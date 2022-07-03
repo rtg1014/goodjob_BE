@@ -19,8 +19,8 @@ db.sequelize
     console.error(error);
   });
 
-const passportconfig = require('./passport/kakao.js');
-passportconfig();
+// const passportconfig = require('./passport/kakao.js');
+// passportconfig();
 
 // middlewares
 app.use(express.json());
