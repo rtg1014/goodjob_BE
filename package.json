@@ -2,11 +2,11 @@
   "name": "good-job",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "dev": "nodemon app",
+    "dev": "nodemon server",
     "test": "jest",
-    "start": "pm2 start app.js",
+    "start": "pm2 start server.js",
     "prettify": "prettier --wrtie *.js **/*.js"
   },
   "dependencies": {
