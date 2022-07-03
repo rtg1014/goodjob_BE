@@ -1,29 +1,21 @@
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define(
-    'user',
+  const User_info = sequelize.define(
+    'user_info',
     {
-      email: {
+      company: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      password: {
+      profileImg: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
-      username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      type: {
-        type: DataTypes.STRING,
-        allowNull: true,
       },
     },
     {
-        timestamps: true,
-        charset: 'utf8mb4',
-        collate: 'utf8mb4_general_ci',
-      }
+      timestamps: true,
+      charset: 'utf8mb4',
+      collate: 'utf8mb4_general_ci',
+    }
   );
 
   // 관계설정은 나중에
@@ -32,5 +24,5 @@ module.exports = (sequelize, DataTypes) => {
   //   db.Badge.hasMany(db.User, { as: "MasterBadge", foreignKey: "masterBadgeId" })
   // };
 
-  return User;
+  return User_info;
 };
