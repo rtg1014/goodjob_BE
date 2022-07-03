@@ -11,7 +11,7 @@ dotenv.config();
 // MySQL
 const db = require('./models');
 db.sequelize
-  .sync()
+  .sync({ logging: false })
   .then(() => {
     console.log('MySQL DB 연결 성공');
   })
