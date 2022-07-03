@@ -16,3 +16,6 @@ module.exports = {
   get: {},
   delete: {},
 };
+
+
+//디나이 실험
