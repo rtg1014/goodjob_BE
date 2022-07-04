@@ -121,7 +121,27 @@ module.exports = {
 
   update: {
     newPassword: asyncWrapper(async (req, res) => {
-      const { email, newPassword } = req.body;
+      const { email, newPassword, confirmNewPassword } = req.body;
+      if (!newPassword || !confirmNewPassword) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '양식을 완성해 주세요.',
+        });
+      }
+      if (!regex.checkPassword(newPassword)) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '비밀번호 형식이 올바르지 않습니다.',
+        });
+      }
+
+      if (newPassword !== confirmNewPassword) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '비밀번호가 일치하지 않습니다.',
+        });
+      }
+
       const hashedPwd = bcrypt.hashSync(newPassword, 10);
       await User.update(
         {
@@ -131,12 +151,22 @@ module.exports = {
           where: { email },
         }
       );
+      return res.status(200).json({
+        isSuccess: false,
+        msg: '비밀번호 변경완료!',
+      });
     }),
   },
 
   get: {
     duplicate: asyncWrapper(async (req, res) => {
       const { email } = req.body;
+      if (!email) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '이메일을 입력해주세요.',
+        });
+      }
       const isExistEmail = await User.findOne({
         where: { email },
       });
