@@ -211,10 +211,9 @@ module.exports = {
       }
 
       const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY);
-
+      res.cookie(token)
       return res.status(200).json({
         isSuccess: true,
-        token,
         msg: '로그인 되었습니다.',
       });
     }),
