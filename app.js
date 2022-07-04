@@ -3,6 +3,7 @@ const morgan = require('morgan'); // 로그 관리
 const cors = require('cors');
 const hpp = require('hpp'); // 파라미터 오염 방지
 const helmet = require('helmet'); // 웹 취약성으로부터 앱을 보호(http://expressjs.com/ko/advanced/best-practice-security.html#use-helmet)
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const dotenv = require('dotenv');
@@ -25,6 +26,7 @@ db.sequelize
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 if (process.env.NODE_ENV === 'production') {
   app.use(morgan('dev'));
