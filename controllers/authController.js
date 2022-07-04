@@ -58,8 +58,10 @@ module.exports = {
 
     sendEmail: asyncWrapper(async (req, res) => {
       const { email } = req.body;
+
+      // 이메일 발송이 완료된 후 응답전에 이메일 발송 요청을 또 한 경우
       const isExistEmail = await AuthEmail.findOne({
-        where: { email, type: 0 },
+        where: { email },
       });
       if (isExistEmail) {
         return res.status(400).json({
@@ -87,12 +89,29 @@ module.exports = {
       let transporter = nodemailer.createTransport(mailConfig);
       transporter.sendMail(message);
 
+      const oldUser = await User.findOne({
+        where: { email },
+      });
+
+      // 신규 회원 가입 시
+      if (!oldUser) {
+        await AuthEmail.create({
+          email,
+          authNumber,
+          type: 0,
+        });
+        return res.status(200).json({
+          isSuccess: true,
+          msg: '메일 발송 완료. 메일함을 확인해 주세요.',
+        });
+      }
+
+      // 비밀번호분실 회원일 시
       await AuthEmail.create({
         email,
         authNumber,
-        type: 0,
+        type: 1,
       });
-
       return res.status(200).json({
         isSuccess: true,
         msg: '메일 발송 완료. 메일함을 확인해 주세요.',
@@ -100,7 +119,20 @@ module.exports = {
     }),
   },
 
-  update: {},
+  update: {
+    newPassword: asyncWrapper(async (req, res) => {
+      const { email, newPassword } = req.body;
+      const hashedPwd = bcrypt.hashSync(newPassword, 10);
+      await User.update(
+        {
+          password: hashedPwd,
+        },
+        {
+          where: { email },
+        }
+      );
+    }),
+  },
 
   get: {
     duplicate: asyncWrapper(async (req, res) => {
@@ -161,8 +193,9 @@ module.exports = {
   delete: {
     verifyNumber: asyncWrapper(async (req, res) => {
       const { email, authNumber } = req.body;
+
       const isVerified = await AuthEmail.findOne({
-        where: { email, authNumber, type: 0 },
+        where: { email, authNumber },
       });
       if (!isVerified) {
         return res.status(400).json({
@@ -170,10 +203,30 @@ module.exports = {
           msg: '인증 번호를 확인해주세요.',
         });
       }
-      await AuthEmail.destroy({ where: { email, authNumber, type: 0 } });
+
+      const oldUser = await User.findOne({
+        where: { email },
+      });
+      // 신규유저 인증완료
+      if (!oldUser) {
+        await AuthEmail.destroy({ where: { email, authNumber, type: 0 } });
+        return res.status(200).json({
+          isSuccess: true,
+          msg: '인증이 완료되었습니다.',
+        });
+      }
+
+      // 비밀번호 분실 유저 인증완료
+      await AuthEmail.destroy({ where: { email, authNumber, type: 1 } });
+      await User.update(
+        { password: Math.floor(Math.random() * 1000000) },
+        {
+          where: { email },
+        }
+      );
       return res.status(200).json({
         isSuccess: true,
-        msg: '인증이 완료되었습니다.',
+        msg: '인증이 완료. 비밀번호가 초기화 되었습니다. 비밀번호를 재설정 해주세요.',
       });
     }),
   },
