@@ -119,6 +119,43 @@ module.exports = {
         msg: '사용가능한 이메일입니다.',
       });
     }),
+
+    auth: asyncWrapper(async (req, res) => {
+      const { email, password } = req.body;
+
+      if (!email || !password) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '이메일 혹은 비밀번호를 입력하세요.',
+        });
+      }
+
+      const user = await User.findOne({
+        where: { email },
+      });
+      if (!user) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '이메일 혹은 비밀번호를 확인해주세요.',
+        });
+      }
+
+      const pwdCheck = bcrypt.compareSync(password, user.password);
+      if (!pwdCheck) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '이메일 혹은 비밀번호를 확인해주세요.',
+        });
+      }
+
+      const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY);
+
+      return res.status(200).json({
+        isSuccess: true,
+        token,
+        msg: '로그인 되었습니다.',
+      });
+    }),
   },
 
   delete: {
