@@ -5,6 +5,7 @@ const hpp = require('hpp'); // 파라미터 오염 방지
 const helmet = require('helmet'); // 웹 취약성으로부터 앱을 보호(http://expressjs.com/ko/advanced/best-practice-security.html#use-helmet)
 const passport = require('passport');
 const expressSession = require('express-session')
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const dotenv = require('dotenv');
@@ -38,6 +39,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(cookieParser());
 
 if (process.env.NODE_ENV === 'production') {
   app.use(morgan('dev'));
@@ -55,8 +57,8 @@ if (process.env.NODE_ENV === 'production') {
   app.use(morgan('dev'));
   app.use(
     cors({
-      origin: '*',
-      // credentials: true,
+      origin: 'http://localhost:3000',
+      credentials: true,
     })
   );
 }
