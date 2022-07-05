@@ -1,0 +1,120 @@
+###
+// 카카오 로그인
+GET http://localhost:3000/api/auth/kakao/callback
+
+
+
+
+
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+
+###
+GET http://localhost:3000/api/lobby
+
+http://3.39.161.93:3000/api/login
+
+###
+GET http://localhost:3000/api/page/2
+
+###
+GET http://localhost:3000/api/mypage
+
+###
+POST http://3.39.161.93:3000/api/signup
+Content-Type: application/json
+
+{
+  "email":"ksh1@naver.com",
+  "password":"123123",
+  "confirmPassword": "123123",
+  "userName": "성현킴"
+}
+
+
+
+
+###
+//로컬 회원가입
+POST http://localhost:3000/api/signup
+Content-Type: application/json
+
+{
+  "email":"abcd@naver.com",
+  "password":"123123123123123",
+  "confirmPassword": "123123123123123",
+  "userName": "김성현"
+}
+
+###
+// 로그인
+POST http://localhost:3000/api/login
+Content-Type: application/json
+
+{
+    "email":"fsfsfs1010@naver.com",
+    "password":"성현111!!!"
+}
+
+###
+/// 이메일로 비밀번호 찾기
+POST http://localhost:3000/api/send/pw
+Content-Type: application/json
+
+{
+  "email" : "rtg1014@naver.com"
+}
+
+
+###
+//  이메일 인증번호 체크
+POST http://localhost:3000/api/send/authCheck
+Content-Type: application/json
+
+{
+  "emailAuthNumber":30094
+}
+
+// 비밀번호 변경
+###
+PATCH http://localhost:3000/api/send/changePassword/fsfsfs1010@naver.com
+Content-Type: application/json
+
+{
+  "password" : "성현111!!!"
+}
+
+
+
+###
+// 이메일 중복검사
+GET http://localhost:3000/api/duplicatesEmail/shshs1010@naver.com
+Content-Type: application/json
+
+
+
+
+//------------------------------------------------------------------------
+
+//------------------------------------------------------------------------
+
+
+###
+// 닉네임 중복검사
+GET http://15.164.50.132/api/duplicatesnick/테스트
+Content-Type: application/json
+
+
+
+
+###
+// 포스팅
+GET http://15.164.50.132/api/travel
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU0LCJpYXQiOjE2NTUzMTA0Nzl9.c48NHpaCXVmsRrcr5tCOpu6Tl1N1cHlkdNCBVB9whao
+Content-Type: application/json

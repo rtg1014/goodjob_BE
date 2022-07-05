@@ -12,10 +12,9 @@ module.exports = {
       }
     }),
   },
+
   update: {},
   get: {},
   delete: {},
 };
 
-
-//디나이 실험
