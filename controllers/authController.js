@@ -10,6 +10,7 @@ module.exports = {
   create: {
     local: asyncWrapper(async (req, res) => {
       const { email, password, confirmPassword, userName } = req.body;
+      // 중복검사
       const isExistEmail = await User.findOne({
         where: { email },
       });
