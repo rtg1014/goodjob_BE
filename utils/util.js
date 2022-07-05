@@ -12,6 +12,13 @@ AWS.config.update({
 
 module.exports = {
   regex: {
+    checkEmail: (email) => {
+      const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+
+      const isValid = regex.test(email);
+
+      return isValid;
+    },
     checkPassword: (password) => {
       const regex =
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,15}$/g;

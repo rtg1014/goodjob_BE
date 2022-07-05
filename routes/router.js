@@ -19,8 +19,6 @@ router.get("/auth/kakao/callback",passport.authenticate('kakao', {
  (req, res) => {
     res.redirect('/');
  },);   // 카카오 로그인 콜백
-// router.post("/auth", AuthController.get.auth);   // 로그인
-router.post('/auth/duplicatesEmail', AuthController.get.duplicate); // 중복확인
 router.post('/auth/sendEmail', AuthController.create.sendEmail); // 인증 메일 발송
 router.post('/auth/verifyNumber', AuthController.delete.verifyNumber); // 인증 번호 확인
 router.patch('/auth/newPassword', AuthController.update.newPassword); //비밀번호 재설정

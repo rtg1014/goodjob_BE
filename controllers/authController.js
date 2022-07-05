@@ -10,18 +10,25 @@ module.exports = {
   create: {
     local: asyncWrapper(async (req, res) => {
       const { email, password, confirmPassword, userName } = req.body;
-
-      //email 인증을 하지 않은 상태면 프론트에서 email을 백으로 주지마세요
-      if (!password || !confirmPassword || !userName) {
+      const isExistEmail = await User.findOne({
+        where: { email },
+      });
+      if (isExistEmail) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '이미 존재하는 이메일입니다.',
+        });
+      }
+      if (!regex.checkEmail(email)) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '이메일 형식이 올바르지 않습니다.',
+        });
+      }
+      if (!email || !password || !confirmPassword || !userName) {
         return res.status(400).json({
           isSuccess: false,
           msg: '회원가입 양식을 완성해 주세요.',
-        });
-      }
-      if (!email) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '이메일 인증을 완료해 주세요',
         });
       }
       if (!regex.checkPassword(password)) {
@@ -39,9 +46,10 @@ module.exports = {
       if (userName.length < 2 && userName.length > 20) {
         return res.status(400).json({
           isSuccess: false,
-          msg: '닉네임이 올바르지 않습니다.',
+          msg: '이름이 올바르지 않습니다.',
         });
       }
+      
       const hashedPwd = bcrypt.hashSync(password, 10);
       const user = await User.create({
         email,
@@ -159,29 +167,6 @@ module.exports = {
   },
 
   get: {
-    duplicate: asyncWrapper(async (req, res) => {
-      const { email } = req.body;
-      if (!email) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '이메일을 입력해주세요.',
-        });
-      }
-      const isExistEmail = await User.findOne({
-        where: { email },
-      });
-      if (isExistEmail) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '이미 존재하는 이메일입니다.',
-        });
-      }
-      return res.status(200).json({
-        isSuccess: true,
-        msg: '사용가능한 이메일입니다.',
-      });
-    }),
-
     auth: asyncWrapper(async (req, res) => {
       const { email, password } = req.body;
 
@@ -211,7 +196,7 @@ module.exports = {
       }
 
       const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY);
-      res.cookie(token)
+      res.cookie(token);
       return res.status(200).json({
         isSuccess: true,
         msg: '로그인 되었습니다.',
