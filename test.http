@@ -3,12 +3,32 @@
 GET http://localhost:3000/api/auth/kakao/callback
 
 
+###
+///로컬 회원가입(이메일 인증받고 가입하기)
+POST http://localhost:3000/api/auth/local
+Content-Type: application/json
+
+{
+  "email" : "rtg1014@naver.com",
+  "password" : "aaaa123!",
+  "confirmPassword" : "aaaa123!",
+  "userName" : "테스터"
+}
 
 
 
+###
+/// 인증번호 입력창###
+///로컬 회원가입(이메일 인증받고 가입하기)
+POST http://localhost:3000/api/auth/verifyNumber
+Content-Type: application/json
 
-
-
+{
+  "email" : "rtg1014@naver.com",
+  "password" : "aaaa123!",
+  "userName" : "테스터",
+  "authNumber" : 645581
+}
 
 
 
@@ -72,49 +92,5 @@ Content-Type: application/json
 }
 
 
-###
-//  이메일 인증번호 체크
-POST http://localhost:3000/api/send/authCheck
-Content-Type: application/json
-
-{
-  "emailAuthNumber":30094
-}
-
-// 비밀번호 변경
-###
-PATCH http://localhost:3000/api/send/changePassword/fsfsfs1010@naver.com
-Content-Type: application/json
-
-{
-  "password" : "성현111!!!"
-}
 
 
-
-###
-// 이메일 중복검사
-GET http://localhost:3000/api/duplicatesEmail/shshs1010@naver.com
-Content-Type: application/json
-
-
-
-
-//------------------------------------------------------------------------
-
-//------------------------------------------------------------------------
-
-
-###
-// 닉네임 중복검사
-GET http://15.164.50.132/api/duplicatesnick/테스트
-Content-Type: application/json
-
-
-
-
-###
-// 포스팅
-GET http://15.164.50.132/api/travel
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU0LCJpYXQiOjE2NTUzMTA0Nzl9.c48NHpaCXVmsRrcr5tCOpu6Tl1N1cHlkdNCBVB9whao
-Content-Type: application/json
