@@ -121,6 +121,7 @@ module.exports = {
           res.cookie(token); /// 헤더나 리스폰스 값으로 토큰값을 전해주면 탈취의 위험이 있어서 쿠키로 감싸서 보내준다.
           res.status(200).json({
             isSuccess: true,
+            msg: '로그인 되었습니다.'
           });
         })
       )(req, res, next); // 미들웨어 확장
@@ -150,7 +151,7 @@ module.exports = {
         type: 'local',
       });
 
-      return res.status(200).json({
+      return res.status(201).json({
         isSuccess: true,
         msg: '회원가입이 완료되었습니다.',
       });
@@ -211,7 +212,7 @@ module.exports = {
         }
       );
       return res.status(200).json({
-        isSuccess: false,
+        isSuccess: true,
         msg: '비밀번호 변경완료!',
       });
     }),
@@ -270,7 +271,7 @@ module.exports = {
       }
 
       return res.status(200).json({
-        isSuccess: false,
+        isSuccess: true,
         msg: '메일 발송 완료. 메일함을 확인해 주세요.',
       });
     }),
