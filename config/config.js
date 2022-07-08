@@ -3,10 +3,10 @@ dotenv.config();
 
 module.exports = {
   "development": {
-    "username": "root",
-    "password": process.env.GOOD_JOB_DB_PASSWORD,
+    "username": process.env.MYSQL_DEVELOPMENT_DB_USERNAME,
+    "password": process.env.MYSQL_DEVELOPMENT_DB_PASSWORD,
     "database": "good_job_database",
-    "host": "127.0.0.1",
+    "host": process.env.MYSQL_DEVELOPMENT_DB_HOST,
     "dialect": "mysql",
     "timezone": "+09:00"
   },
