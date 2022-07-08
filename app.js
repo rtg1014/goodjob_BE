@@ -31,7 +31,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     secret: 'secret',
-    cookie: { httpOnly: true, secure: false, sameSite:'lax' },
+    cookie: { httpOnly: false, secure: false, sameSite: "lax" },
   })
 );
 app.use(express.json());
@@ -57,7 +57,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(morgan('dev'));
   app.use(
     cors({
-      origin: 'http://localhost:3000',
+      origin: '*',
       credentials: true,
     })
   );
