@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const  AuthController  = require('../controllers/authController');
-
+const AuthController  = require('../controllers/authController');
+const ScheduleController = require('../controllers/scheduleController')
 // utils
 const { s3Upload } = require('../utils/util');
 
@@ -19,4 +19,8 @@ router.get('/auth/kakao/callback', AuthController.create.kakao); // 카카오 �
 // router.delete("/auth/logout", middleware.auth, AuthController.delete.auth);   // 로그아웃
 // router.get("/user/me", middleware.auth, UserController.get.user);   // 로그인 유저 정보 가져오기
 
+// api/schedule
+router.post('/schedule', ScheduleController.create.mySchedule); // 수동 스케줄 생성
+router.post('/schedule/scrap', ScheduleController.create.scrap); // 자동 스케줄 생성
+router.get('/schedule/weekly', ScheduleController.get.weekly) // 주간 스케줄 조회
 module.exports = router;

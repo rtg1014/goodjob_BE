@@ -8,11 +8,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       scheduleId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       color: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
       },
       memo: {
         type: DataTypes.STRING,
@@ -20,11 +21,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       sticker: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
+        defaultValue: 0,
       },
       coverImage: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
+        defaultValue: 0,
       },
     },
     {
