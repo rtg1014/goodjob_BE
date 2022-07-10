@@ -139,7 +139,11 @@ module.exports = {
           {
             model: Schedule,
             where: {
-              [Op.and]: [{ date: { [Op.between]: [startedDate, endDate] } }],
+              [Op.or]: [
+                { date: { [Op.between]: [startedDate, endDate] } },
+                { date: startedDate },
+                { date: endDate },
+              ],
             },
           },
         ],
@@ -155,8 +159,68 @@ module.exports = {
               {
                 model: Posting,
                 where: {
-                  [Op.and]: [
+                  [Op.or]: [
                     { deadline: { [Op.between]: [startedDate, endDate] } },
+                    { deadline: startedDate },
+                    { deadline: endDate },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      });
+      return res.status(200).json({
+        isSuccess: true,
+        manual,
+        auto,
+      });
+    }),
+
+    montly: asyncWrapper(async (req, res) => {
+      // 주간 일정 조회 ✨테스트 필요
+      const { startDate } = req.body;
+      const { token } = req.header;
+      const startedDate = new Date(startDate);
+
+      // 재 선언 때문에 var를 굳이 썼습니다..
+      var tDate = new Date(startDate);
+      tDate.setMonth(tDate.getMonth() + 1);
+      const endDate = dateFormatter(tDate);
+
+      const user = await User.findOne({
+        where: { email: token.email },
+      });
+
+      // 수동 스크랩 조회
+      const manual = await user_schedule.findAll({
+        where: { userId: user.id },
+        include: [
+          {
+            model: Schedule,
+            where: {
+              [Op.or]: [
+                { date: { [Op.between]: [startedDate, endDate] } },
+                {date:startedDate}
+              ],
+            },
+          },
+        ],
+      });
+
+      // 자동 스크랩 조회 (attributes, through 옵션 넣기)
+      const auto = await user_schedule.findAll({
+        where: { userId: user.id },
+        include: [
+          {
+            model: Schedule,
+            include: [
+              {
+                model: Posting,
+                where: {
+                  [Op.or]: [
+                    { deadline: { [Op.between]: [startedDate, endDate] } },
+                    { deadline: startedDate },
                   ],
                 },
               },
