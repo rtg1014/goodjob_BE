@@ -31,7 +31,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     secret: 'secret',
-    cookie: { httpOnly: true, secure: false, sameSite:'lax' },
+    cookie: { httpOnly: false, secure: false, sameSite: "lax" },
   })
 );
 app.use(express.json());

@@ -2,13 +2,9 @@ module.exports = (sequelize, DataTypes) => {
   const User_info = sequelize.define(
     'user_info',
     {
-      company: {
+      type: {
         type: DataTypes.STRING,
-        allowNull: false,
-      },
-      profileImg: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
     },
     {
@@ -18,11 +14,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  // 관계설정은 나중에
-  // User.associate = (db) => {
-  //   db.Badge.belongsToMany(db.User, { through: "UserBadge", as: "Challengers" });
-  //   db.Badge.hasMany(db.User, { as: "MasterBadge", foreignKey: "masterBadgeId" })
-  // };
+  User_info.associate = (db) => {
+    db.User_info.belongsTo(db.User); //user, userinfo 1:1관계
+    db.User_info.belongsTo(db.City); //User_info, City 1:N관계
+    db.User_info.belongsTo(db.Job); //User_info, Job 1:1관계
+    db.User_info.belongsTo(db.Career); //User_info, Career 1:1관계
+    db.User_info.belongsTo(db.CompanyType); //User_info, CompanyType 1:1관계
+  };
 
   return User_info;
 };

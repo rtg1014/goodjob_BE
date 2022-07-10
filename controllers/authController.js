@@ -5,7 +5,7 @@ const passport = require('passport');
 
 const { regex, asyncWrapper } = require('../utils/util');
 
-const { User, AuthEmail } = require('../models');
+const { User, AuthEmail, User_info } = require('../models');
 
 module.exports = {
   create: {
@@ -118,10 +118,10 @@ module.exports = {
           const { email } = user;
           const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY);
 
-          res.cookie(token); /// 헤더나 리스폰스 값으로 토큰값을 전해주면 탈취의 위험이 있어서 쿠키로 감싸서 보내준다.
+          // res.cookie(token); /// 헤더나 리스폰스 값으로 토큰값을 전해주면 탈취의 위험이 있어서 쿠키로 감싸서 보내준다.
           res.status(200).json({
+            token,
             isSuccess: true,
-            msg: '로그인 되었습니다.'
           });
         })
       )(req, res, next); // 미들웨어 확장
@@ -150,8 +150,12 @@ module.exports = {
         userName,
         type: 'local',
       });
+      //user info 생성
+      await User_info.create({
+        userId: user.id,
+      });
 
-      return res.status(201).json({
+      return res.status(200).json({
         isSuccess: true,
         msg: '회원가입이 완료되었습니다.',
       });
@@ -212,7 +216,7 @@ module.exports = {
         }
       );
       return res.status(200).json({
-        isSuccess: true,
+        isSuccess: false,
         msg: '비밀번호 변경완료!',
       });
     }),
@@ -271,7 +275,7 @@ module.exports = {
       }
 
       return res.status(200).json({
-        isSuccess: true,
+        isSuccess: false,
         msg: '메일 발송 완료. 메일함을 확인해 주세요.',
       });
     }),
@@ -307,9 +311,9 @@ module.exports = {
       }
 
       const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY);
-      res.cookie(token);
       return res.status(200).json({
         isSuccess: true,
+        token,
         msg: '로그인 되었습니다.',
       });
     }),

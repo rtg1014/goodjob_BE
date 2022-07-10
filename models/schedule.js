@@ -4,15 +4,19 @@ module.exports = (sequelize, DataTypes) => {
     {
       title: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       place: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
-      d_day: {
+      date: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
+      },
+      companyName: {
+        type: DataTypes.DATE,
+        allowNull: true,
       },
     },
     {
@@ -22,11 +26,15 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  // 관계설정은 나중에
-  // User.associate = (db) => {
-  //   db.Badge.belongsToMany(db.User, { through: "UserBadge", as: "Challengers" });
-  //   db.Badge.hasMany(db.User, { as: "MasterBadge", foreignKey: "masterBadgeId" })
-  // };
+  Schedule.associate = (db) => {
+    db.Schedule.belongsToMany(db.User, {
+      through: 'user_schedule',
+      foreignKey: 'scheduleId',
+    });
+    db.Schedule.belongsTo(db.Posting, {
+      foreignKey: 'postingId',
+    });
+  };
 
   return Schedule;
 };

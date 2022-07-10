@@ -2,10 +2,13 @@
 // 카카오 로그인
 GET http://localhost:3000/api/auth/kakao/callback
 
+###
+GET http://14.34.139.253:3000/api/auth/kakao/callback
+
 
 ###
 ///로컬 회원가입(이메일 인증받고 가입하기)
-POST http://localhost:3000/api/auth/local
+POST http://14.34.139.253:3000/api/auth/local
 Content-Type: application/json
 
 {
@@ -20,16 +23,24 @@ Content-Type: application/json
 ###
 /// 인증번호 입력창###
 ///로컬 회원가입(이메일 인증받고 가입하기)
-POST http://localhost:3000/api/auth/verifyNumber
+POST http://localhost:3000/api/auth/verifyNumberForNew
 Content-Type: application/json
 
 {
   "email" : "rtg1014@naver.com",
   "password" : "aaaa123!",
   "userName" : "테스터",
-  "authNumber" : 645581
+  "authNumber" : 333435
 }
 
+###
+POST http://localhost:3000/api/auth
+Content-Type: application/json
+
+{
+  "email" : "rtg1014@naver.com",
+ "password" : "aaaa123!"
+}
 
 
 //--------------------------------------------------------------------------------------------------

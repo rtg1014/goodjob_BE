@@ -8,6 +8,7 @@ module.exports = {
     "database": "good_job_database",
     "host": process.env.MYSQL_DEVELOPMENT_DB_HOST,
     "dialect": "mysql",
+    "timezone": "+09:00"
   },
   "test": {
     "username": "root",

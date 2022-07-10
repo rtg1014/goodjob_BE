@@ -18,11 +18,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  // 관계설정은 나중에
-  // User.associate = (db) => {
-  //   db.Badge.belongsToMany(db.User, { through: "UserBadge", as: "Challengers" });
-  //   db.Badge.hasMany(db.User, { as: "MasterBadge", foreignKey: "masterBadgeId" })
-  // };
+  Job.associate = (db) => {
+    db.Job.hasMany(db.User_info); 
+  };
 
   return Job;
 };
