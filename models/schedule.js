@@ -4,15 +4,19 @@ module.exports = (sequelize, DataTypes) => {
     {
       title: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       place: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
-      d_day: {
+      date: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
+      },
+      companyName: {
+        type: DataTypes.DATE,
+        allowNull: true,
       },
     },
     {
