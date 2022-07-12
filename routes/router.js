@@ -21,6 +21,6 @@ router.get('/auth/kakao/callback', AuthController.create.kakao); // 카카오 �
 
 // api/schedule
 router.post('/schedule', ScheduleController.create.mySchedule); // 수동 스케줄 생성
-router.post('/schedule/scrap', ScheduleController.create.scrap); // 자동 스케줄 생성
+// router.post('/schedule/scrap', ScheduleController.create.scrap); // 자동 스케줄 생성
 router.get('/schedule/weekly', ScheduleController.get.weekly) // 주간 스케줄 조회
 module.exports = router;
