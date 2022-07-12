@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
 
   Job.associate = (db) => {
     db.Job.hasMany(db.User_info); 
+    db.Job.belongsToMany(db.Posting, {
+      through: 'posting_job',
+    });
   };
 
   return Job;

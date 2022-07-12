@@ -15,6 +15,9 @@ module.exports = {
     await queryInterface.bulkInsert('cities', [
       {
         main: '서울',
+      },
+      {
+        main: '서울',
         sub: '강남구',
       },
       {
@@ -112,6 +115,9 @@ module.exports = {
       {
         main: '서울',
         sub: '중랑구',
+      },
+      {
+        main: '경기',
       },
       {
         main: '경기',
@@ -239,6 +245,9 @@ module.exports = {
       },
       {
         main: '인천',
+      },
+      {
+        main: '인천',
         sub: '강화군',
       },
       {
@@ -279,6 +288,9 @@ module.exports = {
       },
       {
         main: '대전',
+      },
+      {
+        main: '대전',
         sub: '대덕구',
       },
       {
@@ -299,6 +311,9 @@ module.exports = {
       },
       {
         main: '세종',
+      },
+      {
+        main: '충남',
       },
       {
         main: '충남',
@@ -362,6 +377,9 @@ module.exports = {
       },
       {
         main: '충북',
+      },
+      {
+        main: '충북',
         sub: '괴산군',
       },
       {
@@ -406,6 +424,9 @@ module.exports = {
       },
       {
         main: '광주',
+      },
+      {
+        main: '광주',
         sub: '광산구',
       },
       {
@@ -423,6 +444,9 @@ module.exports = {
       {
         main: '광주',
         sub: '서구',
+      },
+      {
+        main: '전남',
       },
       {
         main: '전남',
@@ -514,6 +538,9 @@ module.exports = {
       },
       {
         main: '전북',
+      },
+      {
+        main: '전북',
         sub: '고창군',
       },
       {
@@ -570,6 +597,9 @@ module.exports = {
       },
       {
         main: '대구',
+      },
+      {
+        main: '대구',
         sub: '남구',
       },
       {
@@ -599,6 +629,9 @@ module.exports = {
       {
         main: '대구',
         sub: '중구',
+      },
+      {
+        main: '경북',
       },
       {
         main: '경북',
@@ -694,6 +727,9 @@ module.exports = {
       },
       {
         main: '부산',
+      },
+      {
+        main: '부산',
         sub: '강서구',
       },
       {
@@ -758,6 +794,9 @@ module.exports = {
       },
       {
         main: '울산',
+      },
+      {
+        main: '울산',
         sub: '남구',
       },
       {
@@ -775,6 +814,9 @@ module.exports = {
       {
         main: '울산',
         sub: '중구',
+      },
+      {
+        main: '경남',
       },
       {
         main: '경남',
@@ -850,6 +892,9 @@ module.exports = {
       },
       {
         main: '강원',
+      },
+      {
+        main: '강원',
         sub: '강릉시',
       },
       {
@@ -922,6 +967,9 @@ module.exports = {
       },
       {
         main: '제주',
+      },
+      {
+        main: '제주',
         sub: '서귀포시',
       },
       {
@@ -930,6 +978,9 @@ module.exports = {
       },
       {
         main: '전국',
+      },
+      {
+        main: '아시아·중동',
       },
       {
         main: '아시아·중동',
@@ -1021,6 +1072,9 @@ module.exports = {
       },
       {
         main: '중국·홍콩',
+      },
+      {
+        main: '중국·홍콩',
         sub: '북경',
       },
       {
@@ -1086,6 +1140,9 @@ module.exports = {
       {
         main: '중국·홍콩',
         sub: '기타',
+      },
+      {
+        main: '일본',
       },
       {
         main: '일본',
@@ -1170,6 +1227,9 @@ module.exports = {
       {
         main: '일본',
         sub: '히로시마',
+      },
+      {
+        main: '미국',
       },
       {
         main: '미국',
@@ -1277,6 +1337,9 @@ module.exports = {
       },
       {
         main: '북아메리카',
+      },
+      {
+        main: '북아메리카',
         sub: '멕시코',
       },
       {
@@ -1286,6 +1349,9 @@ module.exports = {
       {
         main: '북아메리카',
         sub: '기타',
+      },
+      {
+        main: '남아메리카',
       },
       {
         main: '남아메리카',
@@ -1314,6 +1380,9 @@ module.exports = {
       {
         main: '남아메리카',
         sub: '도미니카연방',
+      },
+      {
+        main: '유럽',
       },
       {
         main: '유럽',
@@ -1409,6 +1478,9 @@ module.exports = {
       },
       {
         main: '오세아니아',
+      },
+      {
+        main: '오세아니아',
         sub: '괌',
       },
       {
@@ -1426,6 +1498,9 @@ module.exports = {
       {
         main: '오세아니아',
         sub: '솔로몬제도',
+      },
+      {
+        main: '아프리카',
       },
       {
         main: '아프리카',
