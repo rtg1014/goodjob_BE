@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Career.associate = (db) => {
-    db.Career.hasMany(db.User_info); 
+    db.Career.hasMany(db.User_info);
+    db.Career.hasMany(db.Posting);
   };
 
   return Career;

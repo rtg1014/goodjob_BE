@@ -29,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
   Schedule.associate = (db) => {
     db.Schedule.belongsToMany(db.User, {
       through: 'user_schedule',
-      foreignKey: 'scheduleId',
     });
     db.Schedule.belongsTo(db.Posting, {
       foreignKey: 'postingId',

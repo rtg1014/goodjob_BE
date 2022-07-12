@@ -10,18 +10,6 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.STRING,
           allowNull: false,
         },
-        career: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
-        education: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
-        address: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
         deadline: {
           type: DataTypes.DATE,
           allowNull: false,
@@ -40,6 +28,12 @@ module.exports = (sequelize, DataTypes) => {
   
     Posting.associate = (db) => {
         db.Posting.hasMany(db.Schedule); //user, Schedule 1:N 관계 하나의 포스팅을 여러명이 스크랩 할수 있나? yes 그래서 has many
+        db.Posting.belongsTo(db.CompanyType);
+        db.Posting.belongsTo(db.City);
+        db.Posting.belongsTo(db.Career);
+        db.Posting.belongsToMany(db.Job, {
+          through: 'posting_job',
+        });
     };
   
     return Posting;
