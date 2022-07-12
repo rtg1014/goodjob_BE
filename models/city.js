@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
 
   City.associate = (db) => {
     db.City.hasOne(db.User_info);
+    db.City.hasMany(db.Posting);
   };
 
   return City;

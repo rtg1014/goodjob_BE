@@ -30,7 +30,6 @@ module.exports = (sequelize, DataTypes) => {
     db.User.hasOne(db.User_info);
     db.User.belongsToMany(db.Schedule, {
       through: 'user_schedule',
-      foreignKey: 'userId',
     });
   };
 
