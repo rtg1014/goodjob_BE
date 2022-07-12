@@ -30,7 +30,7 @@ Content-Type: application/json
   "email" : "rtg1014@naver.com",
   "password" : "aaaa123!",
   "userName" : "테스터",
-  "authNumber" : 333435
+  "authNumber" : 136086
 }
 
 ###
@@ -41,6 +41,22 @@ Content-Type: application/json
   "email" : "rtg1014@naver.com",
  "password" : "aaaa123!"
 }
+
+###
+POST http://14.34.139.253:3000/api/schedule
+Content-Type: application/json
+
+{
+"image" : ,
+"companyName" : ,
+"title" :,
+"sticker" :,
+"date" : "2022-07-09 02:10",
+"place" : ,
+"memo" : ,
+}
+
+
 
 
 //--------------------------------------------------------------------------------------------------
