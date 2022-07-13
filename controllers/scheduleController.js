@@ -40,7 +40,7 @@ module.exports = {
       });
 
       await user_schedule.create({
-        userId: user.id,
+        userId: 1, //토큰되면 수정
         scheduleId: schedule.id,
         sticker,
         coverImage: image,
@@ -56,7 +56,8 @@ module.exports = {
     scrap: asyncWrapper(async (req, res) => {
       const { token } = req.header;
       const { postingId } = req.body;
-      if (!token || !postingId) {
+      // if (!token || !postingId) { // 토큰되면 수정
+      if (!postingId) {
         return res.status(400).json({
           isSuccess: false,
           msg: '토큰이나 포스팅아이디가 없음.',
@@ -83,15 +84,15 @@ module.exports = {
         scrapSchedule = existSchedule;
       }
 
-      const user = await User.findOne({
-        where: { email: token.email },
-      });
+      // const user = await User.findOne({  //토큰 되면 수정
+      //   where: { email: token.email },
+      // });
 
       // findOrCreate 사용
       await user_schedule
         .findOrCreate({
           where: {
-            userId: user.id,
+            userId: 1,
             postingId,
           },
           defaults: {
@@ -124,7 +125,7 @@ module.exports = {
     weekly: asyncWrapper(async (req, res) => {
       // 주간 일정 조회 ✨테스트 필요
       const { startDate } = req.body;
-      const { token } = req.header;
+      // const { token } = req.header;
       const startedDate = new Date(startDate);
 
       // 재 선언 때문에 var를 굳이 썼습니다..
@@ -134,13 +135,13 @@ module.exports = {
       tDate.setMinutes(tDate.getMinutes() + 59);
       const endDate = dateFormatter(tDate);
 
-      const user = await User.findOne({
-        where: { email: token.email },
-      });
+      // const user = await User.findOne({    //토큰되면 수정
+      //   where: { email: token.email },
+      // });
 
       // 수동 스크랩 조회
       const manual = await user_schedule.findAll({
-        where: { userId: user.id },
+        where: { userId: 1 }, //토큰되면 수정
         include: [
           {
             model: Schedule,
@@ -157,7 +158,7 @@ module.exports = {
 
       // 자동 스크랩 조회 (attributes, through 옵션 넣기)
       const auto = await user_schedule.findAll({
-        where: { userId: user.id },
+        where: { userId: 1 }, //토큰되면 수정
         include: [
           {
             model: Schedule,
