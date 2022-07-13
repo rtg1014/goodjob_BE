@@ -13,7 +13,14 @@ module.exports = {
       // 스케줄 수동
       const { image, companyName, color, title, sticker, date, place, memo } =
         req.body;
-      const { token } = req.header; // 토큰에 저장된 유저 이메일
+
+      let user = req.user
+      if (!user) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '토큰값이 이상한데요?',
+        });
+      }
 
       if (!companyName || !title || !date || !place || !color) {
         return res.status(400).json({
@@ -32,9 +39,6 @@ module.exports = {
         companyName,
       });
 
-      const user = await User.findOne({
-        where: { email: token.email },
-      });
       await user_schedule.create({
         userId: user.id,
         scheduleId: schedule.id,
