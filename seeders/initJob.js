@@ -15,6 +15,9 @@ module.exports = {
     await queryInterface.bulkInsert('jobs', [
       {
         main: '경영·사무',
+      },
+      {
+        main: '경영·사무',
         sub: '기획·전략·경영',
       },
       {
@@ -43,6 +46,9 @@ module.exports = {
       },
       {
         main: '마케팅·광고·홍보',
+      },
+      {
+        main: '마케팅·광고·홍보',
         sub: '마케팅·광고·분석',
       },
       {
@@ -52,6 +58,9 @@ module.exports = {
       {
         main: '마케팅·광고·홍보',
         sub: '전시·컨벤션',
+      },
+      {
+        main: 'IT·인터넷',
       },
       {
         main: 'IT·인터넷',
@@ -123,6 +132,9 @@ module.exports = {
       },
       {
         main: '디자인',
+      },
+      {
+        main: '디자인',
         sub: '그래픽디자인·CG',
       },
       {
@@ -155,6 +167,9 @@ module.exports = {
       },
       {
         main: '무역·유통',
+      },
+      {
+        main: '무역·유통',
         sub: '해외영업·무역영업',
       },
       {
@@ -184,6 +199,9 @@ module.exports = {
       {
         main: '무역·유통',
         sub: '화물·중장비',
+      },
+      {
+        main: '영업·고객상담',
       },
       {
         main: '영업·고객상담',
@@ -231,6 +249,9 @@ module.exports = {
       },
       {
         main: '서비스',
+      },
+      {
+        main: '서비스',
         sub: '요리·영양·제과제빵·바리스타',
       },
       {
@@ -267,6 +288,9 @@ module.exports = {
       },
       {
         main: '연구개발·설계',
+      },
+      {
+        main: '연구개발·설계',
         sub: '자동차·조선·기계',
       },
       {
@@ -295,6 +319,9 @@ module.exports = {
       },
       {
         main: '생산·제조',
+      },
+      {
+        main: '생산·제조',
         sub: '생산관리·공정관리·품질관리',
       },
       {
@@ -308,6 +335,9 @@ module.exports = {
       {
         main: '생산·제조',
         sub: '섬유·의류·패션',
+      },
+      {
+        main: '교육',
       },
       {
         main: '교육',
@@ -347,6 +377,9 @@ module.exports = {
       },
       {
         main: '건설',
+      },
+      {
+        main: '건설',
         sub: '건축·설계·인테리어',
       },
       {
@@ -368,6 +401,9 @@ module.exports = {
       {
         main: '건설',
         sub: '부동산·중개·분양·경매',
+      },
+      {
+        main: '의료',
       },
       {
         main: '의료',
@@ -400,6 +436,9 @@ module.exports = {
       {
         main: '의료',
         sub: '의료직기타',
+      },
+      {
+        main: '미디어',
       },
       {
         main: '미디어',
@@ -444,6 +483,9 @@ module.exports = {
       {
         main: '미디어',
         sub: '공연·전시·무대·스텝',
+      },
+      {
+        main: '전문·특수직',
       },
       {
         main: '전문·특수직',

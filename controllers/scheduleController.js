@@ -11,10 +11,9 @@ module.exports = {
   create: {
     mySchedule: asyncWrapper(async (req, res) => {
       // 스케줄 수동
-      const { image, companyName, color, title, sticker, date, place, memo } =
-        req.body;
+      const { image, companyName, color, title, sticker, date, place, memo } =req.body;
 
-      let user = req.user
+      const user = req.user
       if (!user) {
         return res.status(400).json({
           isSuccess: false,
@@ -22,16 +21,14 @@ module.exports = {
         });
       }
 
-      if (!companyName || !title || !date || !place || !color) {
+      if (!companyName || !title || !date || !place ) {
         return res.status(400).json({
           isSuccess: false,
           msg: '양식을 완성해 주세요.',
         });
       }
-      if (!sticker) sticker = 0;
-      if (!image) image = 0;
-      if (!color) color = 0;
 
+      //find of create 로 바꿀것
       const schedule = await Schedule.create({
         date,
         title,
@@ -40,7 +37,7 @@ module.exports = {
       });
 
       await user_schedule.create({
-        userId: 1, //토큰되면 수정
+        userId: user.id, //토큰되면 수정
         scheduleId: schedule.id,
         sticker,
         coverImage: image,
@@ -54,16 +51,22 @@ module.exports = {
     }),
 
     scrap: asyncWrapper(async (req, res) => {
-      const { token } = req.header;
       const { postingId } = req.body;
-      // if (!token || !postingId) { // 토큰되면 수정
-      if (!postingId) {
+
+      const user = req.user
+      if (!user) {
         return res.status(400).json({
           isSuccess: false,
-          msg: '토큰이나 포스팅아이디가 없음.',
+          msg: '토큰값이 이상한데요?',
         });
       }
 
+      if (!postingId) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '포스팅아이디가 없음.',
+        });
+      }
       /*==================================================
       findOrCreate 메소드를 사용하면 편합니다...
       참고 https://sebhastian.com/sequelize-findorcreate/
@@ -126,14 +129,15 @@ module.exports = {
       // 주간 일정 조회 ✨테스트 필요
       const { startDate } = req.body;
       // const { token } = req.header;
-      const startedDate = new Date(startDate);
+      const startedDate = new Date(startDate);  // 7월 11일 00시 00분 00초
 
       // 재 선언 때문에 var를 굳이 썼습니다..
       var tDate = new Date(startDate);
       tDate.setDate(tDate.getDate() + 6);
       tDate.setHours(tDate.getHours() + 23);
       tDate.setMinutes(tDate.getMinutes() + 59);
-      const endDate = dateFormatter(tDate);
+      tDate.setSeconds(tDate.getSeconds() + 59);
+      const endDate = dateFormatter(tDate);   // 7월 17일 23시 59분 59초
 
       // const user = await User.findOne({    //토큰되면 수정
       //   where: { email: token.email },
