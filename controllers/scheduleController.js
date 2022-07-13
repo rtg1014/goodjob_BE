@@ -11,10 +11,18 @@ module.exports = {
   create: {
     mySchedule: asyncWrapper(async (req, res) => {
       // 스케줄 수동
-      const { image, companyName, title, sticker, date, place, memo } =
+      const { image, companyName, color, title, sticker, date, place, memo } =
         req.body;
-      // const { token } = req.header; // 토큰에 저장된 유저 이메일
-      if (!companyName || !title || !date || !place) {
+
+      let user = req.user
+      if (!user) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '토큰값이 이상한데요?',
+        });
+      }
+
+      if (!companyName || !title || !date || !place || !color) {
         return res.status(400).json({
           isSuccess: false,
           msg: '양식을 완성해 주세요.',
@@ -22,6 +30,7 @@ module.exports = {
       }
       if (!sticker) sticker = 0;
       if (!image) image = 0;
+      if (!color) color = 0;
 
       const schedule = await Schedule.create({
         date,
@@ -30,15 +39,13 @@ module.exports = {
         companyName,
       });
 
-      // const user = await User.findOne({
-      //   where: { email: token.email },
-      // });
       await user_schedule.create({
         userId: 1, //토큰되면 수정
         scheduleId: schedule.id,
         sticker,
         coverImage: image,
         memo,
+        color,
       });
       return res.status(201).json({
         isSuccess: true,
@@ -201,7 +208,7 @@ module.exports = {
             where: {
               [Op.or]: [
                 { date: { [Op.between]: [startedDate, endDate] } },
-                {date:startedDate}
+                { date: startedDate },
               ],
             },
           },
