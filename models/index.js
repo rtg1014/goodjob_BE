@@ -21,6 +21,7 @@ db.user_schedule = require('./user_schedule')(sequelize, Sequelize);
 db.User_info = require('./user_info')(sequelize, Sequelize);
 db.User = require('./user')(sequelize, Sequelize);
 db.Posting = require('./posting')(sequelize, Sequelize);
+db.posting_job = require('./posting_job')(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
