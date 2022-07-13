@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const { asyncWrapper } = require('./util');
+const {User} = require('../models/user')
+
 
 module.exports = {
   auth: async (req, res, next) => {
@@ -44,7 +46,7 @@ module.exports = {
         });
       }
 
-      res.locals.user = user;   //쿠키 사용시 수정필요
+      req.user = user;   //쿠키 사용시 수정필요
       next();
     } catch (error) {
       console.error(error);
