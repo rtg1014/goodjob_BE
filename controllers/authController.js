@@ -153,6 +153,7 @@ module.exports = {
       //user info 생성
       await User_info.create({
         userId: user.id,
+        careerId: 3,
       });
 
       return res.status(200).json({

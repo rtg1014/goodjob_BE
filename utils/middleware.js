@@ -3,8 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const { asyncWrapper } = require('./util');
-const {User} = require('../models/user')
-
+const { User } = require('../models');
 
 module.exports = {
   auth: async (req, res, next) => {
@@ -33,10 +32,9 @@ module.exports = {
 
     try {
       const { email } = jwt.verify(value, process.env.JWT_SECRET_KEY);
-
       const user = await User.findOne({
         where: { email },
-        attributes: ['email', 'username', 'profileImg'],
+        attributes: ['id', 'email', 'username'],
       });
 
       if (!user) {
@@ -46,7 +44,7 @@ module.exports = {
         });
       }
 
-      req.user = user;   //쿠키 사용시 수정필요
+      req.user = user;
       next();
     } catch (error) {
       console.error(error);
