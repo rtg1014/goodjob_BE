@@ -32,7 +32,8 @@ router.post('/schedule/scrap', ScheduleController.create.scrap); // 자동 스�
 router.get('/schedule/weekly', ScheduleController.get.weekly); // 주간 스케줄 조회
 
 //  api/posting
-router.patch('/posting/category', middleware.auth, PostingController.update.category); // 추천채용 카테고리 변경
-router.get('/posting/category', middleware.auth, PostingController.get.category); // 추천채용 카테고리 조회
-
+router.patch('/posting/category', middleware.auth, PostingController.update.category); // 추천채용 세팅 변경
+router.get('/posting/category', middleware.auth, PostingController.get.category); // 추천채용 세팅 조회
+router.get('/posting', middleware.auth, PostingController.get.postings); // 추천채용 조회
+router.get('/posting/:postingId',middleware.auth, PostingController.get.posting) // 추천채용 상세 조회
 module.exports = router;

@@ -18,8 +18,6 @@ Content-Type: application/json
   "userName" : "테스터"
 }
 
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU0LCJpYXQiOjE2NTUzMTA0Nzl9.c48NHpaCXVmsRrcr5tCOpu6Tl1N1cHlkdNCBVB9whao
-
 
 ###
 /// 인증번호 입력창###
@@ -31,7 +29,7 @@ Content-Type: application/json
   "email" : "rtg1014@naver.com",
   "password" : "aaaa123!",
   "userName" : "테스터",
-  "authNumber" : 959118
+  "authNumber" : 775824
 }
 
 ###
