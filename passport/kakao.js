@@ -33,6 +33,9 @@ module.exports = () => {
             await User_info.create({
               userId: newUser.id,
               careerId: 3,
+              cityId: 1,
+              companyTypeId: 1,
+              jobId: 1,
             });
             return done(null, newUser); // 회원가입하고 로그인 인증 완료
           }

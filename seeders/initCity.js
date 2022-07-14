@@ -14,7 +14,12 @@ module.exports = {
 
     await queryInterface.bulkInsert('cities', [
       {
+        main: '전체',
+        sub: '전체',
+      },
+      {
         main: '서울',
+        sub: '전체',
       },
       {
         main: '서울',
@@ -118,6 +123,7 @@ module.exports = {
       },
       {
         main: '경기',
+        sub: '전체',
       },
       {
         main: '경기',
@@ -245,6 +251,7 @@ module.exports = {
       },
       {
         main: '인천',
+        sub: '전체',
       },
       {
         main: '인천',
@@ -288,6 +295,7 @@ module.exports = {
       },
       {
         main: '대전',
+        sub: '전체',
       },
       {
         main: '대전',
@@ -311,9 +319,11 @@ module.exports = {
       },
       {
         main: '세종',
+        sub: '전체',
       },
       {
         main: '충남',
+        sub: '전체',
       },
       {
         main: '충남',
@@ -377,6 +387,7 @@ module.exports = {
       },
       {
         main: '충북',
+        sub: '전체',
       },
       {
         main: '충북',
@@ -424,6 +435,7 @@ module.exports = {
       },
       {
         main: '광주',
+        sub: '전체',
       },
       {
         main: '광주',
@@ -447,6 +459,7 @@ module.exports = {
       },
       {
         main: '전남',
+        sub: '전체',
       },
       {
         main: '전남',
@@ -538,6 +551,7 @@ module.exports = {
       },
       {
         main: '전북',
+        sub: '전체',
       },
       {
         main: '전북',
@@ -597,6 +611,7 @@ module.exports = {
       },
       {
         main: '대구',
+        sub: '전체',
       },
       {
         main: '대구',
@@ -632,6 +647,7 @@ module.exports = {
       },
       {
         main: '경북',
+        sub: '전체',
       },
       {
         main: '경북',
@@ -727,6 +743,7 @@ module.exports = {
       },
       {
         main: '부산',
+        sub: '전체',
       },
       {
         main: '부산',
@@ -794,6 +811,7 @@ module.exports = {
       },
       {
         main: '울산',
+        sub: '전체',
       },
       {
         main: '울산',
@@ -817,6 +835,7 @@ module.exports = {
       },
       {
         main: '경남',
+        sub: '전체',
       },
       {
         main: '경남',
@@ -892,6 +911,7 @@ module.exports = {
       },
       {
         main: '강원',
+        sub: '전체',
       },
       {
         main: '강원',
@@ -967,6 +987,7 @@ module.exports = {
       },
       {
         main: '제주',
+        sub: '전체',
       },
       {
         main: '제주',
@@ -978,9 +999,11 @@ module.exports = {
       },
       {
         main: '전국',
+        sub: '전체',
       },
       {
         main: '아시아·중동',
+        sub: '전체',
       },
       {
         main: '아시아·중동',
@@ -1072,6 +1095,7 @@ module.exports = {
       },
       {
         main: '중국·홍콩',
+        sub: '전체',
       },
       {
         main: '중국·홍콩',
@@ -1143,6 +1167,7 @@ module.exports = {
       },
       {
         main: '일본',
+        sub: '전체',
       },
       {
         main: '일본',
@@ -1230,6 +1255,7 @@ module.exports = {
       },
       {
         main: '미국',
+        sub: '전체',
       },
       {
         main: '미국',
@@ -1337,6 +1363,7 @@ module.exports = {
       },
       {
         main: '북아메리카',
+        sub: '전체',
       },
       {
         main: '북아메리카',
@@ -1352,6 +1379,7 @@ module.exports = {
       },
       {
         main: '남아메리카',
+        sub: '전체',
       },
       {
         main: '남아메리카',
@@ -1383,6 +1411,7 @@ module.exports = {
       },
       {
         main: '유럽',
+        sub: '전체',
       },
       {
         main: '유럽',
@@ -1478,6 +1507,7 @@ module.exports = {
       },
       {
         main: '오세아니아',
+        sub: '전체',
       },
       {
         main: '오세아니아',
@@ -1501,6 +1531,7 @@ module.exports = {
       },
       {
         main: '아프리카',
+        sub: '전체',
       },
       {
         main: '아프리카',

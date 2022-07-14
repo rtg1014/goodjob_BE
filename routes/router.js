@@ -33,5 +33,6 @@ router.get('/schedule/weekly', ScheduleController.get.weekly); // 주간 스케�
 
 //  api/posting
 router.patch('/posting/category', middleware.auth, PostingController.update.category); // 추천채용 카테고리 변경
+router.get('/posting/category', middleware.auth, PostingController.get.category); // 추천채용 카테고리 조회
 
 module.exports = router;

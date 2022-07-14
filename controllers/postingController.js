@@ -108,9 +108,79 @@ module.exports = {
         msg: '카테고리 선택 완료',
       });
     }),
-
   },
-  get: {},
+  get: {
+    category: asyncWrapper(async (req, res) => {
+      const user = req.user;
+      if (!user) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '토큰값이 이상한데요?',
+        });
+      }
+
+      const rawData = await User_info.findOne({
+        where: { userId: user.id },
+        attributes: {
+          exclude: [
+            'id',
+            'type',
+            'createdAt',
+            'updatedAt',
+            'careerId',
+            'cityId',
+            'companyTypeId',
+            'jobId',
+            'userId',
+          ],
+        },
+        include: [
+          {
+            model: Career,
+            attributes: {
+              exclude: ['id', 'createdAt', 'updatedAt'],
+            },
+          },
+          {
+            model: City,
+            attributes: {
+              exclude: ['id', 'createdAt', 'updatedAt'],
+            },
+          },
+          {
+            model: CompanyType,
+            attributes: {
+              exclude: ['id', 'createdAt', 'updatedAt'],
+            },
+          },
+          {
+            model: Job,
+            attributes: {
+              exclude: ['id', 'createdAt', 'updatedAt'],
+            },
+          },
+        ],
+      });
+      console.log(rawData)
+
+      if (!rawData) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '카테고리 조회 실패',
+        });
+      }
+      return res.status(200).json({
+        isSuccess: true,
+        career: rawData.career.type,
+        companyType: rawData.companyType.type,
+        cityMain: rawData.city.main,
+        citySub: rawData.city.sub,
+        jobMain: rawData.job.main,
+        jobSub: rawData.job.sub,
+        msg: "카테고리 조회 완료!"
+      });
+    }),
+  },
   delete: {},
 };
 

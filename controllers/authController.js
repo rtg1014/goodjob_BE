@@ -154,6 +154,9 @@ module.exports = {
       await User_info.create({
         userId: user.id,
         careerId: 3,
+        cityId: 1,
+        companyTypeId: 1,
+        jobId: 1,
       });
 
       return res.status(200).json({
