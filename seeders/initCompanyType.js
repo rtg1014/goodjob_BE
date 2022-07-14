@@ -14,6 +14,9 @@ module.exports = {
 
     await queryInterface.bulkInsert("companyTypes", [
       {
+        type: "전체",
+      }, 
+      {
         type: "대기업",
       }, 
       {

@@ -14,7 +14,12 @@ module.exports = {
 
     await queryInterface.bulkInsert('jobs', [
       {
+        main: '전체',
+        sub : '전체',
+      },
+      {
         main: '경영·사무',
+        sub : '전체',
       },
       {
         main: '경영·사무',
@@ -46,6 +51,7 @@ module.exports = {
       },
       {
         main: '마케팅·광고·홍보',
+        sub : '전체',
       },
       {
         main: '마케팅·광고·홍보',
@@ -61,6 +67,7 @@ module.exports = {
       },
       {
         main: 'IT·인터넷',
+        sub : '전체',
       },
       {
         main: 'IT·인터넷',
@@ -132,6 +139,7 @@ module.exports = {
       },
       {
         main: '디자인',
+        sub : '전체',
       },
       {
         main: '디자인',
@@ -167,6 +175,7 @@ module.exports = {
       },
       {
         main: '무역·유통',
+        sub : '전체',
       },
       {
         main: '무역·유통',
@@ -202,6 +211,7 @@ module.exports = {
       },
       {
         main: '영업·고객상담',
+        sub : '전체',
       },
       {
         main: '영업·고객상담',
@@ -249,6 +259,7 @@ module.exports = {
       },
       {
         main: '서비스',
+        sub : '전체',
       },
       {
         main: '서비스',
@@ -288,6 +299,7 @@ module.exports = {
       },
       {
         main: '연구개발·설계',
+        sub : '전체',
       },
       {
         main: '연구개발·설계',
@@ -319,6 +331,7 @@ module.exports = {
       },
       {
         main: '생산·제조',
+        sub : '전체',
       },
       {
         main: '생산·제조',
@@ -338,6 +351,7 @@ module.exports = {
       },
       {
         main: '교육',
+        sub : '전체',
       },
       {
         main: '교육',
@@ -377,6 +391,7 @@ module.exports = {
       },
       {
         main: '건설',
+        sub : '전체',
       },
       {
         main: '건설',
@@ -404,6 +419,7 @@ module.exports = {
       },
       {
         main: '의료',
+        sub : '전체',
       },
       {
         main: '의료',
@@ -439,6 +455,7 @@ module.exports = {
       },
       {
         main: '미디어',
+        sub : '전체',
       },
       {
         main: '미디어',
@@ -486,6 +503,7 @@ module.exports = {
       },
       {
         main: '전문·특수직',
+        sub : '전체',
       },
       {
         main: '전문·특수직',
