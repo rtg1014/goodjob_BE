@@ -1,5 +1,12 @@
+// modules
+const { Op } = require('sequelize');
+
 // utils
-const { asyncWrapper, dateFormatter } = require('../utils/util');
+const {
+  asyncWrapper,
+  attributesOption,
+  dateFormatter,
+} = require('../utils/util');
 
 // models
 const {
@@ -12,6 +19,7 @@ const {
   City,
   Job,
   User_info,
+  posting_job,
 } = require('../models');
 
 module.exports = {
@@ -37,7 +45,7 @@ module.exports = {
       //   });
       // }
       let tempJob;
-      let jobId = null;
+      let jobId = 1;
       if (jobMain) {
         if (!jobSub && jobSub === '전체') {
           tempJob = await Job.findOne({
@@ -53,7 +61,7 @@ module.exports = {
       }
 
       let tempCity;
-      let cityId = null;
+      let cityId = 1;
       if (cityMain) {
         if (!citySub && citySub === '전체') {
           tempCity = await City.findOne({
@@ -69,7 +77,7 @@ module.exports = {
       }
 
       let tempCompanyType;
-      let companyTypeId = null;
+      let companyTypeId = 1;
       if (companyType) {
         tempCompanyType = await CompanyType.findOne({
           where: { type: companyType },
@@ -137,31 +145,22 @@ module.exports = {
         include: [
           {
             model: Career,
-            attributes: {
-              exclude: ['id', 'createdAt', 'updatedAt'],
-            },
+            attributes: attributesOption(),
           },
           {
             model: City,
-            attributes: {
-              exclude: ['id', 'createdAt', 'updatedAt'],
-            },
+            attributes: attributesOption(),
           },
           {
             model: CompanyType,
-            attributes: {
-              exclude: ['id', 'createdAt', 'updatedAt'],
-            },
+            attributes: attributesOption(),
           },
           {
             model: Job,
-            attributes: {
-              exclude: ['id', 'createdAt', 'updatedAt'],
-            },
+            attributes: attributesOption(),
           },
         ],
       });
-      console.log(rawData)
 
       if (!rawData) {
         return res.status(400).json({
@@ -177,24 +176,174 @@ module.exports = {
         citySub: rawData.city.sub,
         jobMain: rawData.job.main,
         jobSub: rawData.job.sub,
-        msg: "카테고리 조회 완료!"
+        msg: '카테고리 조회 완료!',
+      });
+    }),
+
+    postings: asyncWrapper(async (req, res) => {
+      const user = req.user;
+      if (!user) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '토큰값이 이상한데요?',
+        });
+      }
+      // user가 선택한 카테고리
+      const myCategory = await User_info.findOne({
+        where: { userId: user.id },
+      });
+
+      let myCity = await City.findOne({
+        where: { id: myCategory.cityId },
+      });
+
+      let myjob = await Job.findOne({
+        where: { id: myCategory.jobId },
+      });
+
+      let careerOption = { careerId: myCategory.careerId };
+      let cityOption = { cityId: myCategory.cityId };
+      let companyTypeOption = { companyTypeId: myCategory.companyTypeId };
+      let jobOption = { '$jobs.id$': myCategory.jobId };
+      if (myCategory.careerId === 3) {
+        careerOption = {};
+      }
+
+      if (myjob.main === '전체') {
+        jobOption = {};
+      } else if (myjob.sub === '전체') {
+        let jobMain = await Job.findAll({
+          where: { main: myjob.main },
+        });
+        let min = jobMain[0].id;
+        let max = jobMain[jobMain.length - 1].id;
+        jobOption = { '$jobs.Id$': { [Op.between]: [min, max] } };
+      }
+
+      if (myCity.main === '전체') {
+        cityOption = {};
+      } else if (myCity.sub === '전체') {
+        let cityMain = await City.findAll({
+          where: { main: myCity.main },
+        });
+        let min = cityMain[0].id;
+        let max = cityMain[cityMain.length - 1].id;
+        cityOption = { cityId: { [Op.between]: [min, max] } };
+      }
+
+      if (myCategory.companyTypeId === 1) {
+        companyTypeOption = {};
+      }
+
+      const rawPostings = await Posting.findAll({
+        where: {
+          [Op.and]: [careerOption, cityOption, companyTypeOption, jobOption],
+        },
+        attributes: ['id', 'companyName', 'title', 'deadline'],
+        include: [
+          {
+            model: Career,
+            attributes: attributesOption(),
+          },
+          {
+            model: City,
+            attributes: attributesOption(),
+          },
+          {
+            model: CompanyType,
+            attributes: attributesOption(),
+          },
+          {
+            model: Job,
+            attributes: attributesOption(),
+            through: {
+              attributes: ['jobId'],
+            },
+          },
+        ],
+      });
+
+      let postings = [];
+
+      // 프론트에서 job 정보를 받길 원한다면 반복문 안에 반복문 써야함
+      for (x of rawPostings) {
+        let posting = {
+          postingId: x.id,
+          companyName: x.companyName,
+          title: x.title,
+          companyType: x.companyType.type,
+          career: x.career.type,
+          city: x.city.main + ' ' + x.city.sub,
+          deadline: dateFormatter(x.deadline),
+        };
+        postings.push(posting);
+      }
+
+      return res.status(200).json({
+        isSuccess: true,
+        postings,
+        msg: '추천채용 여기있어요!',
+      });
+    }),
+
+    posting: asyncWrapper(async (req, res) => {
+      const user = req.user;
+      if (!user) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '토큰값이 이상한데요?',
+        });
+      }
+      const { postingId } = req.params;
+      const rawPosting = await Posting.findOne({
+        where: { id: postingId },
+        attributes: ['companyName', 'title', 'deadline', 'url'],
+        include: [
+          {
+            model: Career,
+            attributes: attributesOption(),
+          },
+          {
+            model: City,
+            attributes: attributesOption(),
+          },
+          {
+            model: CompanyType,
+            attributes: attributesOption(),
+          },
+          {
+            model: Job,
+            attributes: attributesOption(),
+            through: {
+              attributes: [],
+            },
+          },
+        ],
+      });
+
+      let job = [];
+      for (x of rawPosting.jobs) {
+        job.push(x.sub);
+      }
+
+      const posting = {
+        companyName: rawPosting.companyName,
+        title: rawPosting.title,
+        deadline: dateFormatter(rawPosting.deadline),
+        url: rawPosting.url,
+        career: rawPosting.career.type,
+        city: rawPosting.city.main + ' ' + rawPosting.city.sub,
+        companyType: rawPosting.companyType.type,
+        job,
+      };
+
+      return res.status(200).json({
+        isSuccess: true,
+        posting,
+        msg: '추천채용 상세조회 여기있어요!',
       });
     }),
   },
+
   delete: {},
 };
-
-/*================
-  await User.update(
-   {
-     Name: "김성현",
-   },
-   {
-     where: { Name: '황성원' },
-  }
- );
-
- 웨얼 = Name 이라는 컬럼에서 "황성원" 이라는 로우를 찾는다는 뜻
-
- 네임이 황ㅅ언ㄴ이잉 애들 ㄹ김성현을 바꾼다
-=====================*/

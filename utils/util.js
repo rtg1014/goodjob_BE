@@ -58,6 +58,14 @@ module.exports = {
     return dateString + ' ' + timeString;
   },
 
+  attributesOption: () => {
+    let option = {
+      exclude: ['id', 'createdAt', 'updatedAt'],
+    };
+
+    return option;
+  },
+
   s3Upload: multer({
     storage: multerS3({
       s3: new AWS.S3(),
