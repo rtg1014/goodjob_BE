@@ -157,6 +157,107 @@ module.exports = {
   update: {},
 
   get: {
+    daily: asyncWrapper(async (req, res) => {
+      const { startDate } = req.body;
+      const user = req.user;
+      if (!user) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '토큰값이 이상한데요?',
+        });
+      }
+
+      const startedDate = new Date(startDate); // 7월 20일 00시 00분 00초
+      let tDate = new Date(startDate);
+      tDate.setHours(tDate.getHours() + 23);
+      tDate.setMinutes(tDate.getMinutes() + 59);
+      tDate.setSeconds(tDate.getSeconds() + 59);
+      const endDate = tDate; // 7월 20일 23시 59분 59초
+
+      let manualSchedules = await user_schedule.findAll({
+        where: {
+          [Op.and]: [
+            { userId: user.id },
+            { '$Schedule.postingId$': { [Op.eq]: null } },
+            { '$Schedule.date$': { [Op.between]: [startedDate, endDate] } },
+          ],
+        },
+        attributes: ['scheduleId', 'color', 'memo', 'sticker', 'coverImage'],
+        include: [
+          {
+            model: Schedule,
+            attributes: attributesOption(),
+          },
+        ],
+      });
+
+      let manual = [];
+      for (x of manualSchedules) {
+        let temp = {
+          scheduleId: x.scheduleId,
+          color: x.color,
+          memo: x.memo,
+          sticker: x.sticker,
+          coverImage: x.coverImage,
+          title: x.schedule.title,
+          place: x.schedule.place,
+          date: dateFormatter(x.schedule.date),
+          companyName: x.schedule.companyName,
+        };
+        manual.push(temp);
+      }
+
+      let autoSchedules = await user_schedule.findAll({
+        where: {
+          [Op.and]: [
+            { userId: user.id },
+            { '$Schedule.postingId$': { [Op.gte]: 1 } },
+            { '$Schedule.date$': { [Op.between]: [startedDate, endDate] } },
+          ],
+        },
+        attributes: ['scheduleId', 'color', 'memo', 'sticker', 'coverImage'],
+        include: [
+          {
+            model: Schedule,
+            attributes: attributesOption(),
+            include: [
+              {
+                model: Posting,
+                attributes: attributesOption(),
+              },
+            ],
+          },
+        ],
+      });
+
+      let auto = [];
+      for (x of autoSchedules) {
+
+          let temp = {
+            scheduleId: x.scheduleId,
+            color: x.color,
+            memo: x.memo,
+            sticker: x.sticker,
+            coverImage: x.coverImage,
+            title: x.schedule.title,
+            place: x.schedule.place,
+            date: dateFormatter(x.schedule.date),
+            companyName: x.schedule.companyName,
+          };
+          auto.push(temp);
+        
+      }
+      let data = {
+        manual,
+        auto,
+      };
+      return res.status(200).json({
+        isSuccess: true,
+        data,
+        msg: '일간 일정 조회 완료!',
+      });
+    }),
+
     weekly: asyncWrapper(async (req, res) => {
       // 주간 일정 조회 ✨테스트 필요
       const user = req.user;
@@ -167,7 +268,6 @@ module.exports = {
         });
       }
       const { startDate } = req.body;
-      // const { token } = req.header;
       const startedDate = new Date(startDate); // 7월 11일 00시 00분 00초
 
       // 재 선언 때문에 var를 굳이 썼습니다..
