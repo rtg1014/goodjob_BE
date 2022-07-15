@@ -10,16 +10,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      createdAt: {
+        type: 'TIMESTAMP',
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: false,
+      },
+      updatedAt: {
+        type: 'TIMESTAMP',
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: true,
+      },
     },
     {
-      timestamps: true,
+      timestamps: false,
       charset: 'utf8mb4',
       collate: 'utf8mb4_general_ci',
     }
   );
 
   Job.associate = (db) => {
-    db.Job.hasMany(db.User_info); 
+    db.Job.hasMany(db.User_info);
     db.Job.belongsToMany(db.Posting, {
       through: 'posting_job',
     });

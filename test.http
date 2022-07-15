@@ -22,14 +22,14 @@ Content-Type: application/json
 ###
 /// 인증번호 입력창###
 ///로컬 회원가입(이메일 인증받고 가입하기)
-POST http://localhost:3000/api/auth/verifyNumberForNew
+POST http://14.34.139.253:3000/api/auth/verifyNumberForNew
 Content-Type: application/json
 
 {
   "email" : "rtg1014@naver.com",
   "password" : "aaaa123!",
   "userName" : "테스터",
-  "authNumber" : 775824
+  "authNumber" : 545653
 }
 
 ###
@@ -46,7 +46,7 @@ Content-Type: application/json
 ###
 /// 유저 카테고리 선택
 PATCH http://14.34.139.253:3000/api/posting/category
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ0ZzEwMTRAbmF2ZXIuY29tIiwiaWF0IjoxNjU3NzgyMjc2fQ.FY0fxj3KjS9gTRCCLspqspXztzWDmA58v01xMyvHQ6k
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ0ZzEwMTRAbmF2ZXIuY29tIiwiaWF0IjoxNjU3ODk5NzI2fQ.ndgMqsPSLxM78-z2FjnjALT9Lh97PHax06Kfm1GeQEA
 Content-Type: application/json
 
 {

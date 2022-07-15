@@ -29,9 +29,19 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 0,
       },
+      createdAt: {
+        type: 'TIMESTAMP',
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: false,
+      },
+      updatedAt: {
+        type: 'TIMESTAMP',
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: true,
+      },
     },
     {
-      timestamps: true,
+      timestamps: false,
       charset: 'utf8mb4',
       collate: 'utf8mb4_general_ci',
     }
