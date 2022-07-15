@@ -2,13 +2,19 @@ module.exports = (sequelize, DataTypes) => {
   const User_info = sequelize.define(
     'user_info',
     {
-      type: {
-        type: DataTypes.STRING,
+      createdAt: {
+        type: 'TIMESTAMP',
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: false,
+      },
+      updatedAt: {
+        type: 'TIMESTAMP',
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: true,
       },
     },
     {
-      timestamps: true,
+      timestamps: false,
       charset: 'utf8mb4',
       collate: 'utf8mb4_general_ci',
     }

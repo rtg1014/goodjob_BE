@@ -162,20 +162,25 @@ module.exports = {
         ],
       });
 
-      if (!rawData) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '카테고리 조회 실패',
-        });
-      }
-      return res.status(200).json({
-        isSuccess: true,
+      const data = {
         career: rawData.career.type,
         companyType: rawData.companyType.type,
         cityMain: rawData.city.main,
         citySub: rawData.city.sub,
         jobMain: rawData.job.main,
         jobSub: rawData.job.sub,
+      };
+
+      if (!rawData) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '카테고리 조회 실패',
+        });
+      }
+
+      return res.status(200).json({
+        isSuccess: true,
+        data,
         msg: '카테고리 조회 완료!',
       });
     }),
@@ -235,7 +240,7 @@ module.exports = {
         companyTypeOption = {};
       }
 
-      const rawPostings = await Posting.findAll({
+      const postings = await Posting.findAll({
         where: {
           [Op.and]: [careerOption, cityOption, companyTypeOption, jobOption],
         },
@@ -263,10 +268,10 @@ module.exports = {
         ],
       });
 
-      let postings = [];
+      let data = [];
 
       // 프론트에서 job 정보를 받길 원한다면 반복문 안에 반복문 써야함
-      for (x of rawPostings) {
+      for (x of postings) {
         let posting = {
           postingId: x.id,
           companyName: x.companyName,
@@ -276,12 +281,12 @@ module.exports = {
           city: x.city.main + ' ' + x.city.sub,
           deadline: dateFormatter(x.deadline),
         };
-        postings.push(posting);
+        data.push(posting);
       }
 
       return res.status(200).json({
         isSuccess: true,
-        postings,
+        data,
         msg: '추천채용 여기있어요!',
       });
     }),
@@ -295,7 +300,7 @@ module.exports = {
         });
       }
       const { postingId } = req.params;
-      const rawPosting = await Posting.findOne({
+      const posting = await Posting.findOne({
         where: { id: postingId },
         attributes: ['companyName', 'title', 'deadline', 'url'],
         include: [
@@ -322,24 +327,24 @@ module.exports = {
       });
 
       let job = [];
-      for (x of rawPosting.jobs) {
+      for (x of posting.jobs) {
         job.push(x.sub);
       }
 
-      const posting = {
-        companyName: rawPosting.companyName,
-        title: rawPosting.title,
-        deadline: dateFormatter(rawPosting.deadline),
-        url: rawPosting.url,
-        career: rawPosting.career.type,
-        city: rawPosting.city.main + ' ' + rawPosting.city.sub,
-        companyType: rawPosting.companyType.type,
+      const data = {
+        companyName: posting.companyName,
+        title: posting.title,
+        deadline: dateFormatter(posting.deadline),
+        url: posting.url,
+        career: posting.career.type,
+        city: posting.city.main + ' ' + posting.city.sub,
+        companyType: posting.companyType.type,
         job,
       };
 
       return res.status(200).json({
         isSuccess: true,
-        posting,
+        data,
         msg: '추천채용 상세조회 여기있어요!',
       });
     }),
