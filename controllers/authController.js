@@ -117,8 +117,6 @@ module.exports = {
 
           const { email } = user;
           const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY);
-
-          // res.cookie(token); /// 헤더나 리스폰스 값으로 토큰값을 전해주면 탈취의 위험이 있어서 쿠키로 감싸서 보내준다.
           res.status(200).json({
             token,
             isSuccess: true,

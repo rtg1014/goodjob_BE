@@ -66,6 +66,18 @@ module.exports = {
     return option;
   },
 
+  manual: (startedDate, endDate)=>{
+
+  },
+
+  auto: (startedDate, endDate)=>{
+
+  },
+  
+
+  
+
+  //s3의 시체
   s3Upload: multer({
     storage: multerS3({
       s3: new AWS.S3(),
