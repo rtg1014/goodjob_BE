@@ -1,9 +1,11 @@
 const jwt = require('jsonwebtoken');
+const Joi = require('joi')
 const dotenv = require('dotenv');
 dotenv.config();
 
 const { asyncWrapper } = require('./util');
 const { User } = require('../models');
+const Validators = require('../validators')
 
 module.exports = {
   auth: async (req, res, next) => {
@@ -54,4 +56,22 @@ module.exports = {
       });
     }
   },
+
+  joiMiddleware: (validator) => {
+    if(!Validators.hasOwnProperty(validator)) throw new Error(`존재하지 않습니다 ! '${validator}'`)
+    return async function(req, res, next){
+      try{
+        const validated = await Validators[validator].validateAsync(req.body)
+        req.body = validated
+        next()
+      } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+          isSuccess: false,
+          data: err.details[0].message,
+          msg: 'validation error (joi)',
+        });
+      }
+    }
+  }
 };

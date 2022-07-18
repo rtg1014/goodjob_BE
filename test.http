@@ -5,6 +5,11 @@ GET http://localhost:3000/api/auth/kakao/callback
 ###
 GET http://14.34.139.253:3000/api/auth/kakao/callback
 
+###
+GET http://13.124.202.64:3000/api/auth/kakao/callback
+
+
+13.124.202.64
 
 ###
 ///로컬 회원가입(이메일 인증받고 가입하기)
@@ -29,7 +34,7 @@ Content-Type: application/json
   "email" : "rtg1014@naver.com",
   "password" : "aaaa123!",
   "userName" : "테스터",
-  "authNumber" : 937449
+  "authNumber" : 255007
 }
 
 ###
@@ -40,6 +45,26 @@ Content-Type: application/json
 {
   "email" : "rtg1014@naver.com",
  "password" : "aaaa123!"
+}
+
+###
+/// 유정님 로그인창
+POST http://14.34.139.253:3000/api/auth
+Content-Type: application/json
+
+{
+  "email" : "andn1026@gmail.com",
+ "password" : "test12@@"
+}
+
+###
+/// 비밀번호 재설정
+PATCH http://14.34.139.253:3000/api/auth/newPassword
+Content-Type: application/json
+
+{ "email":"tjddnjs@test.com", 
+  "newPassword":"abc15!", 
+  "confirmNewPassword":"abc15!"
 }
 
 
