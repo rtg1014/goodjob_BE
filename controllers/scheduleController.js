@@ -18,6 +18,7 @@ const {
   City,
   CompanyType,
 } = require('../models');
+const schedule = require('../models/schedule');
 
 module.exports = {
   create: {
@@ -34,14 +35,6 @@ module.exports = {
         });
       }
 
-      if (!companyName || !title || !date || !place) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '양식을 완성해 주세요.',
-        });
-      }
-
-      //find of create 로 바꿀것
       const schedule = await Schedule.create({
         date,
         title,
@@ -70,13 +63,6 @@ module.exports = {
         return res.status(400).json({
           isSuccess: false,
           msg: '토큰값이 이상한데요?',
-        });
-      }
-
-      if (!postingId) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '포스팅아이디가 없음.',
         });
       }
 
@@ -153,12 +139,145 @@ module.exports = {
       }
     }),
   },
-  // mySchedule: asyncWrapper(async (req, res) => {
-  update: {},
+
+  // await myschedule.update({
+  //   image : user_schedule.image,
+  //   memo : user_schedule.memo,
+  //   color: user_schedule.color,
+  //   sticker: user_schedule.sticker,
+  //   companyName : schedule.companyName,
+  //   title : schedule.title,
+  //   date: dateFormatter(schedule.date),
+  //   place: schedule.place
+
+  // },{
+  //   where: { userId: user.id, scheduleId },
+  // });
+
+  // data = {
+  //   image: myschedule.image,
+  //   companyName: myschedule.companyName,
+  //   color : myschedule.color,
+  //   title : myschedule.title,
+  //   sticker : myschedule.sticker,
+  //   date: myschedule.date,
+  //   place: myschedule.place,
+  //   memo: myschedule.memo
+  // };
+
+  // await user_schedule.update(
+  //   {
+  //     image,
+  //     companyName,
+  //     color,
+  //     title,
+  //     sticker,
+  //     date: dateFormatter(date),
+  //     place,
+  //     memo ,
+  //   },
+  //   {
+  //     where: { userId: user.id, scheduleId },
+  //   }
+  // );
+  // console.log('result', result);
+  update: {
+    modify: asyncWrapper(async (req, res) => {
+      const user = req.user;
+      if (!user) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '토큰값이 이상한데요?',
+        });
+      }
+
+      const { scheduleId } = req.params;
+      const { image, companyName, color, title, sticker, date, place, memo } =
+        req.body;
+
+      await user_schedule.update(
+        {
+          coverImage :image,
+          color,
+          memo,
+          sticker,
+        },
+        {
+          where: { userId: user.id, scheduleId }, // user_sc => userId(9) , scheduleId(25)
+        }
+      );
+
+      await Schedule.update(
+        {
+          title,
+          place,
+          date,
+          companyName,
+        },
+        {
+          where: { Id: scheduleId }, // Schedule => Id(25) === sceduleId(25)
+        }
+      );
+
+      return res.status(200).json({
+        isSuccess: true,
+
+        msg: '일정 내용 수정하기 완료!',
+      });
+    }),
+  },
 
   get: {
+    detail: asyncWrapper(async (req, res) => {
+      const user = req.user;
+      if (!user) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '토큰값이 이상한데요?',
+        });
+      }
+      const { scheduleId } = req.params;
+
+      let myschedule = await user_schedule.findOne({
+        where: { userId: user.id, scheduleId },
+        include: [
+          {
+            model: Schedule,
+            attributes: attributesOption(),
+          },
+        ],
+      });
+
+      if (!myschedule) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '잘못된 접근입니다.',
+        });
+      }
+
+      const data = {
+        userId: myschedule.userId,
+        scheduleId: myschedule.scheduleId,
+        color: myschedule.color,
+        memo: myschedule.memo,
+        sticker: myschedule.sticker,
+        coverImage: myschedule.coverImage,
+        title: myschedule.schedule.title,
+        place: myschedule.schedule.place,
+        date: dateFormatter(myschedule.schedule.date),
+        companyName: myschedule.schedule.companyName,
+        postingId: myschedule.schedule.postingId,
+      };
+
+      return res.status(200).json({
+        isSuccess: true,
+        data,
+        msg: '일정 상세보기 완료!',
+      });
+    }),
+
     daily: asyncWrapper(async (req, res) => {
-      const { startDate } = req.body;
+      const { startDate } = req.query;
       const user = req.user;
       if (!user) {
         return res.status(400).json({
@@ -257,11 +376,11 @@ module.exports = {
     }),
 
     weekly: asyncWrapper(async (req, res) => {
-      const { startDate } = req.body;
+      const { startDate } = req.query;
       const user = req.user;
-      console.log(user)
+      console.log(user);
       if (!user) {
-        console.log(user)
+        console.log(user);
         return res.status(400).json({
           isSuccess: false,
           msg: '토큰값이 이상한데요?',
@@ -353,12 +472,12 @@ module.exports = {
       return res.status(200).json({
         isSuccess: true,
         data,
-        msg:'주간 일정 조회 완료!'
+        msg: '주간 일정 조회 완료!',
       });
     }),
 
     montly: asyncWrapper(async (req, res) => {
-      const { startDate } = req.body;
+      const { startDate } = req.query;
       const user = req.user;
       if (!user) {
         return res.status(400).json({
@@ -456,7 +575,56 @@ module.exports = {
     }),
   },
 
-  delete: {},
+  delete: {
+    delete: asyncWrapper(async (req, res) => {
+      const { scheduleId } = req.params;
+      const user = req.user;
+      if (!user) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '토큰값이 이상한데요?',
+        });
+      }
+
+      let myschedule = await user_schedule.findOne({
+        where: { userId: user.id, scheduleId },
+        include: [
+          {
+            model: Schedule,
+            attributes: attributesOption(),
+          },
+        ],
+      });
+
+      if (!myschedule) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '잘못된 접근입니다.',
+        });
+      }
+
+      let shareSchedule = await user_schedule.findOne({
+        where: {
+          [Op.and]: [{ userId: { [Op.ne]: user.id } }, { scheduleId }],
+        },
+      });
+      if (shareSchedule) {
+        await user_schedule.destroy({
+          where: { userId: user.id, scheduleId },
+        });
+      } else {
+        await Schedule.destroy({
+          // schedule에서 없애면 user_schedule에서도 없어집니다!
+          where: { id: scheduleId },
+        });
+      }
+
+      return res.status(200).json({
+        isSuccess: true,
+        msg: '일정 삭제 완료!',
+      });
+    }),
+  },
 };
 
 /*==================

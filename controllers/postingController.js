@@ -38,12 +38,6 @@ module.exports = {
         });
       }
 
-      // if (!career || !companyType || !cityMain || !jobMain) {
-      //   return res.status(400).json({
-      //     isSuccess: false,
-      //     msg: '카테고리 선택 실패',
-      //   });
-      // }
       let tempJob;
       let jobId = 1;
       if (jobMain) {
@@ -117,6 +111,7 @@ module.exports = {
       });
     }),
   },
+
   get: {
     category: asyncWrapper(async (req, res) => {
       const user = req.user;
@@ -186,6 +181,15 @@ module.exports = {
     }),
 
     postings: asyncWrapper(async (req, res) => {
+      let {page} = req.query
+      let limit = 10;
+      let offset = 0 + (page - 1) * limit;
+      Posting.findAndCountAll({
+        offset: offset,
+        limit: limit,
+      })
+    
+   
       const user = req.user;
       if (!user) {
         return res.status(400).json({
