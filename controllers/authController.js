@@ -12,29 +12,6 @@ module.exports = {
     local: asyncWrapper(async (req, res) => {
       const { email, password, confirmPassword, userName } = req.body;
 
-      if (!email || !password || !confirmPassword || !userName) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '회원가입 양식을 완성해 주세요.',
-        });
-      }
-
-      //이름 체크
-      if (userName.length < 2 && userName.length > 20) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '이름이 올바르지 않습니다.',
-        });
-      }
-
-      // 이메일 형식체크
-      if (!regex.checkEmail(email)) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '이메일 형식이 올바르지 않습니다.',
-        });
-      }
-
       // 이메일 중복검사
       const isExistEmail = await User.findOne({
         where: { email },
@@ -43,22 +20,6 @@ module.exports = {
         return res.status(400).json({
           isSuccess: false,
           msg: '이미 존재하는 이메일입니다.',
-        });
-      }
-
-      // 비밀번호 형식체크
-      if (!regex.checkPassword(password)) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '비밀번호 형식이 올바르지 않습니다.',
-        });
-      }
-
-      // 비밀번호 confirm 체크
-      if (password !== confirmPassword) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '비밀번호가 일치하지 않습니다.',
         });
       }
 
@@ -188,25 +149,6 @@ module.exports = {
   update: {
     newPassword: asyncWrapper(async (req, res) => {
       const { email, newPassword, confirmNewPassword } = req.body;
-      if (!newPassword || !confirmNewPassword) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '양식을 완성해 주세요.',
-        });
-      }
-      if (!regex.checkPassword(newPassword)) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '비밀번호 형식이 올바르지 않습니다.',
-        });
-      }
-
-      if (newPassword !== confirmNewPassword) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '비밀번호가 일치하지 않습니다.',
-        });
-      }
 
       const hashedPwd = bcrypt.hashSync(newPassword, 10);
       await User.update(
@@ -218,19 +160,13 @@ module.exports = {
         }
       );
       return res.status(200).json({
-        isSuccess: false,
+        isSuccess: true,
         msg: '비밀번호 변경완료!',
       });
     }),
 
     lostPassword: asyncWrapper(async (req, res) => {
       const { email, userName } = req.body;
-      if (!email || !userName) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '양식을 완성해 주세요.',
-        });
-      }
       const existUser = await User.findOne({
         where: { email, userName },
       });
@@ -286,13 +222,6 @@ module.exports = {
   get: {
     auth: asyncWrapper(async (req, res) => {
       const { email, password } = req.body;
-
-      if (!email || !password) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '이메일 혹은 비밀번호를 입력하세요.',
-        });
-      }
 
       const user = await User.findOne({
         where: { email },
