@@ -28,7 +28,7 @@ jobs:
           run: |
             touch .env
             cat << EOF >> .env
-            ${{ GOODJOB_SECRET.ENV }}
+            ${{ secrets.GOODJOB_SECRET }}
         - name: npm install
           working-directory: ../goodjob_BE
           run: |
