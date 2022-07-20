@@ -11,11 +11,12 @@ module.exports = {
     "timezone": "+09:00"
   },
   "test": {
-    "username": "root",
-    "password": process.env.GOOD_JOB_DB_PASSWORD,
+    "username": process.env.MYSQL_TEST_DB_USERNAME,
+    "password": process.env.MYSQL_TEST_DB_PASSWORD,
     "database": "good_job",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "host": process.env.MYSQL_TEST_DB_HOST,
+    "dialect": "mysql",
+    "timezone": "+09:00"
   },
   "production": {
     "username": process.env.MYSQL_PRODUCTION_DB_USERNAME,
