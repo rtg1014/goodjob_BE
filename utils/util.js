@@ -1,40 +1,28 @@
-const multer = require('multer');
-const path = require('path');
-const multerS3 = require('multer-s3');
-const AWS = require('aws-sdk');
-
-// AWS Config
-AWS.config.update({
-  accessKeyId: process.env.S3_ACCESS_KEY_ID,
-  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-  region: '', // 리전 넣으시면됩니다  예시:"ap-northeast-2"
-});
-
+const { sequelize } = require('../models');
 module.exports = {
-  regex: {
-    checkEmail: (email) => {
-      const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-
-      const isValid = regex.test(email);
-
-      return isValid;
-    },
-    checkPassword: (password) => {
-      const regex =
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,15}$/g;
-
-      const isValid = regex.test(password);
-
-      return isValid;
-    },
-  },
-
   asyncWrapper: (asyncFn) => {
     return async (req, res, next) => {
       try {
         return await asyncFn(req, res, next);
       } catch (error) {
         console.error(error);
+        return res.status(500).json({
+          isSuccess: false,
+          msg: 'Internal Server Error',
+        });
+      }
+    };
+  },
+
+  asyncWrapperWithTransaction: (asyncFn) => {
+    return async (req, res, next) => {
+      const t = await sequelize.transaction();
+
+      try {
+        return await asyncFn(req, res, next, t);
+      } catch (error) {
+        console.error(error);
+        await t.rollback();
         return res.status(500).json({
           isSuccess: false,
           msg: 'Internal Server Error',
@@ -66,25 +54,13 @@ module.exports = {
     return option;
   },
 
-  manual: (startedDate, endDate)=>{
-
+  invalidToken: (user) => {
+    if (!user) {
+      return res.status(400).json({
+        isSuccess: false,
+        msg: '토큰값이 이상한데요?',
+      });
+    }
   },
 
-  auto: (startedDate, endDate)=>{
-
-  },
-  
-
-  
-
-  //s3의 시체
-  s3Upload: multer({
-    storage: multerS3({
-      s3: new AWS.S3(),
-      bucket: '만드신 버킷 이름 넣으시면됩니다',
-      key(req, file, cb) {
-        cb(null, `images/${Date.now()}_${path.basename(file.originalname)}`);
-      },
-    }),
-  }),
 };
