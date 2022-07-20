@@ -10,16 +10,12 @@ const {
 
 // models
 const {
-  User,
-  user_schedule,
-  Schedule,
   Posting,
   Career,
   CompanyType,
   City,
   Job,
   User_info,
-  posting_job,
 } = require('../models');
 
 module.exports = {
@@ -31,12 +27,7 @@ module.exports = {
 
       /// 로그인확인부분 (어스 미들웨어)
       const user = req.user;
-      if (!user) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '토큰값이 이상한데요?',
-        });
-      }
+      invalidToken(user);
 
       let tempJob;
       let jobId = 1;
@@ -115,12 +106,7 @@ module.exports = {
   get: {
     category: asyncWrapper(async (req, res) => {
       const user = req.user;
-      if (!user) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '토큰값이 이상한데요?',
-        });
-      }
+      invalidToken(user);
 
       const rawData = await User_info.findOne({
         where: { userId: user.id },
@@ -181,22 +167,17 @@ module.exports = {
     }),
 
     postings: asyncWrapper(async (req, res) => {
-      let {page} = req.query
-      let limit = 10;
-      let offset = 0 + (page - 1) * limit;
-      Posting.findAndCountAll({
-        offset: offset,
-        limit: limit,
-      })
+      // let {page} = req.query
+      // let limit = 10;
+      // let offset = 0 + (page - 1) * limit;
+      // Posting.findAndCountAll({
+      //   offset: offset,
+      //   limit: limit,
+      // })
     
    
       const user = req.user;
-      if (!user) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '토큰값이 이상한데요?',
-        });
-      }
+      invalidToken(user);
       // user가 선택한 카테고리
       const myCategory = await User_info.findOne({
         where: { userId: user.id },
@@ -297,12 +278,7 @@ module.exports = {
 
     posting: asyncWrapper(async (req, res) => {
       const user = req.user;
-      if (!user) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '토큰값이 이상한데요?',
-        });
-      }
+      invalidToken(user);
       const { postingId } = req.params;
       const posting = await Posting.findOne({
         where: { id: postingId },

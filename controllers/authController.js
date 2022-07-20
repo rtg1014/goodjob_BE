@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 
-const { regex, asyncWrapper } = require('../utils/util');
+const { asyncWrapper } = require('../utils/util');
 
 const { User, AuthEmail, User_info } = require('../models');
 

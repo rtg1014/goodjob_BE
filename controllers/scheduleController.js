@@ -4,13 +4,15 @@ const { Op } = require('sequelize');
 // utils
 const {
   asyncWrapper,
+  asyncWrapperWithTransaction,
   dateFormatter,
   attributesOption,
+  invalidToken,
 } = require('../utils/util');
+const { autoData, manualData } = require('../utils/util2');
 
 // models
 const {
-  User,
   user_schedule,
   Schedule,
   Posting,
@@ -26,14 +28,8 @@ module.exports = {
       // 스케줄 수동
       const { image, companyName, color, title, sticker, date, place, memo } =
         req.body;
-
       const user = req.user;
-      if (!user) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '토큰값이 이상한데요?',
-        });
-      }
+      invalidToken(user);
 
       const schedule = await Schedule.create({
         date,
@@ -56,15 +52,10 @@ module.exports = {
       });
     }),
 
-    scrap: asyncWrapper(async (req, res) => {
+    scrap: asyncWrapperWithTransaction(async (req, res, next, t) => {
       const { postingId } = req.body;
       const user = req.user;
-      if (!user) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '토큰값이 이상한데요?',
-        });
-      }
+      invalidToken(user);
 
       let posting = await Posting.findOne({
         where: { id: postingId },
@@ -87,44 +78,44 @@ module.exports = {
       let place = posting.city.main + ' ' + posting.city.sub;
       let companyName = posting.companyName;
       let date = dateFormatter(posting.deadline);
-
+      console.log(posting);
       /*==================================================
-      findOrCreate 메소드를 사용하면 편합니다...
+      findOrCreate 
       참고 https://sebhastian.com/sequelize-findorcreate/
       ===================================================*/
 
-      // find, create 따로 사용
-      // 성현님 미션 : findorcreate, 트랜잭션
-      let scrapSchedule;
-      let existSchedule = await Schedule.findOne({
-        where: { postingId },
-      });
-
-      if (!existSchedule) {
-        let newSchedule = await Schedule.create({
-          title,
-          place,
-          date,
-          companyName,
-          postingId,
-        });
-        scrapSchedule = newSchedule;
-      } else {
-        scrapSchedule = existSchedule;
-      }
+      let scrapSchedule = await Schedule.findOrCreate(
+        {
+          // scrapSchedule === [a, b]  a=== 결과물 b === create 트루, find false
+          where: { postingId },
+          defaults: {
+            title,
+            place,
+            date,
+            companyName,
+            postingId,
+          },
+        },
+        { transaction: t }
+      );
 
       // findOrCreate 사용
-      const [mine, created] = await user_schedule.findOrCreate({
-        where: {
-          userId: user.id,
-          scheduleId: scrapSchedule.id,
+      const [mine, created] = await user_schedule.findOrCreate(
+        {
+          where: {
+            userId: user.id,
+            scheduleId: scrapSchedule[0].id,
+          },
+          defaults: {
+            color: 0,
+            sticker: 0,
+            coverImage: 0,
+          },
         },
-        defaults: {
-          color: 0,
-          sticker: 0,
-          coverImage: 0,
-        },
-      });
+        { transaction: t }
+      );
+
+      await t.commit();
 
       if (created) {
         return res.status(201).json({
@@ -140,71 +131,50 @@ module.exports = {
     }),
   },
 
-  // await myschedule.update({
-  //   image : user_schedule.image,
-  //   memo : user_schedule.memo,
-  //   color: user_schedule.color,
-  //   sticker: user_schedule.sticker,
-  //   companyName : schedule.companyName,
-  //   title : schedule.title,
-  //   date: dateFormatter(schedule.date),
-  //   place: schedule.place
-
-  // },{
-  //   where: { userId: user.id, scheduleId },
-  // });
-
-  // data = {
-  //   image: myschedule.image,
-  //   companyName: myschedule.companyName,
-  //   color : myschedule.color,
-  //   title : myschedule.title,
-  //   sticker : myschedule.sticker,
-  //   date: myschedule.date,
-  //   place: myschedule.place,
-  //   memo: myschedule.memo
-  // };
-
-  // await user_schedule.update(
-  //   {
-  //     image,
-  //     companyName,
-  //     color,
-  //     title,
-  //     sticker,
-  //     date: dateFormatter(date),
-  //     place,
-  //     memo ,
-  //   },
-  //   {
-  //     where: { userId: user.id, scheduleId },
-  //   }
-  // );
-  // console.log('result', result);
   update: {
-    modify: asyncWrapper(async (req, res) => {
+    modify: asyncWrapperWithTransaction(async (req, res, next, t) => {
       const user = req.user;
-      if (!user) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '토큰값이 이상한데요?',
-        });
-      }
+      invalidToken(user);
 
       const { scheduleId } = req.params;
       const { image, companyName, color, title, sticker, date, place, memo } =
         req.body;
 
+      let myschedule = await user_schedule.findOne({
+        where: { userId: user.id, scheduleId },
+      });
+
+      if (!myschedule) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '잘못된 접근입니다.',
+        });
+      }
+
+      let scrapSchedule = await Schedule.findOne({
+        where: {
+          [Op.and]: [{ id: scheduleId }, { postingId: { [Op.ne]: null } }], //null이 아니다 === 값이 있다 === 스크랩해왔다
+        },
+      });
+
+      if (scrapSchedule) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '스크랩 일정은 수정할 수 없습니다.',
+        });
+      }
+
       await user_schedule.update(
         {
-          coverImage :image,
+          coverImage: image,
           color,
           memo,
           sticker,
         },
         {
           where: { userId: user.id, scheduleId }, // user_sc => userId(9) , scheduleId(25)
-        }
+        },
+        { transaction: t }
       );
 
       await Schedule.update(
@@ -216,12 +186,14 @@ module.exports = {
         },
         {
           where: { Id: scheduleId }, // Schedule => Id(25) === sceduleId(25)
-        }
+        },
+        { transaction: t }
       );
+
+      await t.commit();
 
       return res.status(200).json({
         isSuccess: true,
-
         msg: '일정 내용 수정하기 완료!',
       });
     }),
@@ -230,12 +202,7 @@ module.exports = {
   get: {
     detail: asyncWrapper(async (req, res) => {
       const user = req.user;
-      if (!user) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '토큰값이 이상한데요?',
-        });
-      }
+      invalidToken(user);
       const { scheduleId } = req.params;
 
       let myschedule = await user_schedule.findOne({
@@ -279,12 +246,7 @@ module.exports = {
     daily: asyncWrapper(async (req, res) => {
       const { startDate } = req.query;
       const user = req.user;
-      if (!user) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '토큰값이 이상한데요?',
-        });
-      }
+      invalidToken(user);
 
       const startedDate = new Date(startDate); // 7월 20일 00시 00분 00초
       let tDate = new Date(startDate);
@@ -309,22 +271,6 @@ module.exports = {
         ],
       });
 
-      let manual = [];
-      for (x of manualSchedules) {
-        let temp = {
-          scheduleId: x.scheduleId,
-          color: x.color,
-          memo: x.memo,
-          sticker: x.sticker,
-          coverImage: x.coverImage,
-          title: x.schedule.title,
-          place: x.schedule.place,
-          date: dateFormatter(x.schedule.date),
-          companyName: x.schedule.companyName,
-        };
-        manual.push(temp);
-      }
-
       let autoSchedules = await user_schedule.findAll({
         where: {
           [Op.and]: [
@@ -349,21 +295,8 @@ module.exports = {
         ],
       });
 
-      let auto = [];
-      for (x of autoSchedules) {
-        let temp = {
-          scheduleId: x.scheduleId,
-          color: x.color,
-          memo: x.memo,
-          sticker: x.sticker,
-          coverImage: x.coverImage,
-          title: x.schedule.title,
-          place: x.schedule.place,
-          date: dateFormatter(x.schedule.date),
-          companyName: x.schedule.companyName,
-        };
-        auto.push(temp);
-      }
+      let manual = manualData(manualSchedules);
+      let auto = autoData(autoSchedules);
       let data = {
         manual,
         auto,
@@ -378,14 +311,8 @@ module.exports = {
     weekly: asyncWrapper(async (req, res) => {
       const { startDate } = req.query;
       const user = req.user;
-      console.log(user);
-      if (!user) {
-        console.log(user);
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '토큰값이 이상한데요?',
-        });
-      }
+      invalidToken(user);
+
       const startedDate = new Date(startDate); // 7월 10일 00시 00분 00초
       let tDate = new Date(startDate);
       tDate.setDate(tDate.getDate() + 7);
@@ -409,22 +336,6 @@ module.exports = {
         ],
       });
 
-      let manual = [];
-      for (x of manualSchedules) {
-        let temp = {
-          scheduleId: x.scheduleId,
-          color: x.color,
-          memo: x.memo,
-          sticker: x.sticker,
-          coverImage: x.coverImage,
-          title: x.schedule.title,
-          place: x.schedule.place,
-          date: dateFormatter(x.schedule.date),
-          companyName: x.schedule.companyName,
-        };
-        manual.push(temp);
-      }
-
       let autoSchedules = await user_schedule.findAll({
         where: {
           [Op.and]: [
@@ -449,21 +360,8 @@ module.exports = {
         ],
       });
 
-      let auto = [];
-      for (x of autoSchedules) {
-        let temp = {
-          scheduleId: x.scheduleId,
-          color: x.color,
-          memo: x.memo,
-          sticker: x.sticker,
-          coverImage: x.coverImage,
-          title: x.schedule.title,
-          place: x.schedule.place,
-          date: dateFormatter(x.schedule.date),
-          companyName: x.schedule.companyName,
-        };
-        auto.push(temp);
-      }
+      let manual = manualData(manualSchedules);
+      let auto = autoData(autoSchedules);
       let data = {
         manual,
         auto,
@@ -479,18 +377,12 @@ module.exports = {
     montly: asyncWrapper(async (req, res) => {
       const { startDate } = req.query;
       const user = req.user;
-      if (!user) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '토큰값이 이상한데요?',
-        });
-      }
+      invalidToken(user);
 
       const startedDate = new Date(startDate); // 7월 01일 00시 00분 00초
       let tDate = new Date(startDate);
       tDate.setMonth(tDate.getMonth() + 1);
       const endDate = tDate; // 8월 1일 0시 0분 0초
-
       let manualSchedules = await user_schedule.findAll({
         where: {
           [Op.and]: [
@@ -509,21 +401,6 @@ module.exports = {
         ],
       });
 
-      let manual = [];
-      for (x of manualSchedules) {
-        let temp = {
-          scheduleId: x.scheduleId,
-          color: x.color,
-          memo: x.memo,
-          sticker: x.sticker,
-          coverImage: x.coverImage,
-          title: x.schedule.title,
-          place: x.schedule.place,
-          date: dateFormatter(x.schedule.date),
-          companyName: x.schedule.companyName,
-        };
-        manual.push(temp);
-      }
       let autoSchedules = await user_schedule.findAll({
         where: {
           [Op.and]: [
@@ -547,22 +424,8 @@ module.exports = {
           },
         ],
       });
-
-      let auto = [];
-      for (x of autoSchedules) {
-        let temp = {
-          scheduleId: x.scheduleId,
-          color: x.color,
-          memo: x.memo,
-          sticker: x.sticker,
-          coverImage: x.coverImage,
-          title: x.schedule.title,
-          place: x.schedule.place,
-          date: dateFormatter(x.schedule.date),
-          companyName: x.schedule.companyName,
-        };
-        auto.push(temp);
-      }
+      let manual = manualData(manualSchedules);
+      let auto = autoData(autoSchedules);
       let data = {
         manual,
         auto,
@@ -573,18 +436,71 @@ module.exports = {
         msg: '월간 일정 조회 완료!',
       });
     }),
+
+    search: asyncWrapper(async (req, res) => {
+      const { keyword } = req.query;
+      const user = req.user;
+      invalidToken(user);
+
+      // title, memo, place, companyName
+      let manualSchedules = await user_schedule.findAll({
+        where: {
+          userid: user.id,
+          '$Schedule.postingId$': { [Op.eq]: null },
+          [Op.or]: [
+            { '$Schedule.title$': { [Op.like]: '%' + keyword + '%' } },
+            { memo: { [Op.like]: '%' + keyword + '%' } },
+            { '$Schedule.place$': { [Op.like]: '%' + keyword + '%' } },
+            { '$Schedule.companyName$': { [Op.like]: '%' + keyword + '%' } },
+          ],
+        },
+        include: [
+          {
+            model: Schedule,
+            attributes: attributesOption(),
+          },
+        ],
+      });
+
+      let autoSchedules = await user_schedule.findAll({
+        where: {
+          userid: user.id,
+          '$Schedule.postingId$': { [Op.ne]: null },
+          [Op.or]: [
+            { '$Schedule.title$': { [Op.like]: '%' + keyword + '%' } },
+            { memo: { [Op.like]: '%' + keyword + '%' } },
+            { '$Schedule.place$': { [Op.like]: '%' + keyword + '%' } },
+            { '$Schedule.companyName$': { [Op.like]: '%' + keyword + '%' } },
+          ],
+        },
+        include: [
+          {
+            model: Schedule,
+            attributes: attributesOption(),
+          },
+        ],
+      });
+
+      let manual = manualData(manualSchedules);
+      let auto = autoData(autoSchedules);
+      let data = {
+        manual,
+        auto,
+      };
+
+      return res.status(200).json({
+        isSuccess: true,
+        data,
+        msg: '일정 검색 완료!',
+      });
+    }),
   },
 
   delete: {
     delete: asyncWrapper(async (req, res) => {
       const { scheduleId } = req.params;
       const user = req.user;
-      if (!user) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '토큰값이 이상한데요?',
-        });
-      }
+      invalidToken(user);
 
       let myschedule = await user_schedule.findOne({
         where: { userId: user.id, scheduleId },
@@ -603,21 +519,9 @@ module.exports = {
         });
       }
 
-      let shareSchedule = await user_schedule.findOne({
-        where: {
-          [Op.and]: [{ userId: { [Op.ne]: user.id } }, { scheduleId }],
-        },
+      await Schedule.destroy({
+        where: { id: scheduleId },
       });
-      if (shareSchedule) {
-        await user_schedule.destroy({
-          where: { userId: user.id, scheduleId },
-        });
-      } else {
-        await Schedule.destroy({
-          // schedule에서 없애면 user_schedule에서도 없어집니다!
-          where: { id: scheduleId },
-        });
-      }
 
       return res.status(200).json({
         isSuccess: true,

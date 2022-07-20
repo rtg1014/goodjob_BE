@@ -1,8 +1,10 @@
+// modules
+
 const jwt = require('jsonwebtoken');
-const Joi = require('joi')
 const dotenv = require('dotenv');
 dotenv.config();
 
+// utils
 const { asyncWrapper } = require('./util');
 const { User } = require('../models');
 const Validators = require('../validators')
