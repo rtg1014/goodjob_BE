@@ -4,10 +4,8 @@
 name: Node.js CI
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "test" ]
 
 jobs:
   build:
@@ -20,12 +18,23 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+        - uses: actions/checkout@v3
+        - name: Use Node.js ${{ matrix.node-version }}
+          uses: actions/setup-node@v3
+          with:
+            node-version: ${{ matrix.node-version }}
+            cache: 'npm'
+        - name: create env file
+          working-directory: ../goodjob_BE
+          run: |
+            touch .env
+            cat << EOF >> .env
+            ${{ GOODJOB_SECRET.ENV }}
+        - name: npm install
+          working-directory: ../goodjob_BE
+          run: |
+            npm install 
+        - name: npm test
+          working-directory: ../goodjob_BE
+          run: |
+            npm test
