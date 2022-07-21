@@ -30,6 +30,7 @@ module.exports = {
         service: 'Naver',
         host: 'smtp.naver.com',
         port: process.env.MAIL_SMTP_PORT,
+        maxConnections: 64,
         auth: {
           user: process.env.MAIL_EMAIL,
           pass: process.env.MAIL_PASSWORD,
@@ -184,6 +185,7 @@ module.exports = {
         service: 'Naver',
         host: 'smtp.naver.com',
         port: process.env.MAIL_SMTP_PORT,
+        maxConnections: 64,
         auth: {
           user: process.env.MAIL_EMAIL,
           pass: process.env.MAIL_PASSWORD,
@@ -213,7 +215,7 @@ module.exports = {
       }
 
       return res.status(200).json({
-        isSuccess: false,
+        isSuccess: true,
         msg: '메일 발송 완료. 메일함을 확인해 주세요.',
       });
     }),

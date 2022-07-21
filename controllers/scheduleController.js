@@ -20,7 +20,6 @@ const {
   City,
   CompanyType,
 } = require('../models');
-const schedule = require('../models/schedule');
 
 module.exports = {
   create: {
