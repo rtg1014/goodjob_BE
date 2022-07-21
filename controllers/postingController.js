@@ -144,6 +144,13 @@ module.exports = {
         ],
       });
 
+      if (!rawData) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '카테고리 조회 실패',
+        });
+      }
+
       const data = {
         career: rawData.career.type,
         companyType: rawData.companyType.type,
@@ -152,13 +159,6 @@ module.exports = {
         jobMain: rawData.job.main,
         jobSub: rawData.job.sub,
       };
-
-      if (!rawData) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '카테고리 조회 실패',
-        });
-      }
 
       return res.status(200).json({
         isSuccess: true,
