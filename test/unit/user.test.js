@@ -1,7 +1,6 @@
 const httpMocks = require('node-mocks-http');
 const AuthController = require('../../controllers/authController');
 const { User, AuthEmail, User_info } = require('../../models');
-const locals = require('../data/locals.json');
 const signup1 = require('../data/signup1.json');
 const signup2 = require('../data/signup2.json');
 const signup3 = require('../data/signup3.json');
@@ -19,6 +18,9 @@ const lostPassword6 = require('../data/lostPassword6.json');
 const lostPassword7 = require('../data/lostPassword7.json');
 const newPassword1 = require('../data/newPassword1.json');
 const newPassword2 = require('../data/newPassword2.json');
+const login1 = require('../data/login1.json');
+const login2 = require('../data/login2.json');
+const login3 = require('../data/login3.json');
 
 jest.mock('nodemailer')
 const nodemailer = require('nodemailer');
@@ -35,13 +37,12 @@ User_info.create = jest.fn();
 sendMailMock = jest.fn()
 
 //nodemailer mocking
-nodemailer.createTransport.mockReturnValue({"sendMail": sendMailMock});
+nodemailer.createTransport.mockReturnValue({ "sendMail": sendMailMock });
 
 beforeEach(() => {
   req = httpMocks.createRequest();
   res = httpMocks.createResponse();
   next = null;
-  res.locals.user = locals;
 });
 
 describe('회원가입', () => {
@@ -167,6 +168,36 @@ describe('비밀번호 변경(인증 완료)', () => {
     expect(res._getJSONData()).toStrictEqual({
       isSuccess: true,
       msg: '비밀번호 변경완료!',
+    });
+  });
+});
+
+describe('로그인', () => {
+  test('로그인 완료', async () => {
+    req.body = login1;
+    User.findOne.mockResolvedValue(login2);
+    await AuthController.get.auth(req, res, next);
+    expect(res.statusCode).toBe(200);
+    expect(res._isEndCalled()).toBeTruthy();  // token값 계속 바뀜
+  });
+
+  test('로그인 실패 에러(이메일)', async () => {
+    req.body = login1;
+    User.findOne.mockResolvedValue(undefined);
+    await AuthController.get.auth(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: false,
+      msg: '이메일 혹은 비밀번호를 확인해주세요.',
+    });
+  });
+
+  test('로그인 실패 에러(비밀번호)', async () => {
+    req.body = login1;
+    User.findOne.mockResolvedValue(login3);
+    await AuthController.get.auth(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: false,
+      msg: '이메일 혹은 비밀번호를 확인해주세요.',
     });
   });
 });
