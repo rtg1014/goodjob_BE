@@ -1,4 +1,5 @@
 {
     "email": "tester@test.com",
-    "type":0
+    "type":0,
+    "authNumber":123123
 }

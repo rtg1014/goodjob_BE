@@ -1,13 +1,13 @@
 const httpMocks = require('node-mocks-http');
 const AuthController = require('../../controllers/authController');
-const User = require('../../models/user');
-const AuthEmail = require('../../models/authEmail');
+const { User, AuthEmail, User_info } = require('../../models');
 const locals = require('../data/locals.json');
 const signup1 = require('../data/signup1.json');
 const signup2 = require('../data/signup2.json');
 const signup3 = require('../data/signup3.json');
-let signup4 = require('../data/signup4.json');
+const signup4 = require('../data/signup4.json');
 const signup5 = require('../data/signup5.json');
+const signup6 = require('../data/signup6.json');
 // const {auth, joiMiddleware} = require('../../utils/middleware');
 
 User.findOne = jest.fn();
@@ -16,6 +16,8 @@ User.updateOne = jest.fn();
 AuthEmail.findOne = jest.fn();
 AuthEmail.create = jest.fn();
 AuthEmail.updateOne = jest.fn();
+AuthEmail.destroy = jest.fn();
+User_info.create = jest.fn();
 
 beforeEach(() => {
   req = httpMocks.createRequest();
@@ -47,18 +49,20 @@ describe('회원가입', () => {
 });
 
 describe('회원가입(메일 인증)', () => {
-  // test('메일 인증, 회원 가입 완료', async () => {
-  //   req.body = signup4;
-  //   await AuthController.create.verifyNumberForNew(req, res, next);
-  //   expect(res._getJSONData()).toStrictEqual({
-  //     isSuccess: true,
-  //     msg: '인증이 완료되었습니다. 새로운 비밀번호를 입력해주세요.',
-  //   });
-  // });
+  test('메일 인증, 회원 가입 완료', async () => {
+    req.body = signup4;
+    AuthEmail.findOne.mockResolvedValue(signup4);
+    User.create.mockResolvedValue(signup6);
+    await AuthController.create.verifyNumberForNew(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: true,
+      msg: '회원가입이 완료되었습니다.',
+    });
+  });
 
   test('메일 인증, 인증 번호 오류', async () => {
     req.body = signup5;
-    AuthEmail.findOne.mockResolvedValue(signup5);
+    AuthEmail.findOne.mockResolvedValue(undefined);
     await AuthController.create.verifyNumberForNew(req, res, next);
     expect(res._getJSONData()).toStrictEqual({
       isSuccess: false,
