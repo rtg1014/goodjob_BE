@@ -17,8 +17,11 @@ const lostPassword4 = require('../data/lostPassword4.json');
 const lostPassword5 = require('../data/lostPassword5.json');
 const lostPassword6 = require('../data/lostPassword6.json');
 const lostPassword7 = require('../data/lostPassword7.json');
-// const {auth, joiMiddleware} = require('../../utils/middleware');
 
+jest.mock('nodemailer')
+const nodemailer = require('nodemailer');
+
+// jest.fn()
 User.findOne = jest.fn();
 User.create = jest.fn();
 User.updateOne = jest.fn();
@@ -27,6 +30,9 @@ AuthEmail.create = jest.fn();
 AuthEmail.updateOne = jest.fn();
 AuthEmail.destroy = jest.fn();
 User_info.create = jest.fn();
+sendMailMock = jest.fn()
+nodemailer.createTransport.mockReturnValue({"sendMail": sendMailMock});
+
 
 beforeEach(() => {
   req = httpMocks.createRequest();

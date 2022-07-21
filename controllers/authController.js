@@ -30,8 +30,7 @@ module.exports = {
         service: 'Naver',
         host: 'smtp.naver.com',
         port: process.env.MAIL_SMTP_PORT,
-        pool: true,
-        maxConnections: 100,
+        maxConnections: 64,
         auth: {
           user: process.env.MAIL_EMAIL,
           pass: process.env.MAIL_PASSWORD,
@@ -186,8 +185,7 @@ module.exports = {
         service: 'Naver',
         host: 'smtp.naver.com',
         port: process.env.MAIL_SMTP_PORT,
-        pool: true,
-        maxConnections: 100,
+        maxConnections: 64,
         auth: {
           user: process.env.MAIL_EMAIL,
           pass: process.env.MAIL_PASSWORD,
