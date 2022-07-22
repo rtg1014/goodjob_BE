@@ -2,8 +2,8 @@
 name: Good_job CI
 
 on:
-  pull_request:
-    branches: [ "test" ]
+  push:
+    branches: [ "ksh" ]
 
 jobs:
   build:
@@ -52,11 +52,11 @@ jobs:
               state: "closed"
               })
           if: failure()
-        - name: Merge test -> main
+        - name: Merge ksh -> main
           uses: devmasx/merge-branch@master
           with:
             type: now
-            from_branch: test
+            from_branch: ksh
             target_branch: main
             github_token: ${{ github.token }}
          
