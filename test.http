@@ -25,6 +25,18 @@ Content-Type: application/json
 
 
 ###
+///로컬 회원가입(이메일 인증받고 가입하기)
+POST http://14.34.139.253:3000/api/auth/local
+Content-Type: application/json
+
+{
+  "email" : "tjddnjs7559@gmail.com",
+  "password" : "aaaa123!",
+  "confirmPassword" : "aaaa123!",
+  "userName" : "노드메일러테스트"
+}
+
+###
 /// 인증번호 입력창###
 ///로컬 회원가입(이메일 인증받고 가입하기)
 POST http://14.34.139.253:3000/api/auth/verifyNumberForNew
