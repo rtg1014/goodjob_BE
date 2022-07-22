@@ -310,6 +310,12 @@ module.exports = {
           },
         ],
       });
+      if(!posting) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '해당공고가 없습니다!',
+        });
+      }
 
       let job = [];
       for (x of posting.jobs) {

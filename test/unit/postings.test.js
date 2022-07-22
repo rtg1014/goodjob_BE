@@ -13,12 +13,19 @@ const category8 = require('../data/posting/category8.json');
 const category9 = require('../data/posting/category9.json');
 const category10 = require('../data/posting/category10.json');
 const category11 = require('../data/posting/category11.json');
-// const postings = require('../data/posting/postings.json');
+const postings1 = require('../data/posting/postings1.json');
+const postings2 = require('../data/posting/postings2.json');
+const posting1 = require('../data/posting/posting1.json');
+const posting2 = require('../data/posting/posting2.json');
+const posting3 = require('../data/posting/posting3.json');
+const posting4 = require('../data/posting/posting4.json');
 
 // jest.fn()
 User_info.findOne = jest.fn();
 User_info.updateOne = jest.fn();
 Posting.findAll = jest.fn();
+Posting.findOne = jest.fn();
+
 
 beforeEach(() => {
   req = httpMocks.createRequest();
@@ -97,16 +104,44 @@ describe('카테고리 변경', () => {
   });
 });
 
-// describe('추천채용 조회', () => {
-//     test('조회 성공', async () => {
-//       User_info.findOne.mockResolvedValue(category1);
-//       Posting.findAll.mockResolvedValue(postings);
-//       await PostingController.get.postings(req, res, next);
-//       expect(res._getJSONData()).toStrictEqual({
-//         isSuccess: true,
-//         data,
-//         updatedAt,
-//         msg: '추천채용 여기있어요!',
-//       });
-//     });
-//   });
+describe('추천채용 조회', () => {
+  //🎆🎇✨페이지네이션도 테스트할것
+  test('조회 성공', async () => {
+    User_info.findOne.mockResolvedValue(category1);
+    var today = new Date();
+    var updatedAt = `${today.getFullYear()}년 ${
+      today.getMonth() + 1
+    }월 ${today.getDate()}일 00시 업데이트 완료`;
+    Posting.findAll.mockResolvedValue(postings2.postings);
+    await PostingController.get.postings(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: true,
+      data: postings1.data,
+      updatedAt: updatedAt,
+      msg: '추천채용 여기있어요!',
+    });
+  });
+});
+
+describe('추천채용 상세 조회', () => {
+  test('조회 성공', async () => {
+    req.params = posting1;
+    Posting.findOne.mockResolvedValue(posting4);
+    await PostingController.get.posting(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: true,
+      data: posting3,
+      msg: '추천채용 상세조회 여기있어요!',
+    });
+  });
+
+  test('조회 실패', async () => {
+    req.params = posting2;
+    Posting.findOne.mockResolvedValue(undefined);
+    await PostingController.get.posting(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: false,
+      msg: '해당공고가 없습니다!',
+    });
+  });
+});
