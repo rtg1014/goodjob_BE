@@ -2,19 +2,16 @@
 name: Good_job CI
 
 on:
-  pull_request:
-    branches: [ "test" ]
+  push:
+    branches: [ "sw" ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
         - uses: actions/checkout@v3
         - name: Use Node.js ${{ matrix.node-version }}
@@ -39,7 +36,7 @@ jobs:
         - name: if fail
           uses: actions/github-script@0.2.0
           with:
-            github-token: ${{ secrets.GIT_A_TOKEN }}
+            github-token: ${{github.token}}
             script: |
               const ref = "${{github.ref}}"
               const pull_number = Number(ref.split("/")[2])
@@ -55,25 +52,10 @@ jobs:
               state: "closed"
               })
           if: failure()
-        # - name: merge test
-        #  ~~~~~
-        # - name: if fail
-        #   uses: actions/github-script@0.2.0
-        #   with:
-        #     github-token: ${{ secrets.GIT_A_TOKEN }}
-        #     script: |
-        #       const ref = "${{github.ref}}"
-        #       const pull_number = Number(ref.split("/")[2])
-        #       await github.pulls.createReview({
-        #       ...context.repo,
-        #       pull_number,
-        #       body:"컨플릭트를 해결해 주세요. ",
-        #       event: "REQUEST_CHANGES"
-        #       })
-        #       await github.pulls.update({
-        #       ...context.repo,
-        #       pull_number,
-        #       state: "closed"
-        #       })
-        #   if: failure()
-        # - name: pr main <- test
+        - name: Merge sw -> test
+          uses: devmasx/merge-branch@master
+          with:
+            type: now
+            from_branch: sw
+            target_branch: test
+            github_token: ${{ github.token }}
