@@ -96,12 +96,6 @@ module.exports = {
           where: { userId: user.id },
         }
       );
-      if(!newcategory){
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '카테고리 변경 실패',
-        });
-      }
 
       return res.status(200).json({
         isSuccess: true,
