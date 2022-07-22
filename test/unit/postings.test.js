@@ -116,7 +116,7 @@ describe('추천채용 조회', () => {
     await PostingController.get.postings(req, res, next);
     expect(res._getJSONData()).toStrictEqual({
       isSuccess: true,
-      data: postings1.data,
+      data: postings1,
       updatedAt: updatedAt,
       msg: '추천채용 여기있어요!',
     });

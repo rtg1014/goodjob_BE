@@ -1,15 +1,11 @@
-{
-  "data": [
-    {
-      "postingId": 86,
-      "companyName": "㈜케이씨이앤씨",
-      "title": "포스톤즈커피로스터스 패키지디자인 담당자 채용",
-      "companyType": "대기업",
-      "career": "신입",
-      "city": "서울 강남구",
-      "deadline": "2022-10-13 23:59:59"
-    }
-  ],
-
-  "updatedAt": "2022년 7월 22일 00시 업데이트 완료"
-}
+[
+  {
+    "postingId": 86,
+    "companyName": "㈜케이씨이앤씨",
+    "title": "포스톤즈커피로스터스 패키지디자인 담당자 채용",
+    "companyType": "대기업",
+    "career": "신입",
+    "city": "서울 강남구",
+    "deadline": "2022-10-13 23:59:59"
+  }
+]
