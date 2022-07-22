@@ -20,7 +20,6 @@ const {
   City,
   CompanyType,
 } = require('../models');
-const schedule = require('../models/schedule');
 
 module.exports = {
   create: {
@@ -96,7 +95,7 @@ module.exports = {
             postingId,
           },
         },
-        { transaction: t }
+        // { transaction: t } //findOrCreate에 트랜잭션 사용이 안되는듯 합니다..
       );
 
       // findOrCreate 사용
@@ -112,7 +111,7 @@ module.exports = {
             coverImage: 0,
           },
         },
-        { transaction: t }
+        // { transaction: t }
       );
 
       await t.commit();
