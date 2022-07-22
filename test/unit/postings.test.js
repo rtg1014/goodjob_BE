@@ -114,7 +114,7 @@ describe('추천채용 조회', () => {
     }월 ${today.getDate()}일 00시 업데이트 완료`;
     Posting.findAll.mockResolvedValue(postings2.postings);
     await PostingController.get.postings(req, res, next);
-    expect(res._getJSONData()).toEqual({
+    expect(res._getJSONData()).toStrictEqual({
       isSuccess: true,
       data: postings1.data,
       updatedAt: updatedAt,
