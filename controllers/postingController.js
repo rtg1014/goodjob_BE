@@ -271,7 +271,7 @@ module.exports = {
       }
 
       var today = new Date();
-      var updatedAt = `'${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일 00시' 업데이트 완료`
+      var updatedAt = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일 00시 업데이트 완료`
 
       return res.status(200).json({
         isSuccess: true,
