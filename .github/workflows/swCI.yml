@@ -3,11 +3,7 @@ name: Good_job CI
 
 on:
   push:
-<<<<<<<< HEAD:.github/workflows/swCI.yml
     branches: [ "sw" ]
-========
-    branches: [ "ksh" ]
->>>>>>>> main:.github/workflows/kshCI.yml
 
 jobs:
   build:
@@ -56,21 +52,12 @@ jobs:
               state: "closed"
               })
           if: failure()
-<<<<<<<< HEAD:.github/workflows/swCI.yml
         - name: Merge sw -> test
           uses: devmasx/merge-branch@master
           with:
             type: now
             from_branch: sw
             target_branch: test
-            github_token: ${{ github.token }}
-========
-        - name: Merge ksh -> main
-          uses: devmasx/merge-branch@master
-          with:
-            type: now
-            from_branch: ksh
-            target_branch: main
             github_token: ${{ github.token }}
          
         # - name: if merge fail
