@@ -52,12 +52,12 @@ jobs:
               state: "closed"
               })
           if: failure()
-        - name: Merge test -> ksh
-          uses: devmasx/merge-branch@ksh
+        - name: Merge test -> main
+          uses: devmasx/merge-branch@master
           with:
             type: now
             from_branch: test
-            target_branch: ksh
+            target_branch: main
             github_token: ${{ secrets.GIT_A_TOKEN }}
          
         # - name: if merge fail
