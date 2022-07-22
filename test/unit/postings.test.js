@@ -1,6 +1,6 @@
 const httpMocks = require('node-mocks-http');
 const PostingController = require('../../controllers/postingController');
-const { User, AuthEmail, User_info } = require('../../models');
+const { Posting, User_info } = require('../../models');
 const user = require('../data/posting/user.json');
 const category1 = require('../data/posting/category1.json');
 const category2 = require('../data/posting/category2.json');
@@ -12,18 +12,13 @@ const category7 = require('../data/posting/category7.json');
 const category8 = require('../data/posting/category8.json');
 const category9 = require('../data/posting/category9.json');
 const category10 = require('../data/posting/category10.json');
+const category11 = require('../data/posting/category11.json');
+// const postings = require('../data/posting/postings.json');
 
 // jest.fn()
-User.findOne = jest.fn();
-User.create = jest.fn();
-User.updateOne = jest.fn();
-AuthEmail.findOne = jest.fn();
-AuthEmail.create = jest.fn();
-AuthEmail.updateOne = jest.fn();
-AuthEmail.destroy = jest.fn();
 User_info.findOne = jest.fn();
 User_info.updateOne = jest.fn();
-sendMailMock = jest.fn();
+Posting.findAll = jest.fn();
 
 beforeEach(() => {
   req = httpMocks.createRequest();
@@ -95,8 +90,23 @@ describe('카테고리 변경', () => {
   });
 
   test('변경 실패 에러', async () => {
+    req.body = category11;
     User_info.updateOne.mockResolvedValue(undefined);
     await PostingController.update.category(req, res, next);
     expect(res.statusCode).toBe(500);
   });
 });
+
+// describe('추천채용 조회', () => {
+//     test('조회 성공', async () => {
+//       User_info.findOne.mockResolvedValue(category1);
+//       Posting.findAll.mockResolvedValue(postings);
+//       await PostingController.get.postings(req, res, next);
+//       expect(res._getJSONData()).toStrictEqual({
+//         isSuccess: true,
+//         data,
+//         updatedAt,
+//         msg: '추천채용 여기있어요!',
+//       });
+//     });
+//   });
