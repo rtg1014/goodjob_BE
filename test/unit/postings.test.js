@@ -114,7 +114,7 @@ describe('추천채용 조회', () => {
     }월 ${today.getDate()}일 00시 업데이트 완료`;
     Posting.findAll.mockResolvedValue(postings2.postings);
     await PostingController.get.postings(req, res, next);
-    expect(res._getJSONData()).toStrictEqual({
+    expect(res._getJSONData()).toEqual({
       isSuccess: true,
       data: postings1,
       updatedAt: updatedAt,
@@ -128,7 +128,7 @@ describe('추천채용 상세 조회', () => {
     req.params = posting1;
     Posting.findOne.mockResolvedValue(posting4);
     await PostingController.get.posting(req, res, next);
-    expect(res._getJSONData()).toStrictEqual({
+    expect(res._getJSONData()).toEqual({
       isSuccess: true,
       data: posting3,
       msg: '추천채용 상세조회 여기있어요!',
@@ -145,4 +145,3 @@ describe('추천채용 상세 조회', () => {
     });
   });
 });
- 
