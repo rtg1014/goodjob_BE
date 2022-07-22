@@ -33,7 +33,7 @@ module.exports = {
       let tempJob;
       let jobId = 1;
       if (jobMain) {
-        if (!jobSub && jobSub === '전체') {
+        if (!jobSub || jobSub === '전체') {
           tempJob = await Job.findOne({
             where: { main: jobMain },
           });
@@ -49,7 +49,7 @@ module.exports = {
       let tempCity;
       let cityId = 1;
       if (cityMain) {
-        if (!citySub && citySub === '전체') {
+        if (!citySub || citySub === '전체') {
           tempCity = await City.findOne({
             where: { main: cityMain },
           });
@@ -85,7 +85,7 @@ module.exports = {
         careerId = unselectedUser.careerId;
       }
 
-      await User_info.update(
+      let newcategory = await User_info.update(
         {
           careerId,
           companyTypeId,
@@ -99,7 +99,7 @@ module.exports = {
 
       return res.status(200).json({
         isSuccess: true,
-        msg: '카테고리 선택 완료',
+        msg: '카테고리 변경 완료',
       });
     }),
   },
@@ -144,6 +144,13 @@ module.exports = {
         ],
       });
 
+      if (!rawData) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '카테고리 조회 실패',
+        });
+      }
+
       const data = {
         career: rawData.career.type,
         companyType: rawData.companyType.type,
@@ -152,13 +159,6 @@ module.exports = {
         jobMain: rawData.job.main,
         jobSub: rawData.job.sub,
       };
-
-      if (!rawData) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '카테고리 조회 실패',
-        });
-      }
 
       return res.status(200).json({
         isSuccess: true,
@@ -271,7 +271,7 @@ module.exports = {
       }
 
       var today = new Date();
-      var updatedAt = `'${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일 00시' 업데이트 완료`
+      var updatedAt = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일 00시 업데이트 완료`
 
       return res.status(200).json({
         isSuccess: true,
