@@ -33,7 +33,7 @@ module.exports = {
       let tempJob;
       let jobId = 1;
       if (jobMain) {
-        if (!jobSub && jobSub === '전체') {
+        if (!jobSub || jobSub === '전체') {
           tempJob = await Job.findOne({
             where: { main: jobMain },
           });
@@ -49,7 +49,7 @@ module.exports = {
       let tempCity;
       let cityId = 1;
       if (cityMain) {
-        if (!citySub && citySub === '전체') {
+        if (!citySub || citySub === '전체') {
           tempCity = await City.findOne({
             where: { main: cityMain },
           });
@@ -85,7 +85,7 @@ module.exports = {
         careerId = unselectedUser.careerId;
       }
 
-      await User_info.update(
+      let newcategory = await User_info.update(
         {
           careerId,
           companyTypeId,
@@ -96,10 +96,16 @@ module.exports = {
           where: { userId: user.id },
         }
       );
+      if(!newcategory){
+        return res.status(400).json({
+          isSuccess: true,
+          msg: '카테고리 변경 실패',
+        });
+      }
 
       return res.status(200).json({
         isSuccess: true,
-        msg: '카테고리 선택 완료',
+        msg: '카테고리 변경 완료',
       });
     }),
   },
