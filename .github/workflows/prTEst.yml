@@ -36,7 +36,7 @@ jobs:
         - name: if fail
           uses: actions/github-script@0.2.0
           with:
-            github-token: ${{secrets.GIT_A_TOKEN}}
+            github-token: ${{github.token}}
             script: |
               const ref = "${{github.ref}}"
               const pull_number = Number(ref.split("/")[2])
@@ -58,7 +58,7 @@ jobs:
             type: now
             from_branch: test
             target_branch: main
-            github_token: ${{ secrets.GIT_A_TOKEN }}
+            github_token: ${{ github.token }}
          
         # - name: if merge fail
         #   uses: actions/github-script@0.2.0
