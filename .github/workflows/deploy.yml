@@ -1,11 +1,4 @@
 
-# name: Good_job CD
-
-# on:
-#   pull_request:
-#     branches: [ "main" ]
-
-
 name: Good_job CD
 
 # main branch에 push 되면 실행
@@ -58,7 +51,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-          
+
       # Install project dependencies and build
       - name: Install dependencies
         run: npm install
