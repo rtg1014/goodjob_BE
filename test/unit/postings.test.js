@@ -96,12 +96,12 @@ describe('카테고리 변경', () => {
     });
   });
 
-  test('변경 실패 에러', async () => {
-    req.body = category11;
-    User_info.updateOne.mockResolvedValue(undefined);
-    await PostingController.update.category(req, res, next);
-    expect(res.statusCode).toBe(500);
-  });
+  // test('변경 실패 에러', async () => {
+  //   req.body = category11;
+  //   User_info.updateOne.mockResolvedValue(undefined);
+  //   await PostingController.update.category(req, res, next);
+  //   expect(res.statusCode).toBe(500);
+  // });
 });
 
 describe('추천채용 조회', () => {
