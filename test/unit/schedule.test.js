@@ -3,7 +3,7 @@ const ScheduleController = require('../../controllers/scheduleController');
 const {
   user_schedule,
   Schedule,
-} = require('../models');
+} = require('../../models');
 const user = require('../data/posting/user.json');
 
 // jest.fn()
