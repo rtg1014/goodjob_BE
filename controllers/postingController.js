@@ -98,7 +98,7 @@ module.exports = {
       );
       if(!newcategory){
         return res.status(400).json({
-          isSuccess: true,
+          isSuccess: false,
           msg: '카테고리 변경 실패',
         });
       }
