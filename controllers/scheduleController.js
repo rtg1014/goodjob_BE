@@ -73,11 +73,16 @@ module.exports = {
           },
         ],
       });
+      if (!posting) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '해당 공고가 없습니다!',
+        });
+      }
       let title = posting.title;
       let place = posting.city.main + ' ' + posting.city.sub;
       let companyName = posting.companyName;
       let date = dateFormatter(posting.deadline);
-      console.log(posting);
       /*==================================================
       findOrCreate 
       참고 https://sebhastian.com/sequelize-findorcreate/
@@ -119,7 +124,7 @@ module.exports = {
       if (created) {
         return res.status(201).json({
           isSuccess: true,
-          msg: '스크랩 완료!.',
+          msg: '스크랩 완료!',
         });
       } else {
         return res.status(400).json({

@@ -1,0 +1,22 @@
+{
+  "id": 1,
+  "companyName": "롯데멤버스㈜",
+  "title": "[롯데멤버스] 2022년 7월 경력직 및 계약직 채용 (AI/IT기획/디지털마케팅/MD/급여/데이터추출/정산,회계 등)",
+  "deadline": "2022-08-04T14:59:59.000Z",
+  "url": "https://www.jobkorea.co.kr/Recruit/GI_Read/39053140?rPageCode=SL",
+  "createdAt": "2022-07-15T20:40:53.000Z",
+  "updatedAt": "2022-07-15T20:40:53.000Z",
+  "careerId": 3,
+  "cityId": 26,
+  "companyTypeId": 2,
+  "career": {
+    "type": "경력무관"
+  },
+  "city": {
+    "main": "서울",
+    "sub": "중구"
+  },
+  "companyType": {
+    "type": "대기업"
+  }
+}
