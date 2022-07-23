@@ -1,0 +1,7 @@
+{
+    "id":1,
+    "email":"tjddnjs@test.com",
+    "password": "$2a$10$yg3JVsUNzXYAVX5mhNx7ou3ZW/ileRajjHr4KsQ1JkTrgAqr/J2L6",
+    "userName": "테스터",
+    "type":"local"
+}
