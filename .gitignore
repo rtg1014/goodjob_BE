@@ -16,5 +16,5 @@ public/
 # etc
 .DS_Store
 test.http
-swCI.*
-kshCI.*
+swCI.yml
+kshCI.yml
