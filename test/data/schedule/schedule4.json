@@ -1,0 +1,63 @@
+[
+  {
+    "scheduleId": 39,
+    "color": 0,
+    "memo": null,
+    "sticker": 0,
+    "coverImage": 0,
+    "schedule": {
+      "title": "(인천/부평/서운공장) 생산본부 각 분야 기능직 정규직 사원 채용",
+      "place": "인천 계양구",
+      "date": "2022-08-07T14:59:59.000Z",
+      "companyName": "㈜와이지-원",
+      "postingId": 14,
+      "posting": {
+        "companyName": "㈜와이지-원",
+        "title": "(인천/부평/서운공장) 생산본부 각 분야 기능직 정규직 사원 채용",
+        "deadline": "2022-08-07T14:59:59.000Z",
+        "url": "https://www.jobkorea.co.kr/Recruit/GI_Read/38984160?rPageCode=SL",
+        "careerId": 3,
+        "cityId": 62,
+        "companyTypeId": 2
+      }
+    }
+  },
+  {
+    "scheduleId": 40,
+    "color": 0,
+    "memo": null,
+    "sticker": 0,
+    "coverImage": 0,
+    "schedule": {
+      "title": "[롯데멤버스] 2022년 7월 경력직 및 계약직 채용 (AI/IT기획/디지털마케팅/MD/급여/데이터추출/정산,회계 등)",
+      "place": "서울 중구",
+      "date": "2022-08-04T14:59:59.000Z",
+      "companyName": "롯데멤버스㈜",
+      "postingId": 1,
+      "posting": {
+        "companyName": "롯데멤버스㈜",
+        "title": "[롯데멤버스] 2022년 7월 경력직 및 계약직 채용 (AI/IT기획/디지털마케팅/MD/급여/데이터추출/정산,회계 등)",
+        "deadline": "2022-08-04T14:59:59.000Z",
+        "url": "https://www.jobkorea.co.kr/Recruit/GI_Read/39053140?rPageCode=SL",
+        "careerId": 3,
+        "cityId": 26,
+        "companyTypeId": 2
+      }
+    }
+  },
+  {
+    "scheduleId": 43,
+    "color": 0,
+    "memo": null,
+    "sticker": 0,
+    "coverImage": 0,
+    "schedule": {
+      "title": "비대면 면접3",
+      "place": "집",
+      "date": "2022-08-03T16:01:01.000Z",
+      "companyName": "짱좋은회사3",
+      "postingId": null,
+      "posting": null
+    }
+  }
+]

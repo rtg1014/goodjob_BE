@@ -9,7 +9,7 @@ const {
   attributesOption,
   invalidToken,
 } = require('../utils/util');
-const { autoData, manualData } = require('../utils/util2');
+const { processing } = require('../utils/dataProcessing');
 
 // models
 const {
@@ -73,11 +73,16 @@ module.exports = {
           },
         ],
       });
+      if (!posting) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '해당 공고가 없습니다!',
+        });
+      }
       let title = posting.title;
       let place = posting.city.main + ' ' + posting.city.sub;
       let companyName = posting.companyName;
       let date = dateFormatter(posting.deadline);
-      console.log(posting);
       /*==================================================
       findOrCreate 
       참고 https://sebhastian.com/sequelize-findorcreate/
@@ -94,7 +99,7 @@ module.exports = {
             companyName,
             postingId,
           },
-        },
+        }
         // { transaction: t } //findOrCreate에 트랜잭션 사용이 안되는듯 합니다..
       );
 
@@ -106,11 +111,11 @@ module.exports = {
             scheduleId: scrapSchedule[0].id,
           },
           defaults: {
-            color: 0,
-            sticker: 0,
-            coverImage: 0,
+            color: 1,
+            sticker: 1,
+            coverImage: 1,
           },
-        },
+        }
         // { transaction: t }
       );
 
@@ -119,7 +124,7 @@ module.exports = {
       if (created) {
         return res.status(201).json({
           isSuccess: true,
-          msg: '스크랩 완료!.',
+          msg: '스크랩 완료!',
         });
       } else {
         return res.status(400).json({
@@ -252,29 +257,10 @@ module.exports = {
       tDate.setDate(tDate.getDate() + 1);
       const endDate = tDate; // 7월 21일 00시 00분 00초
 
-      let manualSchedules = await user_schedule.findAll({
+      let schedules = await user_schedule.findAll({
         where: {
           [Op.and]: [
             { userId: user.id },
-            { '$Schedule.postingId$': { [Op.eq]: null } },
-            { '$Schedule.date$': { [Op.gte]: startedDate } },
-            { '$Schedule.date$': { [Op.lt]: endDate } },
-          ],
-        },
-        attributes: ['scheduleId', 'color', 'memo', 'sticker', 'coverImage'],
-        include: [
-          {
-            model: Schedule,
-            attributes: attributesOption(),
-          },
-        ],
-      });
-
-      let autoSchedules = await user_schedule.findAll({
-        where: {
-          [Op.and]: [
-            { userId: user.id },
-            { '$Schedule.postingId$': { [Op.gte]: 1 } },
             { '$Schedule.date$': { [Op.gte]: startedDate } },
             { '$Schedule.date$': { [Op.lt]: endDate } },
           ],
@@ -294,12 +280,15 @@ module.exports = {
         ],
       });
 
-      let manual = manualData(manualSchedules);
-      let auto = autoData(autoSchedules);
-      let data = {
-        manual,
-        auto,
-      };
+      if (!schedules) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '일간 일정이 없습니다!',
+        });
+      }
+
+      let data = processing(schedules);
+
       return res.status(200).json({
         isSuccess: true,
         data,
@@ -317,29 +306,10 @@ module.exports = {
       tDate.setDate(tDate.getDate() + 7);
       const endDate = tDate; // 7월 17일 00시 00분 00초
 
-      let manualSchedules = await user_schedule.findAll({
+      let schedules = await user_schedule.findAll({
         where: {
           [Op.and]: [
             { userId: user.id },
-            { '$Schedule.postingId$': { [Op.eq]: null } },
-            { '$Schedule.date$': { [Op.gte]: startedDate } },
-            { '$Schedule.date$': { [Op.lt]: endDate } },
-          ],
-        },
-        attributes: ['scheduleId', 'color', 'memo', 'sticker', 'coverImage'],
-        include: [
-          {
-            model: Schedule,
-            attributes: attributesOption(),
-          },
-        ],
-      });
-
-      let autoSchedules = await user_schedule.findAll({
-        where: {
-          [Op.and]: [
-            { userId: user.id },
-            { '$Schedule.postingId$': { [Op.gte]: 1 } },
             { '$Schedule.date$': { [Op.gte]: startedDate } },
             { '$Schedule.date$': { [Op.lt]: endDate } },
           ],
@@ -359,12 +329,14 @@ module.exports = {
         ],
       });
 
-      let manual = manualData(manualSchedules);
-      let auto = autoData(autoSchedules);
-      let data = {
-        manual,
-        auto,
-      };
+      if (!schedules) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '주간 일정이 없습니다!',
+        });
+      }
+
+      let data = processing(schedules);
 
       return res.status(200).json({
         isSuccess: true,
@@ -373,7 +345,7 @@ module.exports = {
       });
     }),
 
-    montly: asyncWrapper(async (req, res) => {
+    monthly: asyncWrapper(async (req, res) => {
       const { startDate } = req.query;
       const user = req.user;
       invalidToken(user);
@@ -382,29 +354,11 @@ module.exports = {
       let tDate = new Date(startDate);
       tDate.setMonth(tDate.getMonth() + 1);
       const endDate = tDate; // 8월 1일 0시 0분 0초
-      let manualSchedules = await user_schedule.findAll({
-        where: {
-          [Op.and]: [
-            { userId: user.id },
-            { '$Schedule.postingId$': { [Op.eq]: null } },
-            { '$Schedule.date$': { [Op.gte]: startedDate } },
-            { '$Schedule.date$': { [Op.lt]: endDate } },
-          ],
-        },
-        attributes: ['scheduleId', 'color', 'memo', 'sticker', 'coverImage'],
-        include: [
-          {
-            model: Schedule,
-            attributes: attributesOption(),
-          },
-        ],
-      });
 
-      let autoSchedules = await user_schedule.findAll({
+      let schedules = await user_schedule.findAll({
         where: {
           [Op.and]: [
             { userId: user.id },
-            { '$Schedule.postingId$': { [Op.gte]: 1 } },
             { '$Schedule.date$': { [Op.gte]: startedDate } },
             { '$Schedule.date$': { [Op.lt]: endDate } },
           ],
@@ -423,12 +377,16 @@ module.exports = {
           },
         ],
       });
-      let manual = manualData(manualSchedules);
-      let auto = autoData(autoSchedules);
-      let data = {
-        manual,
-        auto,
-      };
+
+      if (!schedules) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '월간 일정이 없습니다!',
+        });
+      }
+
+      let data = processing(schedules);
+
       return res.status(200).json({
         isSuccess: true,
         data,
@@ -441,11 +399,9 @@ module.exports = {
       const user = req.user;
       invalidToken(user);
 
-      // title, memo, place, companyName
-      let manualSchedules = await user_schedule.findAll({
+      let schedules = await user_schedule.findAll({
         where: {
           userid: user.id,
-          '$Schedule.postingId$': { [Op.eq]: null },
           [Op.or]: [
             { '$Schedule.title$': { [Op.like]: '%' + keyword + '%' } },
             { memo: { [Op.like]: '%' + keyword + '%' } },
@@ -457,35 +413,24 @@ module.exports = {
           {
             model: Schedule,
             attributes: attributesOption(),
+            include: [
+              {
+                model: Posting,
+                attributes: attributesOption(),
+              },
+            ],
           },
         ],
       });
 
-      let autoSchedules = await user_schedule.findAll({
-        where: {
-          userid: user.id,
-          '$Schedule.postingId$': { [Op.ne]: null },
-          [Op.or]: [
-            { '$Schedule.title$': { [Op.like]: '%' + keyword + '%' } },
-            { memo: { [Op.like]: '%' + keyword + '%' } },
-            { '$Schedule.place$': { [Op.like]: '%' + keyword + '%' } },
-            { '$Schedule.companyName$': { [Op.like]: '%' + keyword + '%' } },
-          ],
-        },
-        include: [
-          {
-            model: Schedule,
-            attributes: attributesOption(),
-          },
-        ],
-      });
+      if (!schedules) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '검색 결과가 없습니다!',
+        });
+      }
 
-      let manual = manualData(manualSchedules);
-      let auto = autoData(autoSchedules);
-      let data = {
-        manual,
-        auto,
-      };
+      let data = processing(schedules);
 
       return res.status(200).json({
         isSuccess: true,

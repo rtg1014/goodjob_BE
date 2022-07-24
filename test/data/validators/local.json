@@ -1,0 +1,37 @@
+{
+    "1": {
+        "password": "test123!",
+        "confirmPassword": "test123!",
+        "userName": "테스터"
+    },
+    "2": {
+        "email": "tester@test.com",
+        "password": "test123!",
+        "confirmPassword": "test123!",
+        "userName": "테스터"
+    },
+    "3": {
+        "email": "tester@test.com",
+        "password": "test123!",
+        "confirmPassword": "test123!",
+        "userName": "테스터"
+    },
+    "4": {
+        "email": "tester@test.com",
+        "password": "test123!",
+        "confirmPassword": "test123!",
+        "userName": "테스터"
+    },
+    "5": {
+        "email": "tester@test.com",
+        "password": "test123!",
+        "confirmPassword": "test123!",
+        "userName": "테스터"
+    },
+    "6": {
+        "email": "tester@test.com",
+        "password": "test123!",
+        "confirmPassword": "test123!",
+        "userName": "테스터"
+    }
+}

@@ -23,7 +23,7 @@ router.post('/schedule', auth, joiMiddleware('myScheduleSchema'), ScheduleContro
 router.post('/schedule/scrap', auth, joiMiddleware('scrapSchema'), ScheduleController.create.scrap); // 자동 스케줄 생성 (=== 스크랩)
 router.get('/schedule/daily', auth, ScheduleController.get.daily); // 일간 일정 조회
 router.get('/schedule/weekly', auth, ScheduleController.get.weekly); // 주간 스케줄 조회
-router.get('/schedule/monthly', auth, ScheduleController.get.montly); // 월간 일정 조회
+router.get('/schedule/monthly', auth, ScheduleController.get.monthly); // 월간 일정 조회
 router.get('/schedule/search', auth, ScheduleController.get.search); // 일정 검색
 router.get('/schedule/:scheduleId', auth, ScheduleController.get.detail); // 일정 상세 조회
 router.patch('/schedule/:scheduleId', auth, ScheduleController.update.modify); // 일정 상세 수정
