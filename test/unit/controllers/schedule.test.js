@@ -22,11 +22,18 @@ const search1 = require('../../data/schedule/search1.json');
 const search2 = require('../../data/schedule/search2.json');
 const search3 = require('../../data/schedule/search3.json');
 const search4 = require('../../data/schedule/search4.json');
+const detail1 = require('../../data/schedule/detail1.json');
+const detail2 = require('../../data/schedule/detail2.json');
+const detail3 = require('../../data/schedule/detail3.json');
+const detail4 = require('../../data/schedule/detail4.json');
+const detail5 = require('../../data/schedule/detail5.json');
+const detail6 = require('../../data/schedule/detail6.json');
 
 // jest.fn()
 Schedule.create = jest.fn();
 Schedule.findOrCreate = jest.fn();
 user_schedule.findAll = jest.fn();
+user_schedule.findOne = jest.fn();
 user_schedule.create = jest.fn();
 user_schedule.findOrCreate = jest.fn();
 Posting.findOne = jest.fn();
@@ -175,6 +182,50 @@ describe('일정 검색', () => {
     expect(res._getJSONData()).toStrictEqual({
       isSuccess: false,
       msg: '검색 결과가 없습니다!',
+    });
+  });
+});
+
+describe('일정 상세 (조회)', () => {
+  test('조회 완료(스크랩)', async () => {
+    req.parmas = detail1;
+    user_schedule.findOne.mockResolvedValue(detail2);
+    await ScheduleController.get.detail(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: true,
+      data: detail3,
+      msg: '일정 상세보기 완료!',
+    });
+  });
+
+  test('조회 실패(스크랩)', async () => {
+    req.parmas = detail1;
+    user_schedule.findOne.mockResolvedValue(undefined);
+    await ScheduleController.get.detail(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: false,
+      msg: '잘못된 접근입니다.',
+    });
+  });
+
+  test('조회 완료(수동 작성)', async () => {
+    req.parmas = detail4;
+    user_schedule.findOne.mockResolvedValue(detail5);
+    await ScheduleController.get.detail(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: true,
+      data: detail6,
+      msg: '일정 상세보기 완료!',
+    });
+  });
+
+  test('조회 실패(수동 작성)', async () => {
+    req.parmas = detail4;
+    user_schedule.findOne.mockResolvedValue(undefined);
+    await ScheduleController.get.detail(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: false,
+      msg: '잘못된 접근입니다.',
     });
   });
 });
