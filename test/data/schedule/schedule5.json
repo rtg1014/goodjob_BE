@@ -1,4 +1,17 @@
 {
+  "220803": [
+    {
+      "scheduleId": 43,
+      "color": 0,
+      "memo": null,
+      "sticker": 0,
+      "coverImage": 0,
+      "place": "집",
+      "date": "2022-08-03 16:01:01",
+      "companyName": "짱좋은회사3",
+      "type": "manual"
+    }
+  ],
   "220804": [
     {
       "scheduleId": 40,
@@ -12,17 +25,6 @@
       "companyName": "롯데멤버스㈜",
       "postingId": 1,
       "type": "auto"
-    },
-    {
-      "scheduleId": 43,
-      "color": 0,
-      "memo": null,
-      "sticker": 0,
-      "coverImage": 0,
-      "place": "집",
-      "date": "2022-08-03 16:01:01",
-      "companyName": "짱좋은회사3",
-      "type": "manual"
     }
   ],
   "220807": [
