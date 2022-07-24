@@ -378,6 +378,13 @@ module.exports = {
         ],
       });
 
+      if (!schedules) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '월간 일정이 없습니다!',
+        });
+      }
+
       let data = processing(schedules);
 
       return res.status(200).json({
