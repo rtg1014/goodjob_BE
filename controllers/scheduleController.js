@@ -280,7 +280,7 @@ module.exports = {
         ],
       });
 
-      if(!schedules){
+      if (!schedules) {
         return res.status(400).json({
           isSuccess: false,
           msg: '일간 일정이 없습니다!',
@@ -329,10 +329,18 @@ module.exports = {
         ],
       });
 
+      if (!schedules) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '주간 일정이 없습니다!',
+        });
+      }
+
       let data = processing(schedules);
 
       return res.status(200).json({
         isSuccess: true,
+        schedules,
         data,
         msg: '주간 일정 조회 완료!',
       });
@@ -375,6 +383,7 @@ module.exports = {
 
       return res.status(200).json({
         isSuccess: true,
+        schedules,
         data,
         msg: '월간 일정 조회 완료!',
       });

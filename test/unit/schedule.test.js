@@ -13,6 +13,8 @@ const scrap5 = require('../data/schedule/scrap5.json');
 const schedule1 = require('../data/schedule/schedule1.json');
 const schedule2 = require('../data/schedule/schedule2.json');
 const schedule3 = require('../data/schedule/schedule3.json');
+const schedule4 = require('../data/schedule/schedule4.json');
+const schedule5 = require('../data/schedule/schedule5.json');
 
 // jest.fn()
 Schedule.create = jest.fn();
@@ -97,6 +99,29 @@ describe('일간 일정 조회', () => {
     expect(res._getJSONData()).toStrictEqual({
       isSuccess: false,
       msg: '일간 일정이 없습니다!',
+    });
+  });
+});
+
+describe('주간 일정 조회', () => {
+  test('조회 성공', async () => {
+    req.query = schedule1;
+    user_schedule.findAll.mockResolvedValue(schedule4);
+    await ScheduleController.get.weekly(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: true,
+      data: schedule5,
+      msg: '주간 일정 조회 완료!',
+    });
+  });
+
+  test('조회 실패', async () => {
+    req.query = schedule1;
+    user_schedule.findAll.mockResolvedValue(undefined);
+    await ScheduleController.get.weekly(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: false,
+      msg: '주간 일정이 없습니다!',
     });
   });
 });
