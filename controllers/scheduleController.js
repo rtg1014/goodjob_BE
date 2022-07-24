@@ -389,7 +389,6 @@ module.exports = {
 
       return res.status(200).json({
         isSuccess: true,
-        schedules,
         data,
         msg: '월간 일정 조회 완료!',
       });
