@@ -28,14 +28,26 @@ const detail3 = require('../../data/schedule/detail3.json');
 const detail4 = require('../../data/schedule/detail4.json');
 const detail5 = require('../../data/schedule/detail5.json');
 const detail6 = require('../../data/schedule/detail6.json');
+const modify1 = require('../../data/schedule/modify1.json');
+const modify2 = require('../../data/schedule/modify2.json');
+const modify3 = require('../../data/schedule/modify3.json');
+const modify4 = require('../../data/schedule/modify4.json');
+const modify5 = require('../../data/schedule/modify5.json');
+const modify6 = require('../../data/schedule/modify6.json');
+const modify7 = require('../../data/schedule/modify7.json');
+const modify8 = require('../../data/schedule/modify8.json');
+const modify9 = require('../../data/schedule/modify9.json');
 
 // jest.fn()
+Schedule.findOne = jest.fn();
 Schedule.create = jest.fn();
 Schedule.findOrCreate = jest.fn();
+Schedule.update = jest.fn();
 user_schedule.findAll = jest.fn();
 user_schedule.findOne = jest.fn();
 user_schedule.create = jest.fn();
 user_schedule.findOrCreate = jest.fn();
+user_schedule.update = jest.fn();
 Posting.findOne = jest.fn();
 
 beforeEach(() => {
@@ -226,6 +238,44 @@ describe('일정 상세 (조회)', () => {
     expect(res._getJSONData()).toStrictEqual({
       isSuccess: false,
       msg: '잘못된 접근입니다.',
+    });
+  });
+});
+
+describe('일정 상세 (수정)', () => {
+  test('수정 완료(수동 작성)', async () => {
+    req.parmas = modify5;
+    req.body = modify7;
+    user_schedule.findOne.mockResolvedValue(modify6);
+    Schedule.findOne.mockResolvedValue(undefined);
+    user_schedule.update.mockResolvedValue(modify8);
+    Schedule.update.mockResolvedValue(modify9);
+    await ScheduleController.update.modify(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: true,
+      msg: '일정 내용 수정하기 완료!',
+    });
+  });
+
+  test('scheduleId에 해당하는 일정이 없을 때 에러', async () => {
+    req.parmas = modify1;
+    user_schedule.findOne.mockResolvedValue(undefined);
+    Schedule.findOne.mockResolvedValue(undefined);
+    await ScheduleController.update.modify(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: false,
+      msg: '잘못된 접근입니다.',
+    });
+  });
+
+  test('스크랩한 일정을 수정할 때 에러', async () => {
+    req.parmas = modify2;
+    user_schedule.findOne.mockResolvedValue(modify3);
+    Schedule.findOne.mockResolvedValue(modify4);
+    await ScheduleController.update.modify(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: false,
+      msg: '스크랩 일정은 수정할 수 없습니다.',
     });
   });
 });
