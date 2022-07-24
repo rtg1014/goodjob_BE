@@ -37,12 +37,18 @@ const modify6 = require('../../data/schedule/modify6.json');
 const modify7 = require('../../data/schedule/modify7.json');
 const modify8 = require('../../data/schedule/modify8.json');
 const modify9 = require('../../data/schedule/modify9.json');
+const delete1 = require('../../data/schedule/delete1.json');
+const delete2 = require('../../data/schedule/delete2.json');
+const delete3 = require('../../data/schedule/delete3.json');
+const delete4 = require('../../data/schedule/delete4.json');
+const delete5 = require('../../data/schedule/delete5.json');
 
 // jest.fn()
 Schedule.findOne = jest.fn();
 Schedule.create = jest.fn();
 Schedule.findOrCreate = jest.fn();
 Schedule.update = jest.fn();
+Schedule.destroy = jest.fn();
 user_schedule.findAll = jest.fn();
 user_schedule.findOne = jest.fn();
 user_schedule.create = jest.fn();
@@ -276,6 +282,41 @@ describe('일정 상세 (수정)', () => {
     expect(res._getJSONData()).toStrictEqual({
       isSuccess: false,
       msg: '스크랩 일정은 수정할 수 없습니다.',
+    });
+  });
+});
+
+describe('일정 상세 (삭제)', () => {
+  test('삭제 완료(수동 작성)', async () => {
+    req.parmas = delete3;
+    user_schedule.findOne.mockResolvedValue(delete4);
+    Schedule.destroy.mockResolvedValue(undefined);
+    await ScheduleController.delete.delete(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: true,
+      msg: '일정 삭제 완료!',
+    });
+  });
+
+  test('삭제 완료(스크랩)', async () => {
+    req.parmas = delete2;
+    user_schedule.findOne.mockResolvedValue(delete5);
+    Schedule.destroy.mockResolvedValue(undefined);
+    await ScheduleController.delete.delete(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: true,
+      msg: '일정 삭제 완료!',
+    });
+  });
+
+  test('scheduleId에 해당하는 일정이 없을 때 에러', async () => {
+    req.parmas = delete1;
+    user_schedule.findOne.mockResolvedValue(undefined);
+    Schedule.destroy.mockResolvedValue(undefined);
+    await ScheduleController.delete.delete(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: false,
+      msg: '잘못된 접근입니다.',
     });
   });
 });

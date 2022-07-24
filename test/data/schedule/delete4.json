@@ -1,0 +1,17 @@
+{
+    "userId": 10,
+    "scheduleId": 42,
+    "color": 7,
+    "memo": "한시간 뒤로 밀림",
+    "sticker": 6,
+    "coverImage": 2,
+    "schedule": {
+        "title": "또 비대면 면접",
+        "place": "집",
+        "date": "2022-08-02T03:34:56.000Z",
+        "companyName": "짱짱좋은회사2",
+        "postingId": null
+    },
+    "createdAt": "2022-07-23T11:37:56.000Z",
+    "updatedAt": "2022-07-23T11:37:56.000Z"
+}
