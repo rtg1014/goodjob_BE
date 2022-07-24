@@ -18,6 +18,10 @@ const schedule5 = require('../data/schedule/schedule5.json');
 const schedule6 = require('../data/schedule/schedule6.json');
 const schedule7 = require('../data/schedule/schedule7.json');
 const schedule8 = require('../data/schedule/schedule8.json');
+const search1 = require('../data/schedule/search1.json');
+const search2 = require('../data/schedule/search2.json');
+const search3 = require('../data/schedule/search3.json');
+const search4 = require('../data/schedule/search4.json');
 
 // jest.fn()
 Schedule.create = jest.fn();
@@ -148,6 +152,29 @@ describe('월간 일정 조회', () => {
     expect(res._getJSONData()).toStrictEqual({
       isSuccess: false,
       msg: '월간 일정이 없습니다!',
+    });
+  });
+});
+
+describe('일정 검색', () => {
+  test('검색 완료', async () => {
+    req.query = search1;
+    user_schedule.findAll.mockResolvedValue(search2);
+    await ScheduleController.get.search(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: true,
+      data: search3,
+      msg: '일정 검색 완료!',
+    });
+  });
+
+  test('검색 실패', async () => {
+    req.query = search4;
+    user_schedule.findAll.mockResolvedValue(undefined);
+    await ScheduleController.get.search(req, res, next);
+    expect(res._getJSONData()).toStrictEqual({
+      isSuccess: false,
+      msg: '검색 결과가 없습니다!',
     });
   });
 });
