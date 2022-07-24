@@ -1,5 +1,6 @@
 {
     "1": {
+        "email": "tester",
         "password": "test123!",
         "confirmPassword": "test123!",
         "userName": "테스터"
