@@ -33,5 +33,3 @@ const myScheduleSchema = Joi.object({
 });
 
 module.exports = myScheduleSchema;
-
-//{ image, companyName, color, title, sticker, date, place, memo }
