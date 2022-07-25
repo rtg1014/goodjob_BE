@@ -67,7 +67,6 @@ module.exports = {
         req.body = validated
         next()
       } catch (err) {
-        console.log(err);
         return res.status(500).json({
           isSuccess: false,
           data: err.details[0].message,
