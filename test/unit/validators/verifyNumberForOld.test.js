@@ -2,8 +2,6 @@ const httpMocks = require('node-mocks-http');
 const { joiMiddleware } = require('../../../utils/middleware');
 const verifyNumberForOld = require('../../data/validators/verifyNumberForOld.json');
 
-// Posting.findOne = jest.fn();
-
 beforeEach(() => {
   req = httpMocks.createRequest();
   res = httpMocks.createResponse();

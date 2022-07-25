@@ -2,8 +2,6 @@ const httpMocks = require('node-mocks-http');
 const { joiMiddleware } = require('../../../utils/middleware');
 const local = require('../../data/validators/local.json');
 
-// Posting.findOne = jest.fn();
-
 beforeEach(() => {
   req = httpMocks.createRequest();
   res = httpMocks.createResponse();
