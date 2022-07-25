@@ -28,7 +28,7 @@ const localSchema = Joi.object({
     .pattern(new RegExp(/^[ㄱ-ㅎ|가-힣]+$/)) // 이름은 한글 2~20글자
     .required()
     .messages({
-      'string.min': '이름은 너무 짧아요.',
+      'string.min': '이름이 너무 짧아요.',
       'string.max': '이름이 너무 길어요.',
       'string.empty': '이름을 입력해 주세요.',
       'string.pattern.base': '이름은 한글로 입력해 주세요.',
