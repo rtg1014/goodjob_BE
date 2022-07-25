@@ -6,7 +6,7 @@ const lostPasswordSchema = Joi.object({
     'string.empty': '이메일을 입력해 주세요.',
   }),
   userName: Joi.string().empty().required().messages({
-    'string.empty': '이메일을 입력해 주세요.',
+    'string.empty': '이름을 입력해 주세요.',
   }),
 });
 
