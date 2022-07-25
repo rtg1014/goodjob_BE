@@ -70,3 +70,5 @@ jobs:
           region: ${{ secrets.AWS_REGION }}
           version_label: ${{github.SHA}}
           deployment_package: deploy.zip
+      - name: start server
+        run: npm run start
