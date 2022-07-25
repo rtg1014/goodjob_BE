@@ -43,7 +43,7 @@ describe('verifyNumberForOldSchema', () => {
       msg: 'validation error (joi)',
     });
   });
-    
+
   test('authNumber: 숫자, 정수, 필수 -> authNumber 없을 때', async () => {
     req.body = verifyNumberForOld[4];
     await joiMiddleware('verifyNumberForOldSchema')(req, res, next);
@@ -54,7 +54,7 @@ describe('verifyNumberForOldSchema', () => {
       msg: 'validation error (joi)',
     });
   });
-    
+
   test('req.body에 의도치 않은 값이 들어왔을 때', async () => {
     req.body = verifyNumberForOld[5];
     await joiMiddleware('verifyNumberForOldSchema')(req, res, next);
