@@ -49,7 +49,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(helmet.contentSecurityPolicy()); // Content-Security-Policy 헤더 설정. XSS 공격 및 기타 교차 사이트 인젝션 예방.
   app.use(
     cors({
-      origin: ['http://localhost:8080'],
+      origin: ['http://localhost:3000'],
       // credentials: true,
     })
   );
