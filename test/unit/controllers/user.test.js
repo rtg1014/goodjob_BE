@@ -101,7 +101,7 @@ describe('회원가입(메일 인증)', () => {
     });
   });
 });
-
+sw
 describe('비밀번호 변경', () => {
   test('메일 발송(처음)', async () => {
     req.body = lostPassword1;
