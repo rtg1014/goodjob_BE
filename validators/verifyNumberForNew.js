@@ -9,7 +9,7 @@ const verifyNumberForNewSchema = Joi.object({
     'string.empty': '패스워드를 입력해 주세요.',
   }),
   userName: Joi.string().empty().required().messages({
-    'string.empty': '이메일을 입력해 주세요.',
+    'string.empty': '이름을 입력해 주세요.',
   }),
   authNumber: Joi.number().integer().required().messages({
     'number.empty': '인증번호를 입력해 주세요.',
