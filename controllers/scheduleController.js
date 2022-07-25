@@ -11,6 +11,13 @@ const {
 } = require('../utils/util');
 const { processing } = require('../utils/dataProcessing');
 
+// utils2
+const {
+  autoData,
+  manualData
+} = require('../utils/util2');
+
+
 // models
 const {
   user_schedule,
@@ -257,10 +264,29 @@ module.exports = {
       tDate.setDate(tDate.getDate() + 1);
       const endDate = tDate; // 7월 21일 00시 00분 00초
 
-      let schedules = await user_schedule.findAll({
+      let manualSchedules = await user_schedule.findAll({
         where: {
           [Op.and]: [
             { userId: user.id },
+            { '$Schedule.postingId$': { [Op.eq]: null } },
+            { '$Schedule.date$': { [Op.gte]: startedDate } },
+            { '$Schedule.date$': { [Op.lt]: endDate } },
+          ],
+        },
+        attributes: ['scheduleId', 'color', 'memo', 'sticker', 'coverImage'],
+        include: [
+          {
+            model: Schedule,
+            attributes: attributesOption(),
+          },
+        ],
+      });
+
+      let autoSchedules = await user_schedule.findAll({
+        where: {
+          [Op.and]: [
+            { userId: user.id },
+            { '$Schedule.postingId$': { [Op.gte]: 1 } },
             { '$Schedule.date$': { [Op.gte]: startedDate } },
             { '$Schedule.date$': { [Op.lt]: endDate } },
           ],
@@ -280,15 +306,12 @@ module.exports = {
         ],
       });
 
-      if (!schedules) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '일간 일정이 없습니다!',
-        });
-      }
-
-      let data = processing(schedules);
-
+      let manual = manualData(manualSchedules);
+      let auto = autoData(autoSchedules);
+      let data = {
+        manual,
+        auto,
+      };
       return res.status(200).json({
         isSuccess: true,
         data,
@@ -306,10 +329,29 @@ module.exports = {
       tDate.setDate(tDate.getDate() + 7);
       const endDate = tDate; // 7월 17일 00시 00분 00초
 
-      let schedules = await user_schedule.findAll({
+      let manualSchedules = await user_schedule.findAll({
         where: {
           [Op.and]: [
             { userId: user.id },
+            { '$Schedule.postingId$': { [Op.eq]: null } },
+            { '$Schedule.date$': { [Op.gte]: startedDate } },
+            { '$Schedule.date$': { [Op.lt]: endDate } },
+          ],
+        },
+        attributes: ['scheduleId', 'color', 'memo', 'sticker', 'coverImage'],
+        include: [
+          {
+            model: Schedule,
+            attributes: attributesOption(),
+          },
+        ],
+      });
+
+      let autoSchedules = await user_schedule.findAll({
+        where: {
+          [Op.and]: [
+            { userId: user.id },
+            { '$Schedule.postingId$': { [Op.gte]: 1 } },
             { '$Schedule.date$': { [Op.gte]: startedDate } },
             { '$Schedule.date$': { [Op.lt]: endDate } },
           ],
@@ -329,14 +371,12 @@ module.exports = {
         ],
       });
 
-      if (!schedules) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '주간 일정이 없습니다!',
-        });
-      }
-
-      let data = processing(schedules);
+      let manual = manualData(manualSchedules);
+      let auto = autoData(autoSchedules);
+      let data = {
+        manual,
+        auto,
+      };
 
       return res.status(200).json({
         isSuccess: true,
@@ -354,11 +394,29 @@ module.exports = {
       let tDate = new Date(startDate);
       tDate.setMonth(tDate.getMonth() + 1);
       const endDate = tDate; // 8월 1일 0시 0분 0초
-
-      let schedules = await user_schedule.findAll({
+      let manualSchedules = await user_schedule.findAll({
         where: {
           [Op.and]: [
             { userId: user.id },
+            { '$Schedule.postingId$': { [Op.eq]: null } },
+            { '$Schedule.date$': { [Op.gte]: startedDate } },
+            { '$Schedule.date$': { [Op.lt]: endDate } },
+          ],
+        },
+        attributes: ['scheduleId', 'color', 'memo', 'sticker', 'coverImage'],
+        include: [
+          {
+            model: Schedule,
+            attributes: attributesOption(),
+          },
+        ],
+      });
+
+      let autoSchedules = await user_schedule.findAll({
+        where: {
+          [Op.and]: [
+            { userId: user.id },
+            { '$Schedule.postingId$': { [Op.gte]: 1 } },
             { '$Schedule.date$': { [Op.gte]: startedDate } },
             { '$Schedule.date$': { [Op.lt]: endDate } },
           ],
@@ -377,23 +435,18 @@ module.exports = {
           },
         ],
       });
-
-      if (!schedules) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '월간 일정이 없습니다!',
-        });
-      }
-
-      let data = processing(schedules);
-
+      let manual = manualData(manualSchedules);
+      let auto = autoData(autoSchedules);
+      let data = {
+        manual,
+        auto,
+      };
       return res.status(200).json({
         isSuccess: true,
         data,
         msg: '월간 일정 조회 완료!',
       });
     }),
-
     search: asyncWrapper(async (req, res) => {
       const { keyword } = req.query;
       const user = req.user;
