@@ -1,6 +1,6 @@
 const httpMocks = require('node-mocks-http');
 const { joiMiddleware } = require('../../../utils/middleware');
-const verifyNumberForOld = require('../../data/validators/verifyNumberForOld.json');
+const authSchema = require('../../data/validators/authSchema.json');
 
 beforeEach(() => {
   req = httpMocks.createRequest();
@@ -8,10 +8,10 @@ beforeEach(() => {
   next = null;
 });
 
-describe('verifyNumberForOldSchema', () => {
+describe('authSchema', () => {
   test('email: 문자, email형식, 필수 -> email형식 ❌', async () => {
-    req.body = verifyNumberForOld[1];
-    await joiMiddleware('verifyNumberForOldSchema')(req, res, next);
+    req.body = authSchema[1];
+    await joiMiddleware('authSchema')(req, res, next);
     expect(res.statusCode).toBe(500);
     expect(res._getJSONData()).toStrictEqual({
       isSuccess: false,
@@ -21,8 +21,8 @@ describe('verifyNumberForOldSchema', () => {
   });
 
   test('email: 문자, email형식, 필수 -> email 없을 때', async () => {
-    req.body = verifyNumberForOld[2];
-    await joiMiddleware('verifyNumberForOldSchema')(req, res, next);
+    req.body = authSchema[2];
+    await joiMiddleware('authSchema')(req, res, next);
     expect(res.statusCode).toBe(500);
     expect(res._getJSONData()).toStrictEqual({
       isSuccess: false,
@@ -31,31 +31,20 @@ describe('verifyNumberForOldSchema', () => {
     });
   });
 
-  test('authNumber: 숫자, 정수, 필수 -> 정수 ❌', async () => {
-    req.body = verifyNumberForOld[3];
-    await joiMiddleware('verifyNumberForOldSchema')(req, res, next);
+  test('password: 필수 -> password 없을 때', async () => {
+    req.body = authSchema[3];
+    await joiMiddleware('authSchema')(req, res, next);
     expect(res.statusCode).toBe(500);
     expect(res._getJSONData()).toStrictEqual({
       isSuccess: false,
-      data: '"authNumber" must be an integer',
-      msg: 'validation error (joi)',
-    });
-  });
-
-  test('authNumber: 숫자, 정수, 필수 -> authNumber 없을 때', async () => {
-    req.body = verifyNumberForOld[4];
-    await joiMiddleware('verifyNumberForOldSchema')(req, res, next);
-    expect(res.statusCode).toBe(500);
-    expect(res._getJSONData()).toStrictEqual({
-      isSuccess: false,
-      data: '"authNumber" is required',
+      data: '"password" is required',
       msg: 'validation error (joi)',
     });
   });
 
   test('req.body에 의도치 않은 값이 들어왔을 때', async () => {
-    req.body = verifyNumberForOld[5];
-    await joiMiddleware('verifyNumberForOldSchema')(req, res, next);
+    req.body = authSchema[4];
+    await joiMiddleware('authSchema')(req, res, next);
     expect(res.statusCode).toBe(500);
     expect(res._getJSONData()).toStrictEqual({
       isSuccess: false,
