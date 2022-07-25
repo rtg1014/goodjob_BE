@@ -48,5 +48,5 @@ jobs:
           application_name: good_job_auto
           environment_name: Goodjobauto-env
           region: ${{ secrets.AWS_REGION }}
-          version_label: 12346
+          version_label: ${{github.SHA}}
           deployment_package: goodjob_BE.zip
