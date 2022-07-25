@@ -141,7 +141,7 @@ module.exports = {
       invalidToken(user);
 
       const { scheduleId } = req.params;
-      const { image, companyName, color, title, sticker, date, place, memo } =
+      let { image, companyName, color, title, sticker, date, place, memo } =
         req.body;
         if(!image) image=1;
         if(!color) color=1;
