@@ -25,4 +25,4 @@ jobs:
             sudo git pull
             sudo npm update
             sudo npm ci
-            sudo npm run start
+            sudo npm run dev
