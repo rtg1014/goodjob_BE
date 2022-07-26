@@ -16,10 +16,10 @@ jobs:
       - name: Deploy
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.REMOTE_IP }}
-          username: ${{ secrets.REMOTE_SSH_ID }}
+          host: 43.200.3.250
+          username: ubuntu
           key: ${{ secrets.REMOTE_SSH_KEY }}
-          port: ${{ secrets.REMOTE_SSH_PORT }}
+          port: 22
           script: |
             cd /home/ubuntu/goodjob_BE
             sudo git pull
