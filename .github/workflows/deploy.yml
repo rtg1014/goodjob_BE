@@ -24,6 +24,7 @@ jobs:
             cd /home/ubuntu/goodjob_BE
             sudo git checkout origin/main
             sudo git pull
-            sudo git push
             sudo npm ci
+            sudo pm2 stop 0
+            sudo pm2 kill
             sudo npm run start
