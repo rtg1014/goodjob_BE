@@ -49,10 +49,3 @@ jobs:
               state: "closed"
               })
           if: failure()
-        - name: Merge sw -> test
-          uses: devmasx/merge-branch@master
-          with:
-            type: now
-            from_branch: sw
-            target_branch: test
-            github_token: ${{ github.token }}
