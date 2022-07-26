@@ -22,7 +22,9 @@ jobs:
           port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
             cd /home/ubuntu/goodjob_BE
+            sudo git checkout origin/main
             sudo git pull
-            sudo npm install
-            sudo npm i -g pm2
+            sudo npm ci
+            sudo pm2 stop 0
+            sudo pm2 kill
             sudo npm run start

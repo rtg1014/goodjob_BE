@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "nodemon server",
     "test": "jest --detectOpenHandles --forceExit",
-    "start": "pm2 start server.js",
+    "start": "pm2 -f start server.js",
     "build": "npm install concurrently --save",
     "prettify": "prettier --wrtie *.js **/*.js"
   },
