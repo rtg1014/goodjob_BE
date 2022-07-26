@@ -22,7 +22,8 @@ jobs:
           port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
             cd /home/ubuntu/goodjob_BE
-            sudo git pull
+            sudo git checkout origin/main
+            sudo git pull origin/main
             sudo npm ci
             sudo pm2 stop 0
             sudo pm2 kill
