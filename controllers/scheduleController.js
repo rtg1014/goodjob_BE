@@ -141,8 +141,11 @@ module.exports = {
       invalidToken(user);
 
       const { scheduleId } = req.params;
-      const { image, companyName, color, title, sticker, date, place, memo } =
+      let { image, companyName, color, title, sticker, date, place, memo } =
         req.body;
+        if(!image) image=1;
+        if(!color) color=1;
+        if(!sticker) sticker=1;
 
       let myschedule = await user_schedule.findOne({
         where: { userId: user.id, scheduleId },

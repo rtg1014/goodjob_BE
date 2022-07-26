@@ -3,15 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "engines": {
+    "node": "16"
+  },
   "scripts": {
     "dev": "nodemon server",
     "test": "jest --detectOpenHandles --forceExit",
     "start": "pm2 start server.js",
+    "build": "npm install concurrently --save",
     "prettify": "prettier --wrtie *.js **/*.js"
   },
   "dependencies": {
     "aws-sdk": "^2.1167.0",
     "bcrypt": "^5.0.1",
+    "concurrently": "^7.3.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
@@ -32,7 +37,8 @@
     "passport-kakao": "^1.0.1",
     "pm2": "^5.2.0",
     "puppeteer": "^15.3.1",
-    "sequelize": "^6.21.2"
+    "sequelize": "^6.21.2",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "jest": "^28.1.3",
