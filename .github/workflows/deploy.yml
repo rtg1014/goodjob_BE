@@ -24,4 +24,5 @@ jobs:
             cd /home/ubuntu/goodjob_BE
             sudo git pull
             sudo npm install
+            sudo npm i -g pm2
             sudo npm run start
