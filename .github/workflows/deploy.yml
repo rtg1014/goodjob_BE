@@ -23,6 +23,5 @@ jobs:
           script: |
             cd /home/ubuntu/goodjob_BE
             sudo git pull
-            sudo npm install
-            sudo npm i -g pm2
+            sudo npm ci
             sudo npm run start
