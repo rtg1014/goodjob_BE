@@ -2,7 +2,7 @@
 name: Good_job CI
 
 on:
-  push:
+  pull_request:
     branches: [ "sw" ]
 jobs:
   build:
@@ -34,17 +34,17 @@ jobs:
             github-token: ${{github.token}}
             script: |
               const ref = "${{github.ref}}"
-              const name = ref.split("/")[2]
+              const pull_number = Number(ref.split("/")[2])
               console.log(ref)
               await github.pulls.createReview({
               ...context.repo,
-              name,
+              pull_number,
               body:"테스트코드를 다시 확인해주세요. ",
               event: "REQUEST_CHANGES"
               })
               await github.pulls.update({
               ...context.repo,
-              name,
+              pull_number,
               state: "closed"
               })
           if: failure()
