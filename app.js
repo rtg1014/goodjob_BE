@@ -14,17 +14,17 @@ dotenv.config();
 // MySQL
 const db = require('./models');
 db.sequelize
-  .sync({ logging: false })
-  .then(() => {
-    console.log('MySQL DB 연결 성공');
+.sync({ logging: false })
+.then(() => {
+  console.log('MySQL DB 연결 성공');
   })
   .catch((error) => {
     console.error(error);
   });
-
-const passportconfig = require('./passport/kakao.js');
-passportconfig();
-
+  
+  const passportconfig = require('./passport/kakao.js');
+  passportconfig();
+  
 // middlewares
 app.use(
   expressSession({
@@ -33,12 +33,12 @@ app.use(
     secret: 'secret',
     cookie: { httpOnly: false, secure: false, sameSite: "lax" },
   })
-);
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(passport.initialize());
-app.use(passport.session());
-
+  );
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  app.use(passport.initialize());
+  app.use(passport.session());
+  
 app.use(cookieParser());
 
 if (process.env.NODE_ENV === 'production') {
@@ -49,21 +49,21 @@ if (process.env.NODE_ENV === 'production') {
   app.use(helmet.contentSecurityPolicy()); // Content-Security-Policy 헤더 설정. XSS 공격 및 기타 교차 사이트 인젝션 예방.
   app.use(
     cors({
-      origin: ['http://localhost:3000'],
+      origin: ['http://localhost:3000', 'http://goodjobcalendar.com', 'https://goodjobcalendar.com'],
       // credentials: true,
     })
-  );
-} else {
-  app.use(morgan('dev'));
-  app.use(
-    cors({
-      origin: '*',
-      credentials: true,
-    })
-  );
-}
+    );
+  } else {
+    app.use(morgan('dev'));
+    app.use(
+      cors({
+        origin: '*',
+        credentials: true,
+      })
+      );
+    }
 
-
+    
 app.get('/', (req, res) => {
   return res.status(200).send('🎇✨Good_job✨🎇');
 });
