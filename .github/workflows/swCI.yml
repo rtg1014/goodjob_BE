@@ -3,7 +3,8 @@ name: Good_job CI
 
 on:
   pull_request:
-    branches: [ "sw" ]
+    branches:
+      - test
 jobs:
   build:
     runs-on: ubuntu-latest
