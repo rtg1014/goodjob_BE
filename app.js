@@ -65,7 +65,7 @@ if (process.env.NODE_ENV === 'production') {
 
 
 app.get('/', (req, res) => {
-  return res.status(200).send('Good_job');
+  return res.status(200).send('Good_job!!');
 });
 
 // routes
