@@ -8,47 +8,21 @@ on:
 jobs:
   deploy:
     name: CD Pipeline
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
-        node-version: ['16.13.1']
+        node-version: ['16.x']
     steps:
-      - name: Checkout sorce code.
-        uses: actions/checkout@v2
-      - name: Create env file
-        run: |
-          touch .env
-          cat << EOF >> .env
-          ${{ secrets.GOODJOB_SECRET }}
-      - name: Install Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - name: Deploy
+        uses: appleboy/ssh-action@master
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install dependencies
-        run: npm ci
-      - name: Install AWS CLI 2
-        run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          which aws
-          sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-      - name: build
-        run: npm run build
-      - name: Generate deployment package
-        run: zip -r goodjob_BE.zip . -x ".git/*" -x "./node_modules/*"
-      - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v20
-        with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: good_job_auto
-          environment_name: Goodjobauto-env
-          region: ${{ secrets.AWS_REGION }}
-          version_label: ${{github.SHA}}
-          deployment_package: goodjob_BE.zip
+          host: ${{ secrets.REMOTE_IP }}
+          username: ${{ secrets.REMOTE_SSH_ID }}
+          key: ${{ secrets.REMOTE_SSH_KEY }}
+          port: ${{ secrets.REMOTE_SSH_PORT }}
+          script: |
+            cd /home/ubuntu/goodjob_BE
+            sudo git pull
+            sudo npm update
+            sudo npm ci
+            sudo npm run start
