@@ -16,9 +16,10 @@ jobs:
       - name: Deploy
         uses: appleboy/ssh-action@master
         with:
-          host: ec2-43-200-3-250.ap-northeast-2.compute.amazonaws.com
+          host: ${{ secrets.REMOTE_IP }}
           username: ${{ secrets.REMOTE_SSH_ID }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
+          port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
             cd /home/ubuntu/goodjob_BE
             sudo git pull
