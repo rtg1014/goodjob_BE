@@ -50,7 +50,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(
     cors({
       origin: ['http://localhost:3000', 'http://goodjobcalendar.com', 'https://goodjobcalendar.com'],
-      // credentials: true,
+      credentials: true,
     })
     );
   } else {
