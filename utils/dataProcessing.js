@@ -18,6 +18,7 @@ module.exports = {
           companyName: x.schedule.companyName,
           type:'manual'
         };
+        console.log(333333333333333,temp.date)
         key = temp['date'].replaceAll('-', '').substr(2,6);
       } else {
         temp = {
@@ -33,6 +34,7 @@ module.exports = {
           postingId: x.schedule.postingId,
           type:'auto'
         };
+        console.log(4444444444444444,temp.date)
         key = temp['date'].replaceAll('-', '').substr(2,6);
       }
       if(!data.hasOwnProperty(key)){
@@ -40,6 +42,7 @@ module.exports = {
       } else{
         data[key]=data[key].concat(temp)
       }
+      console.log(22222222222,temp)
     }
     return data;
   },
