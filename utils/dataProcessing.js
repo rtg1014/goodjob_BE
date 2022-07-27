@@ -13,6 +13,7 @@ module.exports = {
           memo: x.memo,
           sticker: x.sticker,
           coverImage: x.coverImage,
+          title: x.schedule.title,
           place: x.schedule.place,
           date: dateFormatter(x.schedule.date),
           companyName: x.schedule.companyName,
