@@ -26,6 +26,10 @@ User_info.updateOne = jest.fn();
 Posting.findAll = jest.fn();
 Posting.findOne = jest.fn();
 
+let req;
+let res;
+let next;
+
 
 beforeEach(() => {
   req = httpMocks.createRequest();

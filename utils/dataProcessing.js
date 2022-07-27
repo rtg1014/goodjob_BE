@@ -1,8 +1,8 @@
 const { dateFormatter } = require('./util');
 module.exports = {
-
   processing: (arr) => {
     let data = {};
+    let x;
     for (x of arr) {
       let key;
       let temp = {};
@@ -16,9 +16,9 @@ module.exports = {
           place: x.schedule.place,
           date: dateFormatter(x.schedule.date),
           companyName: x.schedule.companyName,
-          type:'manual'
+          type: 'manual',
         };
-        key = temp['date'].replaceAll('-', '').substr(2,6);
+        key = temp['date'].replaceAll('-', '').substr(2, 6);
       } else {
         temp = {
           scheduleId: x.scheduleId,
@@ -31,14 +31,14 @@ module.exports = {
           date: dateFormatter(x.schedule.date),
           companyName: x.schedule.companyName,
           postingId: x.schedule.postingId,
-          type:'auto'
+          type: 'auto',
         };
-        key = temp['date'].replaceAll('-', '').substr(2,6);
+        key = temp['date'].replaceAll('-', '').substr(2, 6);
       }
-      if(!data.hasOwnProperty(key)){
-        data[key]=[temp]
-      } else{
-        data[key]=data[key].concat(temp)
+      if (!data.hasOwnProperty(key)) {
+        data[key] = [temp];
+      } else {
+        data[key] = data[key].concat(temp);
       }
     }
     return data;
