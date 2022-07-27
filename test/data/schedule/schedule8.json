@@ -24,6 +24,7 @@
       "place": "집",
       "date": "2022-08-02 03:34:56",
       "companyName": "짱좋은회사",
+      "title": "비대면 면접1",
       "type": "manual"
     }
   ],
@@ -37,6 +38,7 @@
       "place": "집",
       "date": "2022-08-03 02:11:11",
       "companyName": "짱좋은회사2",
+      "title": "비대면 면접2",
       "type": "manual"
     },
     {
@@ -48,6 +50,7 @@
       "place": "집",
       "date": "2022-08-03 16:01:01",
       "companyName": "짱좋은회사3",
+      "title": "비대면 면접3",
       "type": "manual"
     }
   ],
