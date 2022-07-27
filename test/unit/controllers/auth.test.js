@@ -22,9 +22,9 @@ const login1 = require('../../data/auth/login1.json');
 const login2 = require('../../data/auth/login2.json');
 const login3 = require('../../data/auth/login3.json');
 
-jest.mock('nodemailer')
+jest.mock('nodemailer');
 const nodemailer = require('nodemailer');
-
+let sendMailMock;
 // jest.fn()
 User.findOne = jest.fn();
 User.create = jest.fn();
@@ -34,10 +34,14 @@ AuthEmail.create = jest.fn();
 AuthEmail.updateOne = jest.fn();
 AuthEmail.destroy = jest.fn();
 User_info.create = jest.fn();
-sendMailMock = jest.fn()
+sendMailMock = jest.fn();
 
 //nodemailer mocking
-nodemailer.createTransport.mockReturnValue({ "sendMail": sendMailMock });
+nodemailer.createTransport.mockReturnValue({ sendMail: sendMailMock });
+
+let req;
+let res;
+let next;
 
 beforeEach(() => {
   req = httpMocks.createRequest();
@@ -178,7 +182,7 @@ describe('로그인', () => {
     User.findOne.mockResolvedValue(login2);
     await AuthController.get.auth(req, res, next);
     expect(res.statusCode).toBe(200);
-    expect(res._isEndCalled()).toBeTruthy();  // token값 계속 바뀜
+    expect(res._isEndCalled()).toBeTruthy(); // token값 계속 바뀜
   });
 
   test('로그인 실패 에러(이메일)', async () => {

@@ -2,6 +2,10 @@ const httpMocks = require('node-mocks-http');
 const { joiMiddleware } = require('../../../utils/middleware');
 const verifyNumberForOld = require('../../data/validators/verifyNumberForOld.json');
 
+let req;
+let res;
+let next;
+
 beforeEach(() => {
   req = httpMocks.createRequest();
   res = httpMocks.createResponse();
