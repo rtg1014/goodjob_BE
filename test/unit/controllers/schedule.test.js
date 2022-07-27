@@ -56,6 +56,10 @@ user_schedule.findOrCreate = jest.fn();
 user_schedule.update = jest.fn();
 Posting.findOne = jest.fn();
 
+let req;
+let res;
+let next;
+
 beforeEach(() => {
   req = httpMocks.createRequest();
   res = httpMocks.createResponse();
