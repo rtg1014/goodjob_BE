@@ -255,7 +255,7 @@ module.exports = {
       });
 
       let data = [];
-
+      let x;
       // 프론트에서 job 정보를 받길 원한다면 반복문 안에 반복문 써야함
       for (x of postings) {
         let posting = {
@@ -318,6 +318,7 @@ module.exports = {
       }
 
       let job = [];
+      let x;
       for (x of posting.jobs) {
         job.push(x.sub);
       }
