@@ -8,10 +8,19 @@
     "createdAt": "2022-07-23T11:31:31.000Z",
     "updatedAt": "2022-07-23T11:31:31.000Z",
     "schedule": {
-        "title": "[롯데멤버스] 2022년 7월 경력직 및 계약직 채용 (AI/IT기획/디지털마케팅/MD/급여/데이터추출/정산,회계 등)",
-        "place": "서울 중구",
-        "date": "2022-08-04T14:59:59.000Z",
+      "title": "[롯데멤버스] 2022년 7월 경력직 및 계약직 채용 (AI/IT기획/디지털마케팅/MD/급여/데이터추출/정산,회계 등)",
+      "place": "서울 중구",
+      "date": "2022-08-04T14:59:59.000Z",
+      "companyName": "롯데멤버스㈜",
+      "postingId": 1,
+      "posting": {
         "companyName": "롯데멤버스㈜",
-        "postingId": 1
+        "title": "[롯데멤버스] 2022년 7월 경력직 및 계약직 채용 (AI/IT기획/디지털마케팅/MD/급여/데이터추출/정산,회계 등)",
+        "deadline": "2022-08-04T14:59:59.000Z",
+        "url": "https://www.jobkorea.co.kr/Recruit/GI_Read/39053140?rPageCode=SL",
+        "careerId": 3,
+        "cityId": 26,
+        "companyTypeId": 2
+      }
     }
-}
+  }
