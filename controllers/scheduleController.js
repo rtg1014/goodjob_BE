@@ -233,6 +233,10 @@ module.exports = {
           msg: '잘못된 접근입니다.',
         });
       }
+      let url=null
+      if(!!myschedule.schedule.postingId){
+        url = myschedule.schedule.posting.url
+      }
 
       const data = {
         userId: myschedule.userId,
@@ -241,7 +245,7 @@ module.exports = {
         memo: myschedule.memo,
         sticker: myschedule.sticker,
         coverImage: myschedule.coverImage,
-        url: myschedule.schedule.posting.url,
+        url,
         title: myschedule.schedule.title,
         place: myschedule.schedule.place,
         date: dateFormatter(myschedule.schedule.date),
