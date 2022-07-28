@@ -1,5 +1,6 @@
 // modules
 const puppeteer = require('puppeteer');
+const { sequelize } = require('./models');
 const { Op } = require('sequelize');
 
 // models
@@ -16,8 +17,8 @@ const {
 const { dateFormatter } = require('./utils/util');
 
 let len = 0;
-let today = new Date(); 
-let tomorrow = new Date(today); 
+let today = new Date();
+let tomorrow = new Date(today);
 tomorrow.setDate(tomorrow.getDate() + 1);
 let dayAfterTomorrow = new Date(today);
 dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
@@ -28,6 +29,8 @@ let resultAD = [];
 let resultCD = [];
 let resultKD = [];
 let resultURL = [];
+let item;
+let temp;
 
 (async () => {
   console.info('start');
@@ -46,22 +49,24 @@ let resultURL = [];
   await Promise.all([
     page.goto(
       'https://www.jobkorea.co.kr/recruit/joblist?menucode=local&localorder=1'
-    ), 
-    page.waitForNavigation(), 
+    ),
+    page.waitForNavigation(),
   ]);
 
   let target = "//span[text()='대기업']/ancestor::button";
   await page.waitForXPath(target);
   let s = await page.$x(target);
-  s = s[0]; 
+  s = s[0];
 
-
-  await Promise.all([
-    await s.click(),
-    page.waitForNavigation(), 
-  ]).then(nextPage());
+  await Promise.all([await s.click(), page.waitForNavigation()]).then(
+    nextPage()
+  );
 
   async function nextPage() {
+    targetCategory =
+      '//div[@class="tplSltBx tplGiSlt devTplSltBx"]/select[@name="orderTab"]';
+    await page.select('select[name="orderTab"]', '등록일순');
+
     let numofpage = 2;
     do {
       let targetPage = `//a[@href="/recruit/_GI_List?Page=${numofpage}"]`;
@@ -77,6 +82,8 @@ let resultURL = [];
 
       numofpage++;
     } while (len);
+    console.log('크롤링 완료!');
+    process.exit(0);
   }
 
   //-----------------------------------------------------------------------------------------
@@ -100,8 +107,8 @@ let resultURL = [];
   //   공고제목
   async function title() {
     let title = '//div[@class="titBx"]/ancestor::td/div/strong/a';
-    await page.waitForXPath(title); 
-    temp = await page.$x(title); 
+    await page.waitForXPath(title);
+    temp = await page.$x(title);
 
     resultTT = [];
 
@@ -118,8 +125,8 @@ let resultURL = [];
   async function smallInfo() {
     let smallInfo =
       '//p[@class="etc"]/ancestor::div//div[@class="titBx"]/p[@class="etc"]/span[@class="cell"]';
-    await page.waitForXPath(smallInfo); 
-    temp = await page.$x(smallInfo); 
+    await page.waitForXPath(smallInfo);
+    temp = await page.$x(smallInfo);
     resultCR = [];
     resultAD = [];
     let a = '';
@@ -210,8 +217,8 @@ let resultURL = [];
   // 채용공고 날짜
   async function companyDate() {
     let companyDate = '//span[@class="date dotum"]//./text()';
-    await page.waitForXPath(companyDate); 
-    temp = await page.$x(companyDate); 
+    await page.waitForXPath(companyDate);
+    temp = await page.$x(companyDate);
     resultCD = [];
     for (item of temp) {
       if (resultCD.length === len) break;
@@ -238,8 +245,8 @@ let resultURL = [];
   // url
   async function getURL() {
     let keywords = '//div[@class="titBx"]//a/@href';
-    await page.waitForXPath(keywords); 
-    temp = await page.$x(keywords); 
+    await page.waitForXPath(keywords);
+    temp = await page.$x(keywords);
     resultURL = [];
     for (item of temp) {
       if (resultURL.length === len) break;
@@ -265,47 +272,63 @@ let resultURL = [];
       resultKD.push(test.dimension44);
     }
 
-    //  🎇db 삽입 부분🎇 
+    /*========================DB========================*/
+    //  🎇db 삽입 부분🎇
     for (let i = 0; i < len; i++) {
-      let career = await Career.findOne({
-        where: { type: resultCR[i] },
-      });
-
-      let companyType = await CompanyType.findOne({
-        where: { type: '대기업' },
-      });
-
-      let city;
-
-      city = await City.findOne({
-        where: {
-          [Op.and]: [
-            { main: resultAD[i].split(' ')[0] },
-            { sub: resultAD[i].split(' ')[1] },
-          ],
-        },
-      });
-
-      let post = await Posting.create({
-        companyName: resultCN[i],
-        title: resultTT[i],
-        deadline: resultCD[i],
-        url: resultURL[i],
-        companyTypeId: companyType.id,
-        careerId: career.id,
-        cityId: city.id,
-      });
-
-      let jobSub = resultKD[i].split(',');
-      for (let j = 0; j < jobSub.length; j++) {
-        let job = await Job.findOne({
-          where: { sub: jobSub[j] },
+      const t = await sequelize.transaction();
+      try {
+        let career = await Career.findOne({
+          where: { type: resultCR[i] },
         });
 
-        await posting_job.create({
-          postingId: post.id,
-          jobId: job.id,
+        let companyType = await CompanyType.findOne({
+          where: { type: '대기업' },
         });
+
+        let city;
+
+        city = await City.findOne({
+          where: {
+            [Op.and]: [
+              { main: resultAD[i].split(' ')[0] },
+              { sub: resultAD[i].split(' ')[1] },
+            ],
+          },
+        });
+
+        let [post, created] = await Posting.findOrCreate({
+          where: {
+            companyName: resultCN[i],
+            title: resultTT[i],
+            deadline: resultCD[i],
+            url: resultURL[i],
+            companyTypeId: companyType.id,
+            careerId: career.id,
+            cityId: city.id,
+          },
+        });
+
+        if (!created) throw new error();
+
+        let jobSub = resultKD[i].split(',');
+        for (let j = 0; j < jobSub.length; j++) {
+          let job = await Job.findOne({
+            where: { sub: jobSub[j] },
+          });
+
+          await posting_job.create(
+            {
+              postingId: post.id,
+              jobId: job.id,
+            },
+            { transaction: t }
+          );
+        }
+        await t.commit();
+      } catch (error) {
+        await t.rollback();
+        console.log('크롤링 완료');
+        process.exit(0);
       }
     }
   }
