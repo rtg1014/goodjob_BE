@@ -1,0 +1,46 @@
+{
+  "220803": [
+    {
+      "scheduleId": 43,
+      "color": 0,
+      "memo": null,
+      "sticker": 0,
+      "coverImage": 0,
+      "place": "집",
+      "date": "2022-08-03 16:01:01",
+      "companyName": "짱좋은회사3",
+      "title": "비대면 면접3",
+      "type": "manual"
+    }
+  ],
+  "220804": [
+    {
+      "scheduleId": 40,
+      "color": 0,
+      "memo": null,
+      "sticker": 0,
+      "coverImage": 0,
+      "title": "[롯데멤버스] 2022년 7월 경력직 및 계약직 채용 (AI/IT기획/디지털마케팅/MD/급여/데이터추출/정산,회계 등)",
+      "place": "서울 중구",
+      "date": "2022-08-04 14:59:59",
+      "companyName": "롯데멤버스㈜",
+      "postingId": 1,
+      "type": "auto"
+    }
+  ],
+  "220807": [
+    {
+      "scheduleId": 39,
+      "color": 0,
+      "memo": null,
+      "sticker": 0,
+      "coverImage": 0,
+      "title": "(인천/부평/서운공장) 생산본부 각 분야 기능직 정규직 사원 채용",
+      "place": "인천 계양구",
+      "date": "2022-08-07 14:59:59",
+      "companyName": "㈜와이지-원",
+      "postingId": 14,
+      "type": "auto"
+    }
+  ]
+}

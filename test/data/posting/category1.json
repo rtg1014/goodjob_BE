@@ -1,0 +1,22 @@
+{
+    "id": 1,
+    "userId": 1,
+    "cityId": 3,
+    "jobId": 40,
+    "companyTypeId": 2,
+    "careerId": 1,
+    "career": {
+        "type": "신입"
+    },
+    "companyType": {
+        "type": "대기업"
+    },
+    "city": {
+        "main": "서울",
+        "sub": "강남구"
+    },
+    "job": {
+        "main": "디자인",
+        "sub": "디자인기타"
+    }
+}
