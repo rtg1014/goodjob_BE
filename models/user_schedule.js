@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       color: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: 1,
       },
       memo: {
         type: DataTypes.STRING,
@@ -22,12 +22,12 @@ module.exports = (sequelize, DataTypes) => {
       sticker: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: 1,
       },
       coverImage: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: 1,
       },
       createdAt: {
         type: 'TIMESTAMP',
