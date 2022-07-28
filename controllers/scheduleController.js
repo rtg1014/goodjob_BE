@@ -218,6 +218,11 @@ module.exports = {
           {
             model: Schedule,
             attributes: attributesOption(),
+            include: [
+              {
+                model: Posting,
+                attributes: attributesOption(),
+              },]
           },
         ],
       });
@@ -236,6 +241,7 @@ module.exports = {
         memo: myschedule.memo,
         sticker: myschedule.sticker,
         coverImage: myschedule.coverImage,
+        url: myschedule.schedule.posting.url,
         title: myschedule.schedule.title,
         place: myschedule.schedule.place,
         date: dateFormatter(myschedule.schedule.date),
