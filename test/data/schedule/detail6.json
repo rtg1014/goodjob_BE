@@ -1,13 +1,14 @@
 {
-    "userId": 10,
-    "scheduleId": 41,
-    "color": 0,
-    "memo": null,
-    "sticker": 0,
-    "coverImage": 0,
-    "title": "비대면 면접1",
-    "place": "집",
-    "date": "2022-08-02 03:34:56",
-    "companyName": "짱좋은회사",
-    "postingId": null
+  "userId": 10,
+  "scheduleId": 41,
+  "color": 0,
+  "memo": null,
+  "sticker": 0,
+  "coverImage": 0,
+  "title": "비대면 면접1",
+  "place": "집",
+  "date": "2022-08-02 03:34:56",
+  "companyName": "짱좋은회사",
+  "url": null,
+  "postingId": null
 }
