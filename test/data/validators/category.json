@@ -1,0 +1,101 @@
+{
+  "1": {
+    "career": 3,
+    "companyType": "대기업",
+    "cityMain": "서울",
+    "citySub": "강남구",
+    "jobMain": "디자인",
+    "jobSub": "디자인기타"
+  },
+  "2": {
+    "companyType": "대기업",
+    "cityMain": "서울",
+    "citySub": "강남구",
+    "jobMain": "디자인",
+    "jobSub": "디자인기타"
+  },
+  "3": {
+    "career": "신입",
+    "companyType": 8,
+    "cityMain": "서울",
+    "citySub": "강남구",
+    "jobMain": "디자인",
+    "jobSub": "디자인기타"
+  },
+  "4": {
+    "career": "신입",
+    "cityMain": "서울",
+    "citySub": "강남구",
+    "jobMain": "디자인",
+    "jobSub": "디자인기타"
+  },
+  "5": {
+    "career": "신입",
+    "companyType": "대기업",
+    "cityMain": 11,
+    "citySub": "강남구",
+    "jobMain": "디자인",
+    "jobSub": "디자인기타"
+  },
+  "6": {
+    "career": "신입",
+    "companyType": "대기업",
+    "citySub": "강남구",
+    "jobMain": "디자인",
+    "jobSub": "디자인기타"
+  },
+  "7": {
+    "career": "신입",
+    "companyType": "대기업",
+    "cityMain": "서울",
+    "citySub": 99,
+    "jobMain": "디자인",
+    "jobSub": "디자인기타"
+  },
+  "8": {
+    "career": "신입",
+    "companyType": "대기업",
+    "cityMain": "서울",
+    "jobMain": "디자인",
+    "jobSub": "디자인기타"
+  },
+  "9": {
+    "career": "신입",
+    "companyType": "대기업",
+    "cityMain": "서울",
+    "citySub": "강남구",
+    "jobMain": 707,
+    "jobSub": "디자인기타"
+  },
+  "10": {
+    "career": "신입",
+    "companyType": "대기업",
+    "cityMain": "서울",
+    "citySub": "강남구",
+    "jobSub": "디자인기타"
+  },
+  "11": {
+    "career": "신입",
+    "companyType": "대기업",
+    "cityMain": "서울",
+    "citySub": "강남구",
+    "jobMain": "디자인",
+    "jobSub": 5924
+  },
+  "12": {
+    "career": "신입",
+    "companyType": "대기업",
+    "cityMain": "서울",
+    "citySub": "강남구",
+    "jobMain": "디자인"
+  },
+  "13": {
+    "career": "신입",
+    "companyType": "대기업",
+    "cityMain": "서울",
+    "citySub": "강남구",
+    "jobMain": "디자인",
+    "jobSub": "디자인기타",
+    "Hack": "hacking....."
+  }
+}

@@ -1,0 +1,17 @@
+{
+    "userId": 10,
+    "scheduleId": 41,
+    "color": 0,
+    "memo": null,
+    "sticker": 0,
+    "coverImage": 0,
+    "createdAt": "2022-07-23T11:37:42.000Z",
+    "updatedAt": "2022-07-23T11:37:42.000Z",
+    "schedule": {
+        "title": "비대면 면접1",
+        "place": "집",
+        "date": "2022-08-02T03:34:56.000Z",
+        "companyName": "짱좋은회사",
+        "postingId": null
+    }
+}
