@@ -256,15 +256,13 @@ describe('일정 상세 (수정)', () => {
   test('수정 완료(수동 작성)', async () => {
     req.parmas = modify5;
     req.body = modify7;
+    next = jest.fn();
     user_schedule.findOne.mockResolvedValue(modify6);
     Schedule.findOne.mockResolvedValue(undefined);
     user_schedule.update.mockResolvedValue(modify8);
     Schedule.update.mockResolvedValue(modify9);
     await ScheduleController.update.modify(req, res, next);
-    expect(res._getJSONData()).toStrictEqual({
-      isSuccess: true,
-      msg: '일정 내용 수정하기 완료!',
-    });
+    expect(next).toHaveBeenCalled();
   });
 
   test('scheduleId에 해당하는 일정이 없을 때 에러', async () => {
