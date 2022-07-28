@@ -234,7 +234,7 @@ module.exports = {
         });
       }
       let url=null
-      if(!!myschedule.schedule.postingId){
+      if(myschedule.schedule.postingId!==null){
         url = myschedule.schedule.posting.url
       }
 
