@@ -143,9 +143,9 @@ module.exports = {
       const { scheduleId } = req.params;
       let { image, companyName, color, title, sticker, date, place, memo } =
         req.body;
-        if(!image) image=1;
-        if(!color) color=1;
-        if(!sticker) sticker=1;
+      if (!image) image = 1;
+      if (!color) color = 1;
+      if (!sticker) sticker = 1;
 
       let myschedule = await user_schedule.findOne({
         where: { userId: user.id, scheduleId },
@@ -199,10 +199,7 @@ module.exports = {
 
       await t.commit();
 
-      return res.status(200).json({
-        isSuccess: true,
-        msg: '일정 내용 수정하기 완료!',
-      });
+      next();
     }),
   },
 
@@ -222,7 +219,8 @@ module.exports = {
               {
                 model: Posting,
                 attributes: attributesOption(),
-              },]
+              },
+            ],
           },
         ],
       });
@@ -233,9 +231,9 @@ module.exports = {
           msg: '잘못된 접근입니다.',
         });
       }
-      let url=null
-      if(myschedule.schedule.postingId!==null){
-        url = myschedule.schedule.posting.url
+      let url = null;
+      if (myschedule.schedule.postingId !== null) {
+        url = myschedule.schedule.posting.url;
       }
 
       const data = {
