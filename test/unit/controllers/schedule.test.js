@@ -18,6 +18,7 @@ const schedule5 = require('../../data/schedule/schedule5.json');
 const schedule6 = require('../../data/schedule/schedule6.json');
 const schedule7 = require('../../data/schedule/schedule7.json');
 const schedule8 = require('../../data/schedule/schedule8.json');
+const schedule9 = require('../../data/schedule/schedule9.json');
 const search1 = require('../../data/schedule/search1.json');
 const search2 = require('../../data/schedule/search2.json');
 const search3 = require('../../data/schedule/search3.json');
@@ -75,6 +76,7 @@ describe('스케줄 생성(작성)', () => {
     await ScheduleController.create.mySchedule(req, res, next);
     expect(res._getJSONData()).toStrictEqual({
       isSuccess: true,
+      data: schedule9,
       msg: '개인 스케줄 작성이 완료되었습니다.',
     });
   });

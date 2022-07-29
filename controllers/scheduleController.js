@@ -37,7 +37,7 @@ module.exports = {
         companyName,
       });
 
-      await user_schedule.create({
+      const user_Schedule = await user_schedule.create({
         userId: user.id,
         scheduleId: schedule.id,
         sticker,
@@ -45,8 +45,27 @@ module.exports = {
         memo,
         color,
       });
+
+      
+
+      const data = {
+        userId: user_Schedule.id,
+        scheduleId: user_Schedule.scheduleId,
+        color: user_Schedule.color,
+        memo: user_Schedule.memo,
+        sticker: user_Schedule.sticker,
+        coverImage: user_Schedule.coverImage,
+        title: schedule.title,
+        place: schedule.place,
+        date: dateFormatter(schedule.date),
+        companyName: schedule.companyName,
+        postingId: null,
+      }
+    
+
       return res.status(201).json({
         isSuccess: true,
+        data,
         msg: '개인 스케줄 작성이 완료되었습니다.',
       });
     }),
