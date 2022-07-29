@@ -19,7 +19,7 @@ router.post('/auth', joiMiddleware('authSchema'), AuthController.get.auth); // �
 router.get('/auth/kakao/callback', AuthController.create.kakao); // 카카오 로그인 콜백
 
 // api/schedule
-router.post('/schedule', auth, joiMiddleware('myScheduleSchema'), ScheduleController.create.mySchedule); // 수동 스케줄 생성
+router.post('/schedule', auth, joiMiddleware('myScheduleSchema'), ScheduleController.create.mySchedule, ScheduleController.get.detail); // 수동 스케줄 생성
 router.post('/schedule/scrap', auth, joiMiddleware('scrapSchema'), ScheduleController.create.scrap); // 자동 스케줄 생성 (=== 스크랩)
 router.get('/schedule/daily', auth, ScheduleController.get.daily); // 일간 일정 조회
 router.get('/schedule/weekly', auth, ScheduleController.get.weekly); // 주간 스케줄 조회

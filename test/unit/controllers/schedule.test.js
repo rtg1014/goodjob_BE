@@ -70,13 +70,11 @@ beforeEach(() => {
 describe('스케줄 생성(작성)', () => {
   test('생성 성공', async () => {
     req.body = mySchedule1;
+    next = jest.fn();
     Schedule.create.mockResolvedValue(mySchedule2);
     user_schedule.create.mockResolvedValue(mySchedule3);
     await ScheduleController.create.mySchedule(req, res, next);
-    expect(res._getJSONData()).toStrictEqual({
-      isSuccess: true,
-      msg: '개인 스케줄 작성이 완료되었습니다.',
-    });
+    expect(next).toHaveBeenCalled();
   });
 });
 

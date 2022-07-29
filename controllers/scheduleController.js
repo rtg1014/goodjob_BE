@@ -23,32 +23,37 @@ const {
 
 module.exports = {
   create: {
-    mySchedule: asyncWrapper(async (req, res) => {
+    mySchedule: asyncWrapperWithTransaction(async (req, res, next, t) => {
       // 스케줄 수동
       const { image, companyName, color, title, sticker, date, place, memo } =
         req.body;
       const user = req.user;
       invalidToken(user);
 
-      const schedule = await Schedule.create({
-        date,
-        title,
-        place,
-        companyName,
-      });
+      const schedule = await Schedule.create(
+        {
+          date,
+          title,
+          place,
+          companyName,
+        },
+        { transaction: t }
+      );
 
-      await user_schedule.create({
-        userId: user.id,
-        scheduleId: schedule.id,
-        sticker,
-        coverImage: image,
-        memo,
-        color,
-      });
-      return res.status(201).json({
-        isSuccess: true,
-        msg: '개인 스케줄 작성이 완료되었습니다.',
-      });
+      await user_schedule.create(
+        {
+          userId: user.id,
+          scheduleId: schedule.id,
+          sticker,
+          coverImage: image,
+          memo,
+          color,
+        },
+        { transaction: t }
+      );
+      req.params = { scheduleId: schedule.id };
+      await t.commit();
+      next();
     }),
 
     scrap: asyncWrapperWithTransaction(async (req, res, next, t) => {
