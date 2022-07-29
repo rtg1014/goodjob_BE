@@ -16,6 +16,9 @@ const {
 // util
 const { dateFormatter } = require('./utils/util');
 
+// 만료 데이터 삭제
+const destroying = require('./destroying')
+
 let len = 0;
 let today = new Date();
 let tomorrow = new Date(today);
