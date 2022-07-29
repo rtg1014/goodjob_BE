@@ -1,2 +1,3 @@
 #!/bin/bash
-node /home/ubuntu/goodjob_BE/crawler.js
+cd /home/ubuntu/goodjob_BE
+node crawler.js
