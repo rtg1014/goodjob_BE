@@ -270,8 +270,8 @@ module.exports = {
         data.push(posting);
       }
 
-      var today = new Date();
-      var updatedAt = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일 00시 업데이트 완료`
+      var now = new Date();
+      var updatedAt = `${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일 ${now.getHours()}시 업데이트 완료`
 
       return res.status(200).json({
         isSuccess: true,
