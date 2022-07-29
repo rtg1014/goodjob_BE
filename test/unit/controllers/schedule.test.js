@@ -75,6 +75,7 @@ describe('스케줄 생성(작성)', () => {
     await ScheduleController.create.mySchedule(req, res, next);
     expect(res._getJSONData()).toStrictEqual({
       isSuccess: true,
+      data: schedule9,
       msg: '개인 스케줄 작성이 완료되었습니다.',
     });
   });
