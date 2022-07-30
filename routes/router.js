@@ -35,9 +35,4 @@ router.get('/posting/category', auth, PostingController.get.category); // 추천
 router.get('/posting', auth, PostingController.get.postings); // 추천채용 조회
 router.get('/posting/:postingId', auth, PostingController.get.posting); // 추천채용 상세 조회
 
-//  robots.txt
-router.get('/robots.txt', (req, res) => {
-    res.type("text/plain");
-    res.send("User-agent: *\nDisallow: ")
-})
 module.exports = router;
