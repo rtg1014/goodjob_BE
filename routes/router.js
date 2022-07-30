@@ -13,7 +13,7 @@ const {auth, joiMiddleware} = require('../utils/middleware');
 router.post('/auth/local', joiMiddleware('localSchema'), AuthController.create.local); // 이메일 인증받고 가입하기
 router.post('/auth/verifyNumberForNew', joiMiddleware('verifyNumberForNewSchema'), AuthController.create.verifyNumberForNew); // 인증 번호 확인 and 회원가입
 router.post('/auth/lostPassword', joiMiddleware('lostPasswordSchema'), AuthController.update.lostPassword); // 인증 메일 발송(비밀번호 분실)
-router.delete('/auth/verifyNumberForOld', joiMiddleware('verifyNumberForOldSchema'), AuthController.create.verifyNumberForOld); // 인증 번호 확인(비밀번호 분실)
+router.patch('/auth/verifyNumberForOld', joiMiddleware('verifyNumberForOldSchema'), AuthController.create.verifyNumberForOld); // 인증 번호 확인(비밀번호 분실)
 router.patch('/auth/newPassword', joiMiddleware('newPasswordSchema'), AuthController.update.newPassword); // 비밀번호 재설정
 router.post('/auth', joiMiddleware('authSchema'), AuthController.get.auth); // 로그인
 router.get('/auth/kakao/callback', AuthController.create.kakao); // 카카오 로그인 콜백
