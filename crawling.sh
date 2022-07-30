@@ -1,3 +1,3 @@
-#!/bin/bash
+SHELL=/bin/sh
 cd /home/ubuntu/goodjob_BE
-node crawler.js
+sudo node crawler.js
