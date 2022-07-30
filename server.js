@@ -6,11 +6,11 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const certificate = fs.readFileSync(
-  '/etc/letsencrypt/live/goodjobcalendar.com/fullchain.pem',
+  '/etc/letsencrypt/live/goodjobcalendar.shop/fullchain.pem',
   'utf8'
 );
 const privateKey = fs.readFileSync(
-  '/etc/letsencrypt/live/goodjobcalendar.com/privkey.pem',
+  '/etc/letsencrypt/live/goodjobcalendar.shop/privkey.pem',
   'utf8'
 );
 
