@@ -16,6 +16,10 @@ const {
 // util
 const { dateFormatter } = require('./utils/util');
 
+// 만료 데이터 삭제
+const destroying = require('./destroying');
+destroying();
+
 let len = 0;
 let today = new Date();
 let tomorrow = new Date(today);
@@ -38,6 +42,7 @@ let temp;
     headless: true,
     args: ['--window-size=1920,1080'],
     slow: 3,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'], // 우분투에서 puppeteer 실행
   });
   const page = await browser.newPage();
 

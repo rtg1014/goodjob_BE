@@ -30,7 +30,6 @@ let req;
 let res;
 let next;
 
-
 beforeEach(() => {
   req = httpMocks.createRequest();
   res = httpMocks.createResponse();
@@ -112,10 +111,10 @@ describe('추천채용 조회', () => {
   //🎆🎇✨페이지네이션도 테스트할것
   test('조회 성공', async () => {
     User_info.findOne.mockResolvedValue(category1);
-    var today = new Date();
-    var updatedAt = `${today.getFullYear()}년 ${
-      today.getMonth() + 1
-    }월 ${today.getDate()}일 00시 업데이트 완료`;
+    var now = new Date();
+    var updatedAt = `${now.getFullYear()}년 ${
+      now.getMonth() + 1
+    }월 ${now.getDate()}일 ${now.getHours()}시 업데이트 완료`;
     Posting.findAll.mockResolvedValue(postings2.postings);
     await PostingController.get.postings(req, res, next);
     expect(res._getJSONData()).toEqual({
