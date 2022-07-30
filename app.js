@@ -69,6 +69,12 @@ app.get('/', (req, res) => {
   return res.status(200).send('🎇✨Good_job✨🎇');
 });
 
+//  robots.txt
+app.get('/robots.txt', (req, res) => {
+  res.type("text/plain");
+  res.send("User-agent: *\nDisallow: ")
+})
+
 // routes
 const router = require('./routes/router');
 app.use('/api', router);
