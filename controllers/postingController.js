@@ -167,17 +167,6 @@ module.exports = {
     }),
 
     postings: asyncWrapper(async (req, res) => {
-<<<<<<< HEAD
-      // let {page} = req.query
-      // let limit = 10;
-      // let offset = 0 + (page - 1) * limit;
-      // Posting.findAndCountAll({
-      //   offset: offset,
-      //   limit: limit,
-      // })
-
-=======
->>>>>>> ksh
       const user = req.user;
       const { lastPostingId } = req.query;
       let infiniteScroll;
@@ -246,11 +235,7 @@ module.exports = {
         },
         attributes: ['id', 'companyName', 'title', 'deadline'],
         order: [['id', 'DESC']],
-<<<<<<< HEAD
         limit: 5,
-=======
-        limit: 10,
->>>>>>> ksh
         subQuery: false,
         include: [
           {
@@ -333,7 +318,6 @@ module.exports = {
           },
         ],
       });
-<<<<<<< HEAD
 
       const schedule = await Schedule.findAll({
         where: { postingId },
@@ -350,8 +334,6 @@ module.exports = {
         }
       }
       
-=======
->>>>>>> ksh
       if (!posting) {
         return res.status(400).json({
           isSuccess: false,
