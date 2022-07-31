@@ -1,6 +1,6 @@
 const httpMocks = require('node-mocks-http');
 const PostingController = require('../../../controllers/postingController');
-const { Posting, User_info } = require('../../../models');
+const { Posting, User_info, Schedule } = require('../../../models');
 const user = require('../../data/posting/user.json');
 const category1 = require('../../data/posting/category1.json');
 const category2 = require('../../data/posting/category2.json');
@@ -25,6 +25,7 @@ User_info.findOne = jest.fn();
 User_info.updateOne = jest.fn();
 Posting.findAll = jest.fn();
 Posting.findOne = jest.fn();
+Schedule.findAll = jest.fn();
 
 let req;
 let res;
@@ -130,6 +131,7 @@ describe('추천채용 상세 조회', () => {
   test('조회 성공', async () => {
     req.params = posting1;
     Posting.findOne.mockResolvedValue(posting4);
+    Schedule.findAll.mockResolvedValue(undefined);
     await PostingController.get.posting(req, res, next);
     expect(res._getJSONData()).toEqual({
       isSuccess: true,

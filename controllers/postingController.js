@@ -323,12 +323,15 @@ module.exports = {
 
       let isScrap = false;
       let e;
-      for (e of schedule) {
-        const scrap = await user_schedule.findOne({
-          where: { userId: user.id, scheduleId: e.id },
-        });
-        if (scrap) isScrap = true;
+      if (schedule) {
+        for (e of schedule) {
+          const scrap = await user_schedule.findOne({
+            where: { userId: user.id, scheduleId: e.id },
+          });
+          if (scrap) isScrap = true;
+        }
       }
+      
       if (!posting) {
         return res.status(400).json({
           isSuccess: false,
