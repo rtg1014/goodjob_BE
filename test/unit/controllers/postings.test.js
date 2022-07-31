@@ -1,6 +1,6 @@
 const httpMocks = require('node-mocks-http');
 const PostingController = require('../../../controllers/postingController');
-const { Posting, User_info } = require('../../../models');
+const { Posting, User_info, Schedule } = require('../../../models');
 const user = require('../../data/posting/user.json');
 const category1 = require('../../data/posting/category1.json');
 const category2 = require('../../data/posting/category2.json');
@@ -25,6 +25,7 @@ User_info.findOne = jest.fn();
 User_info.updateOne = jest.fn();
 Posting.findAll = jest.fn();
 Posting.findOne = jest.fn();
+Schedule.findAll = jest.fn();
 
 let req;
 let res;
@@ -61,42 +62,34 @@ describe('카테고리 조회', () => {
 describe('카테고리 변경', () => {
   test('변경 성공(경력)', async () => {
     req.body = category3;
+    next = jest.fn();
     User_info.updateOne.mockResolvedValue(category4);
     await PostingController.update.category(req, res, next);
-    expect(res._getJSONData()).toStrictEqual({
-      isSuccess: true,
-      msg: '카테고리 변경 완료',
-    });
+    expect(next).toHaveBeenCalled();
   });
 
   test('변경 성공(기업 형태)', async () => {
     req.body = category5;
+    next = jest.fn();
     User_info.updateOne.mockResolvedValue(category6);
     await PostingController.update.category(req, res, next);
-    expect(res._getJSONData()).toStrictEqual({
-      isSuccess: true,
-      msg: '카테고리 변경 완료',
-    });
+    expect(next).toHaveBeenCalled();
   });
 
   test('변경 성공(근무지)', async () => {
     req.body = category7;
+    next = jest.fn();
     User_info.updateOne.mockResolvedValue(category8);
     await PostingController.update.category(req, res, next);
-    expect(res._getJSONData()).toStrictEqual({
-      isSuccess: true,
-      msg: '카테고리 변경 완료',
-    });
+    expect(next).toHaveBeenCalled();
   });
 
   test('변경 성공(직무)', async () => {
     req.body = category9;
+    next = jest.fn();
     User_info.updateOne.mockResolvedValue(category10);
     await PostingController.update.category(req, res, next);
-    expect(res._getJSONData()).toStrictEqual({
-      isSuccess: true,
-      msg: '카테고리 변경 완료',
-    });
+    expect(next).toHaveBeenCalled();
   });
 
   test('변경 실패 에러', async () => {
@@ -130,6 +123,7 @@ describe('추천채용 상세 조회', () => {
   test('조회 성공', async () => {
     req.params = posting1;
     Posting.findOne.mockResolvedValue(posting4);
+    Schedule.findAll.mockResolvedValue(undefined);
     await PostingController.get.posting(req, res, next);
     expect(res._getJSONData()).toEqual({
       isSuccess: true,

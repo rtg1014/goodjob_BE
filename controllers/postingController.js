@@ -17,12 +17,14 @@ const {
   City,
   Job,
   User_info,
+  user_schedule,
+  Schedule,
 } = require('../models');
 
 module.exports = {
   create: {},
   update: {
-    category: asyncWrapper(async (req, res) => {
+    category: asyncWrapper(async (req, res, next) => {
       const { career, companyType, cityMain, citySub, jobMain, jobSub } =
         req.body;
 
@@ -97,10 +99,7 @@ module.exports = {
         }
       );
 
-      return res.status(200).json({
-        isSuccess: true,
-        msg: '카테고리 변경 완료',
-      });
+      next();
     }),
   },
 
@@ -236,7 +235,7 @@ module.exports = {
         },
         attributes: ['id', 'companyName', 'title', 'deadline'],
         order: [['id', 'DESC']],
-        limit: 10,
+        limit: 5,
         subQuery: false,
         include: [
           {
@@ -319,6 +318,22 @@ module.exports = {
           },
         ],
       });
+
+      const schedule = await Schedule.findAll({
+        where: { postingId },
+      });
+
+      let isScrap = false;
+      let e;
+      if (schedule) {
+        for (e of schedule) {
+          const scrap = await user_schedule.findOne({
+            where: { userId: user.id, scheduleId: e.id },
+          });
+          if (scrap) isScrap = true;
+        }
+      }
+      
       if (!posting) {
         return res.status(400).json({
           isSuccess: false,
@@ -341,6 +356,7 @@ module.exports = {
         city: posting.city.main + ' ' + posting.city.sub,
         companyType: posting.companyType.type,
         job,
+        isScrap,
       };
 
       return res.status(200).json({
