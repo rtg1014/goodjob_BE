@@ -167,6 +167,7 @@ module.exports = {
     }),
 
     postings: asyncWrapper(async (req, res) => {
+<<<<<<< HEAD
       // let {page} = req.query
       // let limit = 10;
       // let offset = 0 + (page - 1) * limit;
@@ -175,7 +176,14 @@ module.exports = {
       //   limit: limit,
       // })
 
+=======
+>>>>>>> ksh
       const user = req.user;
+      const { lastPostingId } = req.query;
+      let infiniteScroll;
+      lastPostingId
+        ? (infiniteScroll = lastPostingId)
+        : (infiniteScroll = Number.MAX_SAFE_INTEGER);
       invalidToken(user);
       // user가 선택한 카테고리
       const myCategory = await User_info.findOne({
@@ -224,13 +232,25 @@ module.exports = {
         companyTypeOption = {};
       }
 
-      const postings = await Posting.findAll({
+      let postings;
+
+      postings = await Posting.findAll({
         where: {
-          [Op.and]: [careerOption, cityOption, companyTypeOption, jobOption],
+          [Op.and]: [
+            { id: { [Op.lt]: infiniteScroll } },
+            careerOption,
+            cityOption,
+            companyTypeOption,
+            jobOption,
+          ],
         },
         attributes: ['id', 'companyName', 'title', 'deadline'],
         order: [['id', 'DESC']],
+<<<<<<< HEAD
         limit: 5,
+=======
+        limit: 10,
+>>>>>>> ksh
         subQuery: false,
         include: [
           {
@@ -313,6 +333,7 @@ module.exports = {
           },
         ],
       });
+<<<<<<< HEAD
 
       const schedule = await Schedule.findAll({
         where: { postingId },
@@ -329,6 +350,8 @@ module.exports = {
         }
       }
       
+=======
+>>>>>>> ksh
       if (!posting) {
         return res.status(400).json({
           isSuccess: false,
