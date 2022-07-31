@@ -62,42 +62,34 @@ describe('카테고리 조회', () => {
 describe('카테고리 변경', () => {
   test('변경 성공(경력)', async () => {
     req.body = category3;
+    next = jest.fn();
     User_info.updateOne.mockResolvedValue(category4);
     await PostingController.update.category(req, res, next);
-    expect(res._getJSONData()).toStrictEqual({
-      isSuccess: true,
-      msg: '카테고리 변경 완료',
-    });
+    expect(next).toHaveBeenCalled();
   });
 
   test('변경 성공(기업 형태)', async () => {
     req.body = category5;
+    next = jest.fn();
     User_info.updateOne.mockResolvedValue(category6);
     await PostingController.update.category(req, res, next);
-    expect(res._getJSONData()).toStrictEqual({
-      isSuccess: true,
-      msg: '카테고리 변경 완료',
-    });
+    expect(next).toHaveBeenCalled();
   });
 
   test('변경 성공(근무지)', async () => {
     req.body = category7;
+    next = jest.fn();
     User_info.updateOne.mockResolvedValue(category8);
     await PostingController.update.category(req, res, next);
-    expect(res._getJSONData()).toStrictEqual({
-      isSuccess: true,
-      msg: '카테고리 변경 완료',
-    });
+    expect(next).toHaveBeenCalled();
   });
 
   test('변경 성공(직무)', async () => {
     req.body = category9;
+    next = jest.fn();
     User_info.updateOne.mockResolvedValue(category10);
     await PostingController.update.category(req, res, next);
-    expect(res._getJSONData()).toStrictEqual({
-      isSuccess: true,
-      msg: '카테고리 변경 완료',
-    });
+    expect(next).toHaveBeenCalled();
   });
 
   test('변경 실패 에러', async () => {

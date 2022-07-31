@@ -24,7 +24,7 @@ const {
 module.exports = {
   create: {},
   update: {
-    category: asyncWrapper(async (req, res) => {
+    category: asyncWrapper(async (req, res, next) => {
       const { career, companyType, cityMain, citySub, jobMain, jobSub } =
         req.body;
 
@@ -99,10 +99,7 @@ module.exports = {
         }
       );
 
-      return res.status(200).json({
-        isSuccess: true,
-        msg: '카테고리 변경 완료',
-      });
+      next();
     }),
   },
 
