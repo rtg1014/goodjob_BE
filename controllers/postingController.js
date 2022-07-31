@@ -168,16 +168,12 @@ module.exports = {
     }),
 
     postings: asyncWrapper(async (req, res) => {
-      // let {page} = req.query
-      // let limit = 10;
-      // let offset = 0 + (page - 1) * limit;
-      // Posting.findAndCountAll({
-      //   offset: offset,
-      //   limit: limit,
-      // })
-    
-   
       const user = req.user;
+      const { lastPostingId } = req.query;
+      let infiniteScroll;
+      lastPostingId
+        ? (infiniteScroll = lastPostingId)
+        : (infiniteScroll = Number.MAX_SAFE_INTEGER);
       invalidToken(user);
       // user가 선택한 카테고리
       const myCategory = await User_info.findOne({
@@ -226,11 +222,22 @@ module.exports = {
         companyTypeOption = {};
       }
 
-      const postings = await Posting.findAll({
+      let postings;
+
+      postings = await Posting.findAll({
         where: {
-          [Op.and]: [careerOption, cityOption, companyTypeOption, jobOption],
+          [Op.and]: [
+            { id: { [Op.lt]: infiniteScroll } },
+            careerOption,
+            cityOption,
+            companyTypeOption,
+            jobOption,
+          ],
         },
         attributes: ['id', 'companyName', 'title', 'deadline'],
+        order: [['id', 'DESC']],
+        limit: 10,
+        subQuery: false,
         include: [
           {
             model: Career,
@@ -271,7 +278,9 @@ module.exports = {
       }
 
       var now = new Date();
-      var updatedAt = `${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일 ${now.getHours()}시 업데이트 완료`
+      var updatedAt = `${now.getFullYear()}년 ${
+        now.getMonth() + 1
+      }월 ${now.getDate()}일 ${now.getHours()}시 업데이트 완료`;
 
       return res.status(200).json({
         isSuccess: true,
@@ -310,7 +319,7 @@ module.exports = {
           },
         ],
       });
-      if(!posting) {
+      if (!posting) {
         return res.status(400).json({
           isSuccess: false,
           msg: '해당공고가 없습니다!',
