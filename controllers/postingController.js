@@ -17,6 +17,8 @@ const {
   City,
   Job,
   User_info,
+  user_schedule,
+  Schedule,
 } = require('../models');
 
 module.exports = {
@@ -175,8 +177,7 @@ module.exports = {
       //   offset: offset,
       //   limit: limit,
       // })
-    
-   
+
       const user = req.user;
       invalidToken(user);
       // user가 선택한 카테고리
@@ -231,6 +232,9 @@ module.exports = {
           [Op.and]: [careerOption, cityOption, companyTypeOption, jobOption],
         },
         attributes: ['id', 'companyName', 'title', 'deadline'],
+        order: [['id', 'DESC']],
+        limit: 5,
+        subQuery: false,
         include: [
           {
             model: Career,
@@ -271,7 +275,9 @@ module.exports = {
       }
 
       var now = new Date();
-      var updatedAt = `${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일 ${now.getHours()}시 업데이트 완료`
+      var updatedAt = `${now.getFullYear()}년 ${
+        now.getMonth() + 1
+      }월 ${now.getDate()}일 ${now.getHours()}시 업데이트 완료`;
 
       return res.status(200).json({
         isSuccess: true,
@@ -310,7 +316,20 @@ module.exports = {
           },
         ],
       });
-      if(!posting) {
+
+      const schedule = await Schedule.findAll({
+        where: { postingId },
+      });
+
+      let isScrap = false;
+      let e;
+      for (e of schedule) {
+        const scrap = await user_schedule.findOne({
+          where: { userId: user.id, scheduleId: e.id },
+        });
+        if (scrap) isScrap = true;
+      }
+      if (!posting) {
         return res.status(400).json({
           isSuccess: false,
           msg: '해당공고가 없습니다!',
@@ -332,6 +351,7 @@ module.exports = {
         city: posting.city.main + ' ' + posting.city.sub,
         companyType: posting.companyType.type,
         job,
+        isScrap,
       };
 
       return res.status(200).json({
