@@ -1,6 +1,5 @@
-const { Posting, Schedule } = require("./models");
-const { sequelize } = require('./models');
-const { dateFormatter } = require('./utils/util')
+const { Posting } = require("../../models");
+const { dateFormatter } = require('../../utils/util')
 const { Op } = require('sequelize');
 
 async function destroying() {
