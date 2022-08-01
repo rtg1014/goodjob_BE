@@ -224,6 +224,7 @@ module.exports = {
         attributes: ['id', 'companyName', 'title', 'deadline'],
         order: [['id', 'DESC']],
         subQuery: false,
+        limit:100,
         include: [
           {
             model: Career,
