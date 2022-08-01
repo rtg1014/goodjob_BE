@@ -116,9 +116,9 @@ module.exports = {
             scheduleId: scrapSchedule[0].id,
           },
           defaults: {
-            color: 1,
-            sticker: 1,
-            coverImage: 1,
+            color: 9,
+            sticker: 9,
+            coverImage: 5,
           },
         }
         // { transaction: t }
