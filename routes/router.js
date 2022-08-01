@@ -32,7 +32,7 @@ router.delete('/schedule/:scheduleId', auth, ScheduleController.delete.delete); 
 //  api/posting
 router.patch('/posting/category', auth, joiMiddleware('categorySchema'), PostingController.update.category, PostingController.get.category); // 추천채용 세팅 변경
 router.get('/posting/category', auth, PostingController.get.category); // 추천채용 세팅 조회
-router.get('/posting', auth, PostingController.get.postings); // 추천채용 조회
+router.get('/postings', auth, PostingController.get.postings); // 추천채용 조회
 router.get('/posting/:postingId', auth, PostingController.get.posting); // 추천채용 상세 조회
 
 module.exports = router;
