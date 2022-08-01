@@ -52,6 +52,7 @@ async function InsertData(
           careerId: career.id,
           cityId: city.id,
         },
+        transaction: t,
       });
 
       if (!created) throw new error();

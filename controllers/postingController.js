@@ -168,11 +168,9 @@ module.exports = {
 
     postings: asyncWrapper(async (req, res) => {
       const user = req.user;
-      const { lastPostingId } = req.query;
-      let infiniteScroll;
-      lastPostingId
-        ? (infiniteScroll = lastPostingId)
-        : (infiniteScroll = Number.MAX_SAFE_INTEGER);
+      const { page } = req.query;
+      let offset;
+      offset = page*10
       invalidToken(user);
       // user가 선택한 카테고리
       const myCategory = await User_info.findOne({
@@ -226,7 +224,6 @@ module.exports = {
       postings = await Posting.findAll({
         where: {
           [Op.and]: [
-            { id: { [Op.lt]: infiniteScroll } },
             careerOption,
             cityOption,
             companyTypeOption,
@@ -235,7 +232,8 @@ module.exports = {
         },
         attributes: ['id', 'companyName', 'title', 'deadline'],
         order: [['id', 'DESC']],
-        limit: 5,
+        limit: 10,
+        offset: offset,
         subQuery: false,
         include: [
           {
@@ -249,13 +247,6 @@ module.exports = {
           {
             model: CompanyType,
             attributes: attributesOption(),
-          },
-          {
-            model: Job,
-            attributes: attributesOption(),
-            through: {
-              attributes: ['jobId'],
-            },
           },
         ],
       });
