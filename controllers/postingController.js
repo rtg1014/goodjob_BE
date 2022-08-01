@@ -168,9 +168,6 @@ module.exports = {
 
     postings: asyncWrapper(async (req, res) => {
       const user = req.user;
-      const { page } = req.query;
-      let offset;
-      offset = page * 10;
       invalidToken(user);
       // user가 선택한 카테고리
       const myCategory = await User_info.findOne({
@@ -201,7 +198,7 @@ module.exports = {
         });
         let min = jobMain[0].id;
         let max = jobMain[jobMain.length - 1].id;
-        jobOption = { '$jobs.Id$': { [Op.between]: [min, max] } };
+        jobOption = { '$jobs.id$': { [Op.between]: [min, max] } };
       }
 
       if (myCity.main === '전체') {
@@ -219,41 +216,13 @@ module.exports = {
         companyTypeOption = {};
       }
 
-      let postings;
-      if(myjob.main === '전체'){
-        postings = await Posting.findAll({
-          where: {
-            [Op.and]: [careerOption, cityOption, companyTypeOption, jobOption],
-          },
-          attributes: ['id', 'companyName', 'title', 'deadline'],
-          order: [['id', 'DESC']],
-          limit: 10,
-          offset: offset,
-          subQuery: false,
-          include: [
-            {
-              model: Career,
-              attributes: attributesOption(),
-            },
-            {
-              model: City,
-              attributes: attributesOption(),
-            },
-            {
-              model: CompanyType,
-              attributes: attributesOption(),
-            },
-          ],
-        });
-      }else{
-      postings = await Posting.findAll({
+
+      let postings = await Posting.findAll({
         where: {
-          [Op.and]: [careerOption, cityOption, companyTypeOption, jobOption],
+          [Op.and]: [careerOption, cityOption, companyTypeOption],
         },
         attributes: ['id', 'companyName', 'title', 'deadline'],
         order: [['id', 'DESC']],
-        limit: 10,
-        offset: offset,
         subQuery: false,
         include: [
           {
@@ -270,13 +239,14 @@ module.exports = {
           },
           {
             model: Job,
+            where:jobOption,
             attributes: attributesOption(),
             through: {
               attributes: ['jobId'],
             },
           },
         ],
-      });}
+      });
 
       let data = [];
       let x;
