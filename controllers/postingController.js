@@ -168,6 +168,9 @@ module.exports = {
 
     postings: asyncWrapper(async (req, res) => {
       const user = req.user;
+      const { page } = req.query;
+      let offset;
+      offset = page * 10;
       invalidToken(user);
       // user가 선택한 카테고리
       const myCategory = await User_info.findOne({
@@ -216,15 +219,42 @@ module.exports = {
         companyTypeOption = {};
       }
 
-
-      let postings = await Posting.findAll({
+      let postings;
+      if(myjob.main === '전체'){
+        postings = await Posting.findAll({
+          where: {
+            [Op.and]: [careerOption, cityOption, companyTypeOption, jobOption],
+          },
+          attributes: ['id', 'companyName', 'title', 'deadline'],
+          order: [['id', 'DESC']],
+          limit: 10,
+          offset: offset,
+          subQuery: false,
+          include: [
+            {
+              model: Career,
+              attributes: attributesOption(),
+            },
+            {
+              model: City,
+              attributes: attributesOption(),
+            },
+            {
+              model: CompanyType,
+              attributes: attributesOption(),
+            },
+          ],
+        });
+      }else{
+      postings = await Posting.findAll({
         where: {
           [Op.and]: [careerOption, cityOption, companyTypeOption],
         },
         attributes: ['id', 'companyName', 'title', 'deadline'],
         order: [['id', 'DESC']],
+        limit: 10,
+        offset: offset,
         subQuery: false,
-        limit:100,
         include: [
           {
             model: Career,
@@ -247,7 +277,7 @@ module.exports = {
             },
           },
         ],
-      });
+      });}
 
       let data = [];
       let x;
