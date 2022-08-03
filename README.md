@@ -51,6 +51,13 @@
 
 ---
 
+💎아키텍쳐
+===
+
+![아키텍쳐](https://user-images.githubusercontent.com/105336416/182626463-fd010fef-c8f9-4879-ba3b-f1dd66383850.png)
+
+---
+
 🛠 tools
 ===
 <!-- <img src="https://img.shields.io/badge/이름-색상코드?style=flat-square&logo=로고명&logoColor=로고색"/> -->
@@ -58,11 +65,27 @@
 
 📌 BackEnd
 
-<img src="https://img.shields.io/badge/javascript-333333?style=flat-square&logo=javascript&logoColor=yellow"/> <img src="https://img.shields.io/badge/mysql-3333ff?style=flat-square&logo=firebase&logoColor=white"/> 
-<img src="https://img.shields.io/badge/express-666666?style=flat-square&logo=express&logoColor=white"/> <img src="https://img.shields.io/badge/Node.js-33cc00?style=flat-square&logo=Node.js&logoColor=white"/> <img src="https://img.shields.io/badge/AWS-ffcc33?style=flat-square&logo=AWS&logoColor=white"/> 
+
+---
+
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+<br>
+![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white)
+![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+<br>
+![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+<br>
+![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+<br>
+![Puppeteer](https://img.shields.io/badge/Puppeteer-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
+<br>
+![Passport](https://img.shields.io/badge/Passport-34E27A?style=for-the-badge&logo=Passport&logoColor=white)
+<img src="https://img.shields.io/badge/JSON Web Tokens-000000?style=for-the-badge&logo=JSON Web Tokens&logoColor=white">
+<br>
+![Jest](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=Jest&logoColor=white)
 
 
-<img src="https://img.shields.io/badge/jsonwebtoken-333333?style=flat-square&logo=json web token&logoColor=white"/> <img src="https://img.shields.io/badge/Socket.io-33cc00?style=flat-square&logo=Node.js&logoColor=white"/> <img src="https://img.shields.io/badge/winston-33ccff?style=flat-square&logo=Node.js&logoColor=white"/> <img src="https://img.shields.io/badge/multer-cc0033?style=flat-square&logo=Node.js&logoColor=white"/> <img src="https://img.shields.io/badge/sequelize-ffff33?style=flat-square&logo=Node.js&logoColor=black"/>
 
 
 
