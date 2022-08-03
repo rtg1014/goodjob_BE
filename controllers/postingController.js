@@ -168,10 +168,10 @@ module.exports = {
 
     postings: asyncWrapper(async (req, res) => {
       const user = req.user;
-      const { page } = req.query;
-      let offset;
-      offset = page * 10;
+      let { nextCursor } = req.query;
+      let { previousCursor } = req.query;
       invalidToken(user);
+
       // user가 선택한 카테고리
       const myCategory = await User_info.findOne({
         where: { userId: user.id },
@@ -218,17 +218,34 @@ module.exports = {
       if (myCategory.companyTypeId === 1) {
         companyTypeOption = {};
       }
+      let paginationOption;
+      let orderBy = 'DESC';
+      if (!(nextCursor >= 1) && !(previousCursor >= 1)) {
+        paginationOption = {};
+        orderBy = 'DESC';
+      } else if (nextCursor >= 1 && !(previousCursor >= 1)) {
+        paginationOption = { id: { [Op.lt]: nextCursor } };
+        orderBy = 'DESC';
+      } else if (!(nextCursor >= 1) && previousCursor >= 1) {
+        paginationOption = { id: { [Op.gt]: previousCursor } };
+        orderBy = 'ASC';
+      }
 
       let postings;
-      if(myjob.main === '전체'){
+      if (myjob.main === '전체') {
         postings = await Posting.findAll({
           where: {
-            [Op.and]: [careerOption, cityOption, companyTypeOption, jobOption],
+            [Op.and]: [
+              careerOption,
+              cityOption,
+              companyTypeOption,
+              jobOption,
+              paginationOption,
+            ],
           },
           attributes: ['id', 'companyName', 'title', 'deadline'],
-          order: [['id', 'DESC']],
+          order: [['id', orderBy]],
           limit: 10,
-          offset: offset,
           subQuery: false,
           include: [
             {
@@ -245,43 +262,47 @@ module.exports = {
             },
           ],
         });
-      }else{
-      postings = await Posting.findAll({
-        where: {
-          [Op.and]: [careerOption, cityOption, companyTypeOption],
-        },
-        attributes: ['id', 'companyName', 'title', 'deadline'],
-        order: [['id', 'DESC']],
-        limit: 10,
-        offset: offset,
-        subQuery: false,
-        include: [
-          {
-            model: Career,
-            attributes: attributesOption(),
+      } else {
+        postings = await Posting.findAll({
+          where: {
+            [Op.and]: [
+              careerOption,
+              cityOption,
+              companyTypeOption,
+              paginationOption,
+            ],
           },
-          {
-            model: City,
-            attributes: attributesOption(),
-          },
-          {
-            model: CompanyType,
-            attributes: attributesOption(),
-          },
-          {
-            model: Job,
-            where:jobOption,
-            attributes: attributesOption(),
-            through: {
-              attributes: ['jobId'],
+          attributes: ['id', 'companyName', 'title', 'deadline'],
+          order: [['id', orderBy]],
+          limit: 10,
+          subQuery: false,
+          include: [
+            {
+              model: Career,
+              attributes: attributesOption(),
             },
-          },
-        ],
-      });}
+            {
+              model: City,
+              attributes: attributesOption(),
+            },
+            {
+              model: CompanyType,
+              attributes: attributesOption(),
+            },
+            {
+              model: Job,
+              where: jobOption,
+              attributes: attributesOption(),
+              through: {
+                attributes: ['jobId'],
+              },
+            },
+          ],
+        });
+      }
 
       let data = [];
       let x;
-      // 프론트에서 job 정보를 받길 원한다면 반복문 안에 반복문 써야함
       for (x of postings) {
         let posting = {
           postingId: x.id,
@@ -294,6 +315,10 @@ module.exports = {
         };
         data.push(posting);
       }
+      if (orderBy === 'ASC') data = data.reverse();
+
+      nextCursor = data[data.length - 1].postingId;
+      previousCursor = data[0].postingId;
 
       var now = new Date();
       var updatedAt = `${now.getFullYear()}년 ${
@@ -304,6 +329,8 @@ module.exports = {
         isSuccess: true,
         data,
         updatedAt,
+        nextCursor,
+        previousCursor,
         msg: '추천채용 여기있어요!',
       });
     }),

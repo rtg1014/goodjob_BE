@@ -104,6 +104,7 @@ describe('추천채용 조회', () => {
   //🎆🎇✨페이지네이션도 테스트할것
   test('조회 성공', async () => {
     User_info.findOne.mockResolvedValue(category1);
+    req.query = { nextCursor: 0, previousCursor: 0 };
     var now = new Date();
     var updatedAt = `${now.getFullYear()}년 ${
       now.getMonth() + 1
@@ -114,6 +115,8 @@ describe('추천채용 조회', () => {
       isSuccess: true,
       data: postings1,
       updatedAt: updatedAt,
+      nextCursor: 86,
+      previousCursor: 86,
       msg: '추천채용 여기있어요!',
     });
   });
