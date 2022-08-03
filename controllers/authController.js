@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 
-const { asyncWrapper } = require('../utils/util');
+const { asyncWrapper, asyncWrapperWithTransaction } = require('../utils/util');
 
 const { User, AuthEmail, User_info } = require('../models');
 
@@ -87,43 +87,54 @@ module.exports = {
       )(req, res, next); // 미들웨어 확장
     },
 
-    verifyNumberForNew: asyncWrapper(async (req, res) => {
-      const { email, password, userName, authNumber } = req.body;
+    verifyNumberForNew: asyncWrapperWithTransaction(
+      async (req, res, next, t) => {
+        const { email, password, userName, authNumber } = req.body;
 
-      const isVerified = await AuthEmail.findOne({
-        where: { email, authNumber },
-      });
-      if (!isVerified) {
-        return res.status(400).json({
-          isSuccess: false,
-          msg: '인증 번호가 틀렸습니다.',
+        const isVerified = await AuthEmail.findOne({
+          where: { email, authNumber },
+        });
+        if (!isVerified) {
+          return res.status(400).json({
+            isSuccess: false,
+            msg: '인증 번호가 틀렸습니다.',
+          });
+        }
+
+        // 인증완료
+        await AuthEmail.destroy(
+          { where: { email, authNumber, type: 0 } },
+          { transaction: t }
+        );
+
+        const hashedPwd = bcrypt.hashSync(password, 10);
+        const user = await User.create(
+          {
+            email,
+            password: hashedPwd,
+            userName,
+            type: 'local',
+          },
+          { transaction: t }
+        );
+        //user info 생성
+        await User_info.create(
+          {
+            userId: user.id,
+            careerId: 3,
+            cityId: 1,
+            companyTypeId: 1,
+            jobId: 1,
+          },
+          { transaction: t }
+        );
+
+        return res.status(200).json({
+          isSuccess: true,
+          msg: '회원가입이 완료되었습니다.',
         });
       }
-
-      // 인증완료
-      await AuthEmail.destroy({ where: { email, authNumber, type: 0 } });
-
-      const hashedPwd = bcrypt.hashSync(password, 10);
-      const user = await User.create({
-        email,
-        password: hashedPwd,
-        userName,
-        type: 'local',
-      });
-      //user info 생성
-      await User_info.create({
-        userId: user.id,
-        careerId: 3,
-        cityId: 1,
-        companyTypeId: 1,
-        jobId: 1,
-      });
-
-      return res.status(200).json({
-        isSuccess: true,
-        msg: '회원가입이 완료되었습니다.',
-      });
-    }),
+    ),
 
     verifyNumberForOld: asyncWrapper(async (req, res) => {
       const { email, authNumber } = req.body;
