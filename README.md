@@ -67,8 +67,7 @@
 6. create seeds: npx sequelize db:seed:all
 ```
 
-🛠 tools
-===
+##tools 🛠 BackEnd
 <!-- <img src="https://img.shields.io/badge/이름-색상코드?style=flat-square&logo=로고명&logoColor=로고색"/> -->
 
 
@@ -94,38 +93,27 @@
 
 
 
----
-
-💎BE 우리가 새롭게 도전한 기술들
-===
-1. router, Controller, Services 를 나눔으로써 의존성은 낮추고 응집도는 높게 구현
-
-2. 해싱을 사용해서 사용자의 비밀번호가 DB에 암호화되서 저장되게끔 구현
-
-3. dotenv로 환경변수 설정해서 중요한 키값을 환경변수로 처리하여 다른사람이 보지못하게 구현. 
-
-4. DB를 기존에 사용하던 mongodb 가 아닌 MYSQL 을 사용 
-
-5. MYSQL 을 사용할 때 다른 테이블의 키값을 가져오기 위해서 외래키를 사용
-
-6. 비밀번호 찾기 기능을 구현하기 위해서 nodemailer 를 사용
-
-7. 채팅 기능을 구현하기 위해 socket.io를 사용
-
-8. 음악 기능을 구현하기 위해 stream 방식을 사용
-
-9. 프로필 사진 업로드를 위해 S3와 multer를 사용
+## Feature
+1. `Node.js & Express`를 이용한 웹 애플리케이션 서버
+2. 유저, 일정, 추천채용공고, 추천채용조건 등 테이블간의 관계를 기반으로 `MySQL` 선택, `Sequelize ORM` 사용
+3. MySQL Profiles로 쿼리 성능 테스트 및 쿼리 성능 개선 => 데이터 처리 속도 개선
+4. `JWT`를 이용한 로그인 인증, 카카오 소셜로그인
+5. puppeteer를 활용한 크롤러 구현, 
+6. 최근 일주일, 한달간 유저의 총 참여 시간을 분 단위로 기록
+7. Github actions, AWS EC2를 활용한 `CI/CD 파이프라인`
+8. `AWS RDS`를 이용하여 데이터베이스 분리
+9. 비즈니스 로직을 Controller로 분리 & Controller에 한해 `Typescript` 적용
 
 ---
 
 😥 BE: 개발하면서 어려웠던점
-1. Stream 방식의 데이터 전송이나 웹소켓을 활용한 실시간 통신이 기존에 CRUD에서 사용한 통신 방식과 달라 그 부분을 이해하는데 시간이 많이 소요됨
+
 
 🤟 Trouble Shooting
 (우리 팀이 해결한 문제 정리)
 
-1. socket.io의 room 기능을 활용해 데이터 분산
-2. stream 방식으로 오디오 파일을 전송해 서버 과부화 해결
+1. 
+2. 
 
 
 ## Contributors
