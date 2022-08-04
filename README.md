@@ -102,6 +102,9 @@
 8. `AWS RDS`를 이용하여 데이터베이스 분리
 9. 비즈니스 로직을 Controller로 분리 & Controller에 한해 `Typescript` 적용
 
+## ERD
+![ERD](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/96519750-6922-447f-9748-9fd46a4c700c/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220804%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220804T170144Z&X-Amz-Expires=86400&X-Amz-Signature=84f75ab415a30805eabb3b8b6436e85fa2ffbdb68179ae01f479ec7823bfeecb&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
+
 
 😥 BE: 개발하면서 어려웠던점
 
