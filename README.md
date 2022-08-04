@@ -16,7 +16,7 @@
 ---
 
 
-## 주요기능
+## 💡 주요기능
 
 
 1️⃣ 이메일 인증을 통한 신뢰감있는 로컬 회원가입 !!
@@ -51,12 +51,12 @@
 
 
 
-## Architecture
+## 💎 Architecture
 
 ![아키텍쳐](https://user-images.githubusercontent.com/105336416/182626463-fd010fef-c8f9-4879-ba3b-f1dd66383850.png)
 
 
-## How to use
+## 🕹 How to use
 ```
 1. fork & clone
 2. npm install
@@ -91,7 +91,7 @@
 
 
 
-## Feature
+## 📌 Feature
 1. `Node.js & Express`를 이용한 웹 애플리케이션 서버
 2. 유저, 일정, 추천채용공고, 추천채용조건 등 테이블간의 관계를 기반으로 `MySQL` 선택, `Sequelize ORM` 사용
 3. MySQL Profiles로 쿼리 성능 테스트 및 쿼리 성능 개선 => 데이터 처리 속도 개선
@@ -102,21 +102,16 @@
 8. `AWS RDS`를 이용하여 데이터베이스 분리
 9. 비즈니스 로직을 Controller로 분리 & Controller에 한해 `Typescript` 적용
 
-## ERD
+## 🌠 ERD
 ![ERD](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/96519750-6922-447f-9748-9fd46a4c700c/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220804%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220804T170144Z&X-Amz-Expires=86400&X-Amz-Signature=84f75ab415a30805eabb3b8b6436e85fa2ffbdb68179ae01f479ec7823bfeecb&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
 
 
-😥 BE: 개발하면서 어려웠던점
-
-
-🤟 Trouble Shooting
-(우리 팀이 해결한 문제 정리)
-
+## 🤟 Trouble Shooting
 1. 
 2. 
 
 
-## Contributors
+## 🙋‍♂️ Contributors
 |name|position|github|
 |------|---|---|
 |김성현|Node.js|https://github.com/rtg1014|
