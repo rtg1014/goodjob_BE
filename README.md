@@ -128,6 +128,15 @@
 2. stream 방식으로 오디오 파일을 전송해 서버 과부화 해결
 
 
+## Contributors
+|name|position|github|
+|------|---|---|
+|장현광|Node.js|https://github.com/Hyeon-Gwang|
+|장창훈|Node.js|https://github.com/Hoon333|
+|황성원|Node.js|https://github.com/Magiof|
+
+</br>
+
 ## ⏰ 프로젝트 기간
 
 |||
