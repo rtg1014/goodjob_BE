@@ -57,6 +57,15 @@
 ![아키텍쳐](https://user-images.githubusercontent.com/105336416/182626463-fd010fef-c8f9-4879-ba3b-f1dd66383850.png)
 
 ---
+## How to use
+```
+1. fork & clone
+2. npm install
+3. create .env
+4. create MySQL DB: npx sequelize db:create
+5. npm run dev
+6. create seeds: npx sequelize db:seed:all
+```
 
 🛠 tools
 ===
@@ -65,8 +74,6 @@
 
 📌 BackEnd
 
-
----
 
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
