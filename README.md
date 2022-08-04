@@ -51,8 +51,7 @@
 
 ---
 
-💎아키텍쳐
-===
+## Architecture
 
 ![아키텍쳐](https://user-images.githubusercontent.com/105336416/182626463-fd010fef-c8f9-4879-ba3b-f1dd66383850.png)
 
@@ -66,7 +65,7 @@
 5. npm run dev
 6. create seeds: npx sequelize db:seed:all
 ```
-## 🛠Tools
+## 🛠 기술스택
 <!-- <img src="https://img.shields.io/badge/이름-색상코드?style=flat-square&logo=로고명&logoColor=로고색"/> -->
 
 
@@ -103,7 +102,6 @@
 8. `AWS RDS`를 이용하여 데이터베이스 분리
 9. 비즈니스 로직을 Controller로 분리 & Controller에 한해 `Typescript` 적용
 
----
 
 😥 BE: 개발하면서 어려웠던점
 
