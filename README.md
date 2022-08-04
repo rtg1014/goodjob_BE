@@ -1,6 +1,6 @@
 ![Title](https://user-images.githubusercontent.com/105336416/182617216-d4156ce3-f572-44d6-a335-5e7fd9183123.png)
 
-# ✨[굿잡 캘린더 사용해보기][goodjob-link]
+## ✨[굿잡 캘린더 바로가기][goodjob-link]
 
 [goodjob-link]: https://goodjobcalendar.com/ '굿잡 캘린더 바로가기!'
 
