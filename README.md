@@ -124,6 +124,7 @@
 |------|---|---|
 |김성현|Node.js|https://github.com/rtg1014|
 |황성원|Node.js|https://github.com/Magiof|
+|Front End|Repo|[https://github.com/Magiof](https://github.com/YoujungSon/Good-Job-Calender)|
 
 </br>
 
