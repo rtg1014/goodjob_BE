@@ -108,14 +108,14 @@
 6. `crontab`을 이용해 매 시 정각 크롤러 자동 실행 => 채용공고 업데이트
 7. Github actions, AWS EC2를 활용한 `CI/CD 파이프라인`
 8. `AWS RDS`를 이용하여 데이터베이스 분리
-9. 모든 API, validator, util에 `jest`를 활용한 유닛  
+9. 모든 API, validator, util에 `jest`를 활용한 유닛 테스트 실시
 
 ## 🌠 ERD
 ![ERD](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/96519750-6922-447f-9748-9fd46a4c700c/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220804%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220804T170144Z&X-Amz-Expires=86400&X-Amz-Signature=84f75ab415a30805eabb3b8b6436e85fa2ffbdb68179ae01f479ec7823bfeecb&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
 
 
 ## 🤟 Trouble Shooting
-1. 
+1. https://github.com/rtg1014/goodjob_BE/wiki/%ED%8A%B8%EB%9F%AC%EB%B8%94-%EC%8A%88%ED%8C%85-(1)-pagination
 2. 
 
 
@@ -124,9 +124,13 @@
 |------|---|---|
 |김성현|Node.js|https://github.com/rtg1014|
 |황성원|Node.js|https://github.com/Magiof|
-|Front End|Repo|[https://github.com/YoujungSon/Good-Job-Calender](https://github.com/YoujungSon/Good-Job-Calender)|
-
 </br>
+
+### ✨[FE repo 바로가기][goodjobFE-link]
+
+[goodjobFE-link]: https://github.com/YoujungSon/Good-Job-Calender '굿잡 캘린더 바로가기!'
+
+<br>
 
 ## ⏰ 프로젝트 기간
 
