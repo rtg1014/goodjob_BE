@@ -457,7 +457,7 @@ module.exports = {
   },
 
   delete: {
-    delete: asyncWrapper(async (req, res) => {
+    delete: asyncWrapper(async (req, res, next) => {
       const { scheduleId } = req.params;
       const user = req.user;
       invalidToken(user);
@@ -483,10 +483,7 @@ module.exports = {
         where: { id: scheduleId },
       });
 
-      return res.status(200).json({
-        isSuccess: true,
-        msg: '일정 삭제 완료!',
-      });
+      next();
     }),
   },
 };

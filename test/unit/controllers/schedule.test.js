@@ -289,28 +289,25 @@ describe('일정 상세 (수정)', () => {
 describe('일정 상세 (삭제)', () => {
   test('삭제 완료(수동 작성)', async () => {
     req.parmas = delete3;
+    next = jest.fn();
     user_schedule.findOne.mockResolvedValue(delete4);
     Schedule.destroy.mockResolvedValue(undefined);
     await ScheduleController.delete.delete(req, res, next);
-    expect(res._getJSONData()).toStrictEqual({
-      isSuccess: true,
-      msg: '일정 삭제 완료!',
-    });
+    expect(next).toHaveBeenCalled();
   });
 
   test('삭제 완료(스크랩)', async () => {
     req.parmas = delete2;
+    next = jest.fn();
     user_schedule.findOne.mockResolvedValue(delete5);
     Schedule.destroy.mockResolvedValue(undefined);
     await ScheduleController.delete.delete(req, res, next);
-    expect(res._getJSONData()).toStrictEqual({
-      isSuccess: true,
-      msg: '일정 삭제 완료!',
-    });
+    expect(next).toHaveBeenCalled();
   });
 
   test('scheduleId에 해당하는 일정이 없을 때 에러', async () => {
     req.parmas = delete1;
+    next = jest.fn();
     user_schedule.findOne.mockResolvedValue(undefined);
     Schedule.destroy.mockResolvedValue(undefined);
     await ScheduleController.delete.delete(req, res, next);
