@@ -27,7 +27,7 @@ router.get('/schedule/monthly', auth, ScheduleController.get.monthly); // 월간
 router.get('/schedule/search', auth, ScheduleController.get.search); // 일정 검색
 router.get('/schedule/:scheduleId', auth, ScheduleController.get.detail); // 일정 상세 조회
 router.patch('/schedule/:scheduleId', auth, joiMiddleware('myScheduleSchema'), ScheduleController.update.modify, ScheduleController.get.detail); // 일정 상세 수정
-router.delete('/schedule/:scheduleId', auth, ScheduleController.delete.delete, ScheduleController.get.detail); // 일정 상세 삭제
+router.delete('/schedule/:scheduleId', auth, ScheduleController.delete.delete, ScheduleController.get.monthly); // 일정 상세 삭제
 
 //  api/posting
 router.patch('/posting/category', auth, joiMiddleware('categorySchema'), PostingController.update.category, PostingController.get.category); // 추천채용 세팅 변경
