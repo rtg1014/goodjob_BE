@@ -25,6 +25,7 @@ router.get('/schedule/daily', auth, ScheduleController.get.daily); // 일간 일
 router.get('/schedule/weekly', auth, ScheduleController.get.weekly); // 주간 스케줄 조회
 router.get('/schedule/monthly', auth, ScheduleController.get.monthly); // 월간 일정 조회
 router.get('/schedule/search', auth, ScheduleController.get.search); // 일정 검색
+router.get('/schedule/scrap', auth, ScheduleController.get.myScrap) // 스크랩한 공고 모아 보기
 router.get('/schedule/:scheduleId', auth, ScheduleController.get.detail); // 일정 상세 조회
 router.patch('/schedule/:scheduleId', auth, joiMiddleware('myScheduleSchema'), ScheduleController.update.modify, ScheduleController.get.detail); // 일정 상세 수정
 router.delete('/schedule/:scheduleId', auth, ScheduleController.delete.delete, ScheduleController.get.monthly); // 일정 상세 삭제
