@@ -454,6 +454,45 @@ module.exports = {
         msg: '일정 검색 완료!',
       });
     }),
+
+    myScrap: asyncWrapper(async (req, res) => {
+      const user = req.user;
+      invalidToken(user);
+
+      const schedules = await user_schedule.findAll({
+        where: {
+          userid: user.id,
+          [Op.or]: [{ '$Schedule.postingId$': { [Op.ne]: null } }],
+        },
+        include: [
+          {
+            model: Schedule,
+            attributes: attributesOption(),
+            include: [
+              {
+                model: Posting,
+                attributes: attributesOption(),
+              },
+            ],
+          },
+        ],
+      });
+
+      if (!schedules) {
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '스크랩한 공고가 없습니다!',
+        });
+      }
+
+      const data = processing(schedules);
+
+      return res.status(200).json({
+        isSuccess: true,
+        data,
+        msg: '스크랩한 공고들 여기있어요!',
+      });
+    }),
   },
 
   delete: {
