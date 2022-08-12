@@ -28,7 +28,7 @@ let sendMailMock;
 // jest.fn()
 User.findOne = jest.fn();
 User.create = jest.fn();
-User.updateOne = jest.fn();
+User.update = jest.fn();
 AuthEmail.findOne = jest.fn();
 AuthEmail.create = jest.fn();
 AuthEmail.updateOne = jest.fn();
@@ -167,7 +167,7 @@ describe('비밀번호 변경(메일 인증)', () => {
 describe('비밀번호 변경(인증 완료)', () => {
   test('비밀번호 변경 완료', async () => {
     req.body = newPassword1;
-    User.updateOne.mockResolvedValue(newPassword2);
+    User.update.mockResolvedValue(newPassword2);
     await AuthController.update.newPassword(req, res, next);
     expect(res._getJSONData()).toStrictEqual({
       isSuccess: true,
