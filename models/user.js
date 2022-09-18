@@ -41,6 +41,9 @@ module.exports = (sequelize, DataTypes) => {
     db.User.belongsToMany(db.Schedule, {
       through: 'user_schedule',
     });
+    db.User.belongsToMany(db.Posting, {
+      through: 'user_posting',
+    });
   };
 
   return User;

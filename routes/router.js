@@ -34,6 +34,9 @@ router.delete('/schedule/:scheduleId', auth, ScheduleController.delete.delete, S
 router.patch('/posting/category', auth, joiMiddleware('categorySchema'), PostingController.update.category, PostingController.get.category); // 추천채용 세팅 변경
 router.get('/posting/category', auth, PostingController.get.category); // 추천채용 세팅 조회
 router.get('/postings', auth, PostingController.get.postings); // 추천채용 조회
+router.post('/posting/like/:postingId', auth, PostingController.create.like); // 찜하기
+router.delete('/posting/like/:postingId', auth, PostingController.delete.like); // 찜한거 삭제
+router.get('/posting/likes', auth, PostingController.get.likes); // 찜목록 보기
 router.get('/posting/:postingId', auth, PostingController.get.posting); // 추천채용 상세 조회
 
 module.exports = router;
