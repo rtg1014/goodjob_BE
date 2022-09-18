@@ -340,7 +340,12 @@ module.exports = {
           career: x.career.type,
           city: x.city.main + ' ' + x.city.sub,
           deadline: dateFormatter(x.deadline),
+          isLike: false,
         };
+        const likePosting = await user_posting.findOne({
+          where: { userId: user.id, postingId: x.id },
+        });
+        if (likePosting) posting.isLike = true;
         data.push(posting);
       }
       if (orderBy === 'ASC') data = data.reverse();
@@ -408,6 +413,12 @@ module.exports = {
         }
       }
 
+      const likePosting = await user_posting.findOne({
+        where: { userId: user.id, postingId },
+      });
+      let isLike = false;
+      if (likePosting) isLike = true;
+
       if (!posting) {
         return res.status(400).json({
           isSuccess: false,
@@ -431,6 +442,7 @@ module.exports = {
         companyType: posting.companyType.type,
         job,
         isScrap,
+        isLike,
       };
 
       return res.status(200).json({
