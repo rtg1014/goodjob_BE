@@ -19,10 +19,38 @@ const {
   User_info,
   user_schedule,
   Schedule,
+  user_posting,
 } = require('../models');
 
 module.exports = {
-  create: {},
+  create: {
+    like: asyncWrapper(async (req, res, next) => {
+      const user = req.user;
+      invalidToken(user);
+      const { postingId } = req.params;
+      const posting = await Posting.findOne({
+        where: { id: postingId },
+      });
+
+      if (!posting)
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '해당 포스팅이 존재하지 않습니다.',
+        });
+
+      const likePosting = await user_posting.create({
+        userId: user.id,
+        postingId,
+      });
+
+      return res.status(200).json({
+        isSuccess: true,
+        data: likePosting,
+        msg: '찜하기 완료!',
+      });
+    }),
+  },
+
   update: {
     category: asyncWrapper(async (req, res, next) => {
       const { career, companyType, cityMain, citySub, jobMain, jobSub } =
@@ -411,7 +439,80 @@ module.exports = {
         msg: '추천채용 상세조회 여기있어요!',
       });
     }),
+
+    likes: asyncWrapper(async (req, res, next) => {
+      const user = req.user;
+      invalidToken(user);
+
+      const likePostings = await user_posting.findAll({
+        userId: user.id,
+      });
+
+      const likepostingIds = [];
+      for (const likePosting of likePostings) {
+        likepostingIds.push(likePosting.postingId);
+      }
+
+      const data = await Posting.findAll({
+        where: {
+          id: { [Op.in]: likepostingIds },
+        },
+        attributes: ['id', 'companyName', 'title', 'deadline'],
+        include: [
+          {
+            model: Career,
+            attributes: attributesOption(),
+          },
+          {
+            model: City,
+            attributes: attributesOption(),
+          },
+          {
+            model: CompanyType,
+            attributes: attributesOption(),
+          },
+        ],
+      });
+
+      return res.status(200).json({
+        isSuccess: true,
+        data,
+        msg: '찜 목록 조회 완료!',
+      });
+    }),
   },
 
-  delete: {},
+  delete: {
+    like: asyncWrapper(async (req, res, next) => {
+      const user = req.user;
+      invalidToken(user);
+      const { postingId } = req.params;
+      const posting = await Posting.findOne({
+        where: { id: postingId },
+      });
+      const likePosting = await user_posting.findOne({
+        userId: user.id,
+        postingId,
+      });
+
+      if (!posting || !likePosting)
+        return res.status(400).json({
+          isSuccess: false,
+          msg: '해당 포스팅이 존재하지 않습니다.',
+        });
+
+      await user_posting.destroy({
+        where: {
+          userId: user.id,
+          postingId,
+        },
+      });
+
+      return res.status(200).json({
+        isSuccess: true,
+        data: { userId: user.id, postingId },
+        msg: '찜 취소 완료!',
+      });
+    }),
+  },
 };
