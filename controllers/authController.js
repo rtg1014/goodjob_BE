@@ -3,9 +3,13 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 
-const { asyncWrapper, asyncWrapperWithTransaction } = require('../utils/util');
+const {
+  asyncWrapper,
+  asyncWrapperWithTransaction,
+  invalidToken,
+} = require('../utils/util');
 
-const { User, AuthEmail, User_info } = require('../models');
+const { User, AuthEmail, User_info, user_posting } = require('../models');
 
 module.exports = {
   create: {
@@ -257,6 +261,32 @@ module.exports = {
         isSuccess: true,
         token,
         msg: '로그인 되었습니다.',
+      });
+    }),
+
+    userInfo: asyncWrapper(async (req, res) => {
+      const user = req.user;
+      invalidToken(user);
+
+      const userInfo = await User.findOne({
+        where: { id: user.id },
+      });
+
+      const countLikePostings = await user_posting.count({
+        where: { userId: user.id },
+      });
+
+      const data = {
+        email: userInfo.email,
+        countLikePostings,
+        type: userInfo.type,
+        updatedAt: userInfo.updatedAt,
+      };
+
+      return res.status(200).json({
+        isSuccess: true,
+        data,
+        msg: '마이페이지 조회 완료!',
       });
     }),
   },

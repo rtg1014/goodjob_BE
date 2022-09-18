@@ -17,6 +17,7 @@ router.patch('/auth/verifyNumberForOld', joiMiddleware('verifyNumberForOldSchema
 router.patch('/auth/newPassword', joiMiddleware('newPasswordSchema'), AuthController.update.newPassword); // 비밀번호 재설정
 router.post('/auth', joiMiddleware('authSchema'), AuthController.get.auth); // 로그인
 router.get('/auth/kakao/callback', AuthController.create.kakao); // 카카오 로그인 콜백
+router.get('/auth/userInfo', auth, AuthController.get.userInfo); // 마이페이지 조회
 
 // api/schedule
 router.post('/schedule', auth, joiMiddleware('myScheduleSchema'), ScheduleController.create.mySchedule, ScheduleController.get.detail); // 수동 스케줄 생성
