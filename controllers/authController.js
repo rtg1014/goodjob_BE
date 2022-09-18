@@ -149,16 +149,26 @@ module.exports = {
   update: {
     newPassword: asyncWrapper(async (req, res) => {
       const { email, newPassword, confirmNewPassword } = req.body;
+      var now = new Date();
+
+      const user = await User.findOne({ wher: email });
+      if (!user)
+        return res.status(400).json({
+          isSuccess: true,
+          msg: '해당하는 유저정보가 없습니다.',
+        });
 
       const hashedPwd = bcrypt.hashSync(newPassword, 10);
       await User.update(
         {
           password: hashedPwd,
+          updatedAt: now,
         },
         {
           where: { email },
         }
       );
+
       return res.status(200).json({
         isSuccess: true,
         msg: '비밀번호 변경완료!',
