@@ -20,6 +20,7 @@ const {
   user_schedule,
   Schedule,
   user_posting,
+  User,
 } = require('../models');
 
 module.exports = {
@@ -454,17 +455,32 @@ module.exports = {
 
     likes: asyncWrapper(async (req, res, next) => {
       const user = req.user;
+      const { condition, orderBy } = req.query;
       invalidToken(user);
-
       const likePostings = await user_posting.findAll({
         where: { userId: user.id },
       });
+
+      if (condition !== 'scrapping' && condition !== 'deadline') {
+        return res.status(400).json({
+          isSuccess: false,
+          data: null,
+          msg: 'plz insert correct query',
+        });
+      }
+
+      if (orderBy !== 'asc' && orderBy !== 'desc') {
+        return res.status(400).json({
+          isSuccess: false,
+          data: null,
+          msg: 'plz insert correct query',
+        });
+      }
 
       const likepostingIds = [];
       for (const likePosting of likePostings) {
         likepostingIds.push(likePosting.postingId);
       }
-      console.log(likepostingIds, 'userId', user.id);
 
       const data = await Posting.findAll({
         where: {
@@ -484,9 +500,26 @@ module.exports = {
             model: CompanyType,
             attributes: attributesOption(),
           },
+          {
+            model: User,
+            attributes: ['createdAt'],
+            where: { id: user.id },
+          },
         ],
         order: [['deadline', 'ASC']],
       });
+
+      if (condition === 'scrapping') {
+        data.sort(
+          (a, b) =>
+            a.users[0].user_posting.createdAt -
+            b.users[0].user_posting.createdAt
+        );
+      }
+
+      if (orderBy === 'desc') {
+        data.reverse()
+      }
 
       return res.status(200).json({
         isSuccess: true,
