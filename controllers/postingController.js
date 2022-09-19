@@ -457,13 +457,14 @@ module.exports = {
       invalidToken(user);
 
       const likePostings = await user_posting.findAll({
-        userId: user.id,
+        where: { userId: user.id },
       });
 
       const likepostingIds = [];
       for (const likePosting of likePostings) {
         likepostingIds.push(likePosting.postingId);
       }
+      console.log(likepostingIds, 'userId', user.id);
 
       const data = await Posting.findAll({
         where: {
@@ -484,6 +485,7 @@ module.exports = {
             attributes: attributesOption(),
           },
         ],
+        order: [['deadline', 'ASC']],
       });
 
       return res.status(200).json({
