@@ -84,4 +84,3 @@ module.exports = app;
 
 
 // app.js 깃허브액션 Ci 재실행
-// app.js 다운된 EC2 재실행 
