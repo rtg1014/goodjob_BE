@@ -34,4 +34,5 @@ async function getCompanyDate(page, len) {
 
   return resultCD;
 }
+// 년도변경으로 22년에서 23년으로 변경
 module.exports = getCompanyDate;
