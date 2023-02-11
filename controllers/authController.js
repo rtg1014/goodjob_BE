@@ -3,9 +3,13 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 
-const { asyncWrapper, asyncWrapperWithTransaction } = require('../utils/util');
+const {
+  asyncWrapper,
+  asyncWrapperWithTransaction,
+  invalidToken,
+} = require('../utils/util');
 
-const { User, AuthEmail, User_info } = require('../models');
+const { User, AuthEmail, User_info, user_posting } = require('../models');
 
 module.exports = {
   create: {
@@ -149,16 +153,26 @@ module.exports = {
   update: {
     newPassword: asyncWrapper(async (req, res) => {
       const { email, newPassword, confirmNewPassword } = req.body;
+      var now = new Date();
+
+      const user = await User.findOne({ wher: email });
+      if (!user)
+        return res.status(400).json({
+          isSuccess: true,
+          msg: '해당하는 유저정보가 없습니다.',
+        });
 
       const hashedPwd = bcrypt.hashSync(newPassword, 10);
       await User.update(
         {
           password: hashedPwd,
+          updatedAt: now,
         },
         {
           where: { email },
         }
       );
+
       return res.status(200).json({
         isSuccess: true,
         msg: '비밀번호 변경완료!',
@@ -247,6 +261,32 @@ module.exports = {
         isSuccess: true,
         token,
         msg: '로그인 되었습니다.',
+      });
+    }),
+
+    userInfo: asyncWrapper(async (req, res) => {
+      const user = req.user;
+      invalidToken(user);
+
+      const userInfo = await User.findOne({
+        where: { id: user.id },
+      });
+
+      const countLikePostings = await user_posting.count({
+        where: { userId: user.id },
+      });
+
+      const data = {
+        email: userInfo.email,
+        countLikePostings,
+        type: userInfo.type,
+        updatedAt: userInfo.updatedAt,
+      };
+
+      return res.status(200).json({
+        isSuccess: true,
+        data,
+        msg: '마이페이지 조회 완료!',
       });
     }),
   },

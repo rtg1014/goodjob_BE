@@ -17,6 +17,7 @@ router.patch('/auth/verifyNumberForOld', joiMiddleware('verifyNumberForOldSchema
 router.patch('/auth/newPassword', joiMiddleware('newPasswordSchema'), AuthController.update.newPassword); // 비밀번호 재설정
 router.post('/auth', joiMiddleware('authSchema'), AuthController.get.auth); // 로그인
 router.get('/auth/kakao/callback', AuthController.create.kakao); // 카카오 로그인 콜백
+router.get('/auth/userInfo', auth, AuthController.get.userInfo); // 마이페이지 조회
 
 // api/schedule
 router.post('/schedule', auth, joiMiddleware('myScheduleSchema'), ScheduleController.create.mySchedule, ScheduleController.get.detail); // 수동 스케줄 생성
@@ -34,6 +35,9 @@ router.delete('/schedule/:scheduleId', auth, ScheduleController.delete.delete, S
 router.patch('/posting/category', auth, joiMiddleware('categorySchema'), PostingController.update.category, PostingController.get.category); // 추천채용 세팅 변경
 router.get('/posting/category', auth, PostingController.get.category); // 추천채용 세팅 조회
 router.get('/postings', auth, PostingController.get.postings); // 추천채용 조회
+router.post('/posting/like/:postingId', auth, PostingController.create.like); // 찜하기
+router.delete('/posting/like/:postingId', auth, PostingController.delete.like); // 찜한거 삭제
+router.get('/posting/likes', auth, PostingController.get.likes); // 찜목록 보기
 router.get('/posting/:postingId', auth, PostingController.get.posting); // 추천채용 상세 조회
 
 module.exports = router;
