@@ -19,7 +19,7 @@ async function getCompanyDate(page, len) {
     let valueTrim = value.trim();
     if (valueTrim.indexOf('~') > -1) {
       valueTrim =
-        '2022-' + valueTrim.replace('~', '').replace('/', '-') + ' 23:59:59';
+        '2023-' + valueTrim.replace('~', '').replace('/', '-') + ' 23:59:59';
     } else if (valueTrim.indexOf('(') > -1) continue;
     else if (valueTrim.indexOf('오늘') > -1) {
       valueTrim = dateFormatter(today).substr(0, 10) + ' 23:59:59';
