@@ -86,3 +86,4 @@ module.exports = app;
 
 // app.js 깃허브액션 Ci 재실행
 // app.js 깃허브액션 Ci 재실행 23.01.18
+// 서버 다운으로 인한 재실행
